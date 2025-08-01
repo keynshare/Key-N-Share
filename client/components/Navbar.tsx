@@ -76,7 +76,7 @@ function Navbar() {
 
   return (
   
-    <div className='sticky top-0 p-4 px-6 bg-transparent z-50'>
+    <div className='sticky w-screen top-0 p-4 z-[99999999999999999999] px-5 overflow-hidden xl:px-10 bg-transparent '>
       <div className="flex justify-center">
         <div
           className={clsx(
@@ -84,7 +84,7 @@ function Navbar() {
             ' flex items-center justify-between transition-[padding] duration-500 ease-in-out',
             IsScrolled
               ? 'backdrop-blur-[5px] w-fit border border-gray-200 bg-[#DBF0FF]/30 p-2 gap-4 rounded-lg'
-              : 'p-0 gap-[18px] w-full' 
+              : 'p-0 gap-[18px] w-full bg-transparent' 
           )}
         >
           <div className="text-[29px] flex items-center gap-[18px] font-bold text-black">

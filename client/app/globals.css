@@ -3,6 +3,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body{
+    width: 100vw;
+    overflow-x: hidden;
+}
 
 .Btn{
     opacity: 1;
