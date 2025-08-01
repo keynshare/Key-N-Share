@@ -1,19 +1,37 @@
-
+import CircleBG from './CircleBG'
+import Logo from '@/public/logo.svg'
+import Image from 'next/image'
+import PrimaryBtn from '../SharedComponents/PrimaryBtn'
+import SecondaryBtn from '../SharedComponents/SecondaryBtn'
+import Diagram from './Diagram'
 function HeroSection() {
   return (
     <>
-    <div className="flex left-1/2 -translate-x-1/2  absolute w-screen overflow-hidden h-screen max-h-[700px] ">
+   <CircleBG/>
 
-<div className=" w-[900px] h-[900px] xl:w-[1280px] xl:h-[1280px] absolute top-4 translate-y-5 left-1/2 -translate-x-1/2 aspect-square rounded-full border border-[#ADADAD] "/>
+   <div className='flex flex-col z-50 relative items-center gap-9 justify-center h-screen md:h-[580px] xl:h-[700px] w-screen px-[5vw] '>
 
-<div className=" w-[740px] h-[740px] xl:w-[1080px] xl:h-[1080px] translate-y-28 top-4 xl:translate-y-28 absolute left-1/2 -translate-x-1/2 aspect-square rounded-full border border-[#ADADAD] "/>
+      <div className='flex justify-center items-center gap-3 [background:#192B42/25] backdrop-blur-xl shadow-[0_0_5px_0_#004CBE50_inset]  px-[15px] py-[5px]  rounded-full border-[0.75px] border-[rgba(25,43,66,0.25)]'>
+        
+        <Image src={Logo} alt='Key N Share' className="w-[18px] sm:w-[25px]" />
+          <p className='text-[#004CBE] text-xs sm:text-base shiny-text'>  Discover. Download. Decrypt.</p>
 
-  
-<div className=" w-[558px] h-[558px] xl:w-[864px] xl:h-[864px]  translate-y-52 top-4 absolute left-1/2 -translate-x-1/2 aspect-square rounded-full border border-[#ADADAD] "/>
+      </div>
 
-<div className=" h-[80vh] w-[30vw] lg:h-[65vw] lg:w-[20vw] -top-10 lg:-top-44  bg-white blur-2xl md:blur-3xl z-50 absolute left-1/2 -translate-x-1/2 aspect-square" />
 
-    </div>
+      <div className='flex flex-col items-center justify-center gap-3'>
+        <h1 className='font-bricola font-extrabold sm:font-bold text-lg sm:text-3xl md:text-[31px] lg:text-[42px]  xl:text-5xl w-[320px] sm:w-3/4 text-center'>Own Your Data. Share It Securely. Get Paid Fairly.</h1>
+        <p className='text-[#3F3F3F] text-center text-base md:text-lg'> Own, protect, and monetize your data in the Web3 era. </p>
+      </div>
+
+      <div className='flex flex-wrap items-center justify-center  gap-5'>
+        <SecondaryBtn>Upload Datasets</SecondaryBtn>
+        <PrimaryBtn sparkelClass='sm:!-top-3 -top-[15px]  w-[200px] ' className={'w-[156px] sm:w-fit'} >Get Started</PrimaryBtn>
+      </div>
+
+   </div>
+
+   <Diagram/>
     
     </>
   )

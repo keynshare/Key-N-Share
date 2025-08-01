@@ -9,6 +9,7 @@ module.exports = {
     extend: {
        fontFamily: {
         poppins: ['var(--font-poppins)'],
+        bricola: ['var(--font-bricolage-grotesque)'],
         body: ['inherit'],
       },
     },

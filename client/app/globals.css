@@ -14,10 +14,19 @@ body{
     transform-style: preserve-3d;
 }
 
-.poppins{
-    font-family: 'Poppins', sans-serif;
+@keyframes shine {
+  0% {
+    background-position: -200%;
+  }
+  100% {
+    background-position: 200%;
+  }
 }
 
-/* .karla{
-    font-family: 'Karla', sans-serif;
-} */
+.shiny-text {
+  @apply bg-gradient-to-r from-[#3458bd] via-[#65faff] to-[#004CBE] text-transparent bg-clip-text;
+  background-size: 200% auto;
+  animation: shine 5s linear infinite;
+}
+
+

@@ -25,6 +25,7 @@ function Navbar() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [IsScrolled, setIsScrolled] = useState<boolean>(false);
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const currentIndex = navLinks.findIndex((link) => link.href === pathname);
@@ -81,7 +82,7 @@ function Navbar() {
         <div
           className={clsx(
           
-            ' flex items-center justify-between transition-[padding] duration-500 ease-in-out',
+            ' flex items-center min-w-[90vw] md:min-w-[700px] justify-between transition-[padding] duration-500 ease-in-out',
             IsScrolled
               ? 'backdrop-blur-[5px] w-fit border border-gray-200 bg-[#DBF0FF]/30 p-2 gap-4 rounded-lg'
               : 'p-0 gap-[18px] w-full bg-transparent' 
@@ -90,14 +91,14 @@ function Navbar() {
           <div className="text-[29px] flex items-center gap-[18px] font-bold text-black">
             <Image
               src={Logo}
-              alt="logo"
+              alt="Key N Share"
               width={43}
               className="w-[30px] xl:w-[43.38px]"
             />
             <p
               className={clsx(
-                'font-poppins transition-all duration-500 ease-in-out overflow-hidden whitespace-nowrap',
-                IsScrolled ? 'max-w-0 opacity-0' : 'max-w-xs opacity-100'
+                'font-poppins transition-all text-2xl lg:text-[29px] duration-500 ease-in-out overflow-hidden whitespace-nowrap',
+                IsScrolled ? 'max-w-xs opacity-100 lg:max-w-0 lg:opacity-0' : 'max-w-xs opacity-100'
               )}
             >
               Key N Share
@@ -105,7 +106,7 @@ function Navbar() {
           </div>
 
 
-          <div className="relative w-fit">
+          <div className="relative hidden lg:block w-fit">
             <div
               ref={containerRef}
               className={clsx(
@@ -136,12 +137,47 @@ function Navbar() {
 
 
 
-          <div className="flex items-center gap-5">
+          <div className=" hidden lg:flex items-center gap-5">
             <SecondaryBtn>Login</SecondaryBtn>
             <PrimaryBtn>Register</PrimaryBtn>
           </div>
+
+
+            <div className="lg:hidden text-black flex bg-[#DBF0FF]/30 backdrop-blur-sm p-2 px-3 border border-gray-100 aspect-square rounded-full items-center">
+          <button onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle Menu">
+            {menuOpen ? 'X' : '|||'}
+          </button>
         </div>
+
+        </div>
+                
+      
+      
+
+     
       </div>
+       {/* Mobile Menu */}
+      {menuOpen && (
+        <div className="lg:hidden mt-4 fixed  flex w-[90%] md:w-[95%]  justify-between gap-3 bg-[#DBF0FF]/30 backdrop-blur-xl border rounded-xl p-4 shadow-lg transition-all duration-300">
+        <div className="lg:hidden mt-4  flex flex-col  gap-3">
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={() => setMenuOpen(false)}
+              className="text-black text-lg  font-medium hover:text-blue-600 transition"
+            >
+              {link.label}
+            </Link>
+          ))}
+          <SecondaryBtn className={'w-[156px]'} >Login</SecondaryBtn>
+          <PrimaryBtn sparkelClass='sm:!-top-3 -top-[15px]  w-[180px] ' className={'w-[156px]'}>Register</PrimaryBtn>
+        </div>
+        <div className="w-full  bg-gray-300">
+
+        </div>
+        </div>
+      )}
     </div>
   );
 }

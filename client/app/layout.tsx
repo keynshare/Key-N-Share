@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Poppins,Karla } from "next/font/google";
+import { Poppins, Karla, Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import clsx from "clsx";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -12,6 +13,11 @@ const poppins = Poppins({
 
 const karla = Karla({
   variable: "--font-karla",
+  subsets: ["latin"],
+  weight: [ "200", "300", "400", "500", "600", "700", "800"],
+});
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-bricolage-grotesque",
   subsets: ["latin"],
   weight: [ "200", "300", "400", "500", "600", "700", "800"],
 });
@@ -29,7 +35,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${karla.className}  ${poppins.variable} bg-white`}>
+      <body className={clsx(bricolage.variable ,karla.className , poppins.variable, 'bg-white')}>
         <Navbar />
         {children}
       </body>
