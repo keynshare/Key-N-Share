@@ -1,4 +1,4 @@
-import CircleSvg from "../assets/hero/circle.png"
+
 function HeroSection() {
   return (
     <>
