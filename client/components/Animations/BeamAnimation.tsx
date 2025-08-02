@@ -13,7 +13,7 @@ const cn = (...classes: (string | undefined)[]) => classes.filter(Boolean).join(
 // BeamAnimation component
 interface BeamAnimationProps {
   className?: string
-  containerRef: RefObject<HTMLElement>
+  containerRef: RefObject<HTMLElement | null>
   fromRef: RefObject<HTMLElement>
   toRef: RefObject<HTMLElement>
   curvature?: number
