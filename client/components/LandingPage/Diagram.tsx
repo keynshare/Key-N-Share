@@ -98,7 +98,7 @@ export const Diagram: React.FC<BeamAnimationDemoProps> = ({
  
   beamSpeed = 9,
 }) => {
-  const containerRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement | null>(null)
   const div1Ref = useRef<HTMLDivElement>(null)
   const div2Ref = useRef<HTMLDivElement>(null)
   const div3Ref = useRef<HTMLDivElement>(null)
