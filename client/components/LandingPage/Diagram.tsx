@@ -1,5 +1,5 @@
 "use client"
-import {forwardRef, useRef} from 'react'
+import {forwardRef, useState,useEffect, useRef} from 'react'
 import BeamAnimation from '../Animations/BeamAnimation'
 import { Particles } from '../Animations/Particles'
 
@@ -85,14 +85,14 @@ const Icons = {
 }
 
 
- interface BeamAnimationDemoProps {
+ interface DiagramProp {
   className?: string
   icons?: typeof Icons
   beamColor?: string
   beamSpeed?: number
 }
 
-export const Diagram: React.FC<BeamAnimationDemoProps> = ({
+export const Diagram: React.FC<DiagramProp> = ({
   className,
   icons = Icons,
  
@@ -104,7 +104,25 @@ export const Diagram: React.FC<BeamAnimationDemoProps> = ({
   const div3Ref = useRef<HTMLDivElement>(null)
   const div4Ref = useRef<HTMLDivElement>(null)
   const div5Ref = useRef<HTMLDivElement>(null)
+   const [particleCount, setParticleCount] = useState<number>(200)
   
+  useEffect(() => {
+  
+    const updateParticleCount = () => {
+      if (window.innerWidth < 640) { 
+        setParticleCount(100)
+      } else if (window.innerWidth < 1024) { 
+        setParticleCount(200)
+      } else {
+        setParticleCount(800)
+      }
+    }
+
+    updateParticleCount()
+
+    window.addEventListener('resize', updateParticleCount)
+    return () => window.removeEventListener('resize', updateParticleCount)
+  }, [])
 
   return (
    <>
@@ -112,7 +130,7 @@ export const Diagram: React.FC<BeamAnimationDemoProps> = ({
 
     <div
       className={cn(
-        "relative flex w-full  mx-auto items-center justify-center bg-black overflow-hidden rounded-lg border bg-background",
+        "relative flex w-full  mx-auto items-center -translate-y-6 justify-center bg-black overflow-hidden rounded-lg border bg-background",
         "p-4 sm:p-6 md:p-10 md:shadow-xl", 
         className,
       )}
@@ -120,8 +138,8 @@ export const Diagram: React.FC<BeamAnimationDemoProps> = ({
     >
         <Particles
           className="absolute inset-0"
-        quantity={300}
-        ease={80}
+        quantity={particleCount}
+        ease={30}
         color='#67e8f9'
         size={0.5}
         refresh/>
