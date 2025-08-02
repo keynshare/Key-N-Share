@@ -19,9 +19,9 @@ const navLinks = [
 
 function Navbar() {
   const pathname = usePathname();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [tabStyle, setTabStyle] = useState({});
-  const [activeIndex, setActiveIndex] = useState(0);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [tabStyle, setTabStyle] = useState<React.CSSProperties>({});
+  const [activeIndex, setActiveIndex] = useState<number>(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [IsScrolled, setIsScrolled] = useState<boolean>(false);

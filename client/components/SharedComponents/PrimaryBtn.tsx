@@ -2,7 +2,14 @@ import Sparkel from '@/components/assets/glitter-button-effect.svg'
 import clsx from 'clsx'
 import Image from "next/image"
 
-function PrimaryBtn({children,onClick,sparkelClass,className}) {
+type PropTypes={
+    children:React.ReactNode,
+    onClick?:React.MouseEventHandler<HTMLButtonElement>,
+    className?:string
+    sparkelClass?:string
+}
+
+function PrimaryBtn({children,onClick,sparkelClass,className}:PropTypes) {
   return (
     <button onClick={onClick} className={clsx( className ,"relative group w-fit h-fit")}> 
 <div className="inline-block relative w-full z-10 rounded-lg p-[3px] [background:linear-gradient(105deg,#1070FF_0%,#BA8CFF_17%,rgba(167,108,255,0.8)_30%,#FFBEE6_40%,#FF9C4B_75%,#FFC18E_83%,#FF7A00_100%)]  hover:bg-white text-black  ">
