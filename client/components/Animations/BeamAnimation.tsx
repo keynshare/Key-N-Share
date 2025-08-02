@@ -14,8 +14,8 @@ const cn = (...classes: (string | undefined)[]) => classes.filter(Boolean).join(
 interface BeamAnimationProps {
   className?: string
   containerRef: RefObject<HTMLElement | null>
-  fromRef: RefObject<HTMLElement>
-  toRef: RefObject<HTMLElement>
+  fromRef: RefObject<HTMLElement | null>
+  toRef: RefObject<HTMLElement | null>
   curvature?: number
   reverse?: boolean
   pathColor?: string
