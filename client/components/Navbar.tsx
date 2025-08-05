@@ -23,7 +23,7 @@ function Navbar() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [tabStyle, setTabStyle] = useState<React.CSSProperties>({});
   const [activeIndex, setActiveIndex] = useState<number>(0);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [IsScrolled, setIsScrolled] = useState<boolean>(false);
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
@@ -40,7 +40,7 @@ function Navbar() {
     const currentIndex = navLinks.findIndex((link) => link.href === pathname);
     setActiveIndex(currentIndex);
     moveTabTo(currentIndex);
-  }, [pathname]);
+  }, [pathname]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const handleScroll = () => {
@@ -73,13 +73,11 @@ function Navbar() {
 
   const handleMouseEnter = (index: number) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    setHoveredIndex(index);
     moveTabTo(index);
   };
 
   const handleMouseLeave = () => {
     timeoutRef.current = setTimeout(() => {
-      setHoveredIndex(null);
       moveTabTo(activeIndex);
     }, 100);
   };

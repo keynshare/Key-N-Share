@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 
 function CircleBG() {
-  const [scrollProgress, setScrollProgress] = useState(0)
+
   const [hiddenCircles, setHiddenCircles] = useState(0)
 
   useEffect(() => {
@@ -13,7 +13,6 @@ function CircleBG() {
       
       
       const progress = Math.min((scrollTop / (documentHeight - windowHeight)) * 100, 100)
-      setScrollProgress(progress)
       
     
       let hidden = 0

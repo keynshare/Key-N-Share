@@ -19,7 +19,7 @@ interface SparklesProps {
   mousemove?: boolean;
   hover?: boolean;
   background?: string;
-  options?: string; 
+ 
 }
 
 export function Sparkles({
@@ -37,7 +37,7 @@ export function Sparkles({
   mousemove = false,
   hover = false,
   background = 'transparent',
-  options = '',
+
 }: SparklesProps) {
   const [isReady, setIsReady] = useState(false);
 
@@ -77,7 +77,9 @@ export function Sparkles({
             smooth: 10,
           },
         },
-        resize: true,
+        resize: {
+          enable: true,
+        },
       },
       modes: {
         push: {
@@ -95,7 +97,7 @@ export function Sparkles({
       },
       move: {
         enable: true,
-        direction,
+        direction: (direction || 'none') as 'none' | 'top' | 'bottom' | 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right',
         speed: {
           min: minSpeed || speed / 130,
           max: speed,
@@ -116,7 +118,7 @@ export function Sparkles({
         },
         enable: false,
         maxSpeed: 50,
-        mode: 'bounce',
+        mode: 'bounce' as const,
         overlap: {
           enable: true,
           retries: 0,

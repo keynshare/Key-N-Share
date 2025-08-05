@@ -89,15 +89,15 @@ export const Particles: React.FC<ParticlesProps> = ({
       window.removeEventListener("resize", initCanvas);
       cancelAnimationFrame(animationRef.current);
     };
-  }, [color, quantity]); 
+  }, [color, quantity]); // eslint-disable-line react-hooks/exhaustive-deps 
 
   useEffect(() => {
     updateMousePosition();
-  }, [mousePosition]);
+  }, [mousePosition]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     initCanvas();
-  }, [refresh, quantity]);
+  }, [refresh, quantity]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const updateMousePosition = () => {
     if (!canvasRef.current) return;
