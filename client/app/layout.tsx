@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
-import { Poppins, Karla, Bricolage_Grotesque } from "next/font/google";
+import { Cinzel_Decorative, Karla, Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import clsx from "clsx";
 
-const poppins = Poppins({
-  variable: "--font-poppins",
+
+const cinzel_decorative = Cinzel_Decorative({
+  variable: "--font-cinzel-decorative",
   subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  weight: ["400", "700", "900"],
 });
 
 
@@ -35,7 +36,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={clsx(bricolage.variable ,karla.className , poppins.variable, 'bg-white')}>
+      <body className={clsx(bricolage.variable ,karla.className ,  cinzel_decorative.variable, 'bg-white')}>
         <Navbar />
         {children}
       </body>

@@ -6,15 +6,16 @@ import { Particles } from '../Animations/Particles'
 const cn = (...classes: (string | undefined)[]) => classes.filter(Boolean).join(" ")
 
 
-const Circle = forwardRef<HTMLDivElement, { className?: string; children?: React.ReactNode }>(
-  ({ className, children }, ref) => {
+const Circle = forwardRef<HTMLDivElement, { className?: string; children?: React.ReactNode; forceHover?: boolean }>(
+  ({ className, children, forceHover }, ref) => {
     return (
       <div
         ref={ref}
         className={cn(
-          "z-10 flex items-center cursor-pointer justify-center rounded-full transition-colors duration-500 border-2 border-[#686868] hover:border-cyan-300 bg-[#CFCFCF]/15 hover:bg-cyan-300/30 backdrop-blur-3xl shadow-[0_0_20px_-12px_rgba(0,0,0,0.8)]",
-          "w-12 h-12 p-2 sm:w-10 sm:h-10 sm:p-2.5 md:w-16 md:h-16 md:p-3", 
+          "z-10 flex items-center cursor-pointer justify-center rounded-full transition-colors duration-500 border-2 border-[#686868] hover:border-[#80b4fa] bg-[#CFCFCF]/15 hover:bg-[#0d182b] backdrop-blur-3xl shadow-[0_0_20px_-12px_rgba(0,0,0,0.8)]",
+          "w-12 h-12 p-2 sm:w-10 sm:h-10 sm:p-2.5 md:w-16 md:h-16 md:p-3",
           className,
+          forceHover ? "!border-[#5ebfff] !bg-[#0d182b]" : undefined
         )}
       >
         {children}
@@ -35,9 +36,9 @@ const Icons = {
 <path d="M38.6154 31.6913L50.7125 24.7328C51.3537 24.3632 51.75 23.6778 51.75 22.9421V9.02512C51.75 8.28944 51.3537 7.604 50.7125 7.23436L38.6154 0.275883C37.9742 -0.093753 37.1781 -0.0901643 36.5404 0.275883L24.4434 7.23436C23.8021 7.604 23.4059 8.28944 23.4059 9.02512V33.8948L14.9221 38.7718L6.43828 33.8948V24.1371L14.9221 19.2601L20.5167 22.4791V15.9334L15.9596 13.31C15.6462 13.1306 15.2859 13.0337 14.9221 13.0337C14.5582 13.0337 14.198 13.1306 13.8846 13.31L1.78751 20.2685C1.14627 20.6381 0.75 21.3236 0.75 22.0593V35.9762C0.75 36.7119 1.14627 37.3973 1.78751 37.767L13.8846 44.7255C14.5258 45.0915 15.3183 45.0915 15.9596 44.7255L28.0566 37.767C28.6979 37.3973 29.0941 36.7119 29.0941 35.9762V11.1066L29.2454 11.0204L37.5743 6.22953L46.0581 11.1066V20.8642L37.5743 25.7413L31.9869 22.5294V29.0752L36.5368 31.6913C37.1781 32.0574 37.9742 32.0574 38.6118 31.6913H38.6154Z" fill="url(#paint0_linear_84_53)"/>
 <defs>
 <linearGradient id="paint0_linear_84_53" x1="0.584286" y1="37.3399" x2="49.465" y2="8.85907" gradientUnits="userSpaceOnUse">
-<stop stop-color="#A726C1"/>
-<stop offset="0.88" stop-color="#803BDF"/>
-<stop offset="1" stop-color="#7B3FE4"/>
+<stop stopColor="#A726C1"/>
+<stop offset="0.88" stopColor="#803BDF"/>
+<stop offset="1" stopColor="#7B3FE4"/>
 </linearGradient>
 </defs>
 </svg>
@@ -56,23 +57,29 @@ const Icons = {
 
   ),
 
-  image5: () => (
-    <svg viewBox="0 0 24 24" fill="none">
-      <path
-        d="M11.572 0c-.176 0-.31.001-.358.007a19.76 19.76 0 0 1-.364.033C7.443.346 4.25 2.185 2.228 5.012a11.875 11.875 0 0 0-2.119 5.243c-.096.659-.108.854-.108 1.747s.012 1.089.108 1.748c.652 4.506 3.86 8.292 8.209 9.695.779.25 1.6.422 2.534.525.363.04 1.935.04 2.299 0 1.611-.178 2.977-.577 4.323-1.264.207-.106.247-.134.219-.158-.02-.013-.9-1.193-1.955-2.62l-1.919-2.592-2.404-3.558a338.739 338.739 0 0 0-2.422-3.556c-.009-.002-.018 1.579-.023 3.51-.007 3.38-.01 3.515-.052 3.595a.426.426 0 0 1-.206.214c-.075.037-.14.044-.495.044H7.81l-.108-.068a.438.438 0 0 1-.157-.171l-.05-.106.006-4.703.007-4.705.072-.092a.645.645 0 0 1 .174-.143c.096-.047.134-.051.54-.051.478 0 .558.018.682.154.035.038 1.337 1.999 2.895 4.361a10760.433 10760.433 0 0 0 4.735 7.17l1.9 2.879.096-.063a12.317 12.317 0 0 0 2.466-2.163 11.944 11.944 0 0 0 2.824-6.134c.096-.66.108-.854.108-1.748 0-.893-.012-1.088-.108-1.747-.652-4.506-3.859-8.292-8.208-9.695a12.597 12.597 0 0 0-2.499-.523A33.119 33.119 0 0 0 11.573 0zm4.069 7.217c.347 0 .408.005.486.047a.473.473 0 0 1 .237.277c.018.06.023 1.365.018 4.304l-.006 4.218-.744-1.14-.746-1.14v-3.066c0-1.982.01-3.097.023-3.15a.478.478 0 0 1 .233-.296c.096-.05.13-.054.5-.054z"
-        fill="#000"
-      />
-    </svg>
-  ),
+ 
   image6: () => (
-   <svg width="65" height="71" viewBox="0 0 65 71" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M14.416 9.62183C20.9156 5.13403 28.8589 3.23821 36.6846 4.30737L30.7979 11.6716C24.7137 12.0866 19.0132 14.794 14.8477 19.2478C10.6823 23.7015 8.36183 29.5697 8.35449 35.6677C8.36137 40.7101 9.94979 45.6242 12.8965 49.7166C15.8433 53.8087 20.0006 56.8734 24.7812 58.4792L22.5371 65.7371C15.0319 63.2761 8.71788 58.0978 4.83594 51.2195C0.954034 44.3411 -0.214986 36.2589 1.55762 28.5623C3.33022 20.8656 7.91645 14.1097 14.416 9.62183Z" fill="white"/>
-<path d="M14.416 9.62183C20.9156 5.13403 28.8589 3.23821 36.6846 4.30737L30.7979 11.6716C24.7137 12.0866 19.0132 14.794 14.8477 19.2478C10.6823 23.7015 8.36183 29.5697 8.35449 35.6677C8.36137 40.7101 9.94979 45.6242 12.8965 49.7166C15.8433 53.8087 20.0006 56.8734 24.7812 58.4792L22.5371 65.7371C15.0319 63.2761 8.71788 58.0978 4.83594 51.2195C0.954034 44.3411 -0.214986 36.2589 1.55762 28.5623C3.33022 20.8656 7.91645 14.1097 14.416 9.62183Z" stroke="#575757"/>
-<path d="M42.2529 5.53101C49.8141 7.9514 56.189 13.1248 60.1143 20.0251C64.0393 26.9256 65.2276 35.0494 63.4434 42.7849C61.6591 50.5206 57.0332 57.3031 50.4824 61.7878C43.9316 66.2723 35.9345 68.131 28.0771 66.9958L33.9111 59.6814C39.5105 59.3662 44.8233 57.1052 48.9316 53.2888C53.0402 49.4719 55.6862 44.3401 56.4121 38.78C57.1377 33.2195 55.8975 27.5798 52.9062 22.8367C49.9153 18.0936 45.3608 14.5449 40.0303 12.8035L42.2529 5.53101Z" fill="white"/>
-<path d="M42.2529 5.53101C49.8141 7.9514 56.189 13.1248 60.1143 20.0251C64.0393 26.9256 65.2276 35.0494 63.4434 42.7849C61.6591 50.5206 57.0332 57.3031 50.4824 61.7878C43.9316 66.2723 35.9345 68.131 28.0771 66.9958L33.9111 59.6814C39.5105 59.3662 44.8233 57.1052 48.9316 53.2888C53.0402 49.4719 55.6862 44.3401 56.4121 38.78C57.1377 33.2195 55.8975 27.5798 52.9062 22.8367C49.9153 18.0936 45.3608 14.5449 40.0303 12.8035L42.2529 5.53101Z" stroke="#575757"/>
-<path d="M33.2285 28.7305L41.6113 29.7607L47.5791 39.6211L22.6992 70.8301L31.54 42.2334L23.1562 41.2031L17.1885 31.3467L41.8574 0.5L33.2285 28.7305Z" fill="#FF7A00"/>
-<path d="M33.2285 28.7305L41.6113 29.7607L47.5791 39.6211L22.6992 70.8301L31.54 42.2334L23.1562 41.2031L17.1885 31.3467L41.8574 0.5L33.2285 28.7305Z" stroke="#575757"/>
-</svg>
+    <svg width="141" height="103" viewBox="0 0 141 103" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0.701493 14.2069V0H47V47.3305C47 47.8444 47.3895 48.2747 47.9009 48.3256L88.0072 52.3181C89.6145 52.4781 91.117 53.189 92.2599 54.3304L141 103H92.9582C91.3785 103 89.8626 102.377 88.7393 101.266L0.701493 14.2069Z" fill="url(#paint0_linear_513_32)"/>
+    <path d="M90.4925 35.5172L56.1194 0H123.463L90.4925 35.5172Z" fill="url(#paint1_linear_513_32)"/>
+    <path d="M1.40299 103L0 46.8828L56.1194 103H1.40299Z" fill="url(#paint2_linear_513_32)"/>
+    <defs>
+    <linearGradient id="paint0_linear_513_32" x1="70.5" y1="-3.94029e-06" x2="-26.1289" y2="187.698" gradientUnits="userSpaceOnUse">
+    <stop offset="0.0769231" stopColor="#E5E5E5"/>
+    <stop offset="0.552885" stopColor="#1070FF"/>
+    </linearGradient>
+    <linearGradient id="paint1_linear_513_32" x1="70.5" y1="-3.94029e-06" x2="-26.1289" y2="187.698" gradientUnits="userSpaceOnUse">
+    <stop offset="0.0769231" stopColor="#E5E5E5"/>
+    <stop offset="0.552885" stopColor="#1070FF"/>
+    </linearGradient>
+    <linearGradient id="paint2_linear_513_32" x1="70.5" y1="-3.94029e-06" x2="-26.1289" y2="187.698" gradientUnits="userSpaceOnUse">
+    <stop offset="0.0769231" stopColor="#E5E5E5"/>
+    <stop offset="0.552885" stopColor="#1070FF"/>
+    </linearGradient>
+    </defs>
+    </svg>
+    
+    
 
 
   ),
@@ -95,7 +102,6 @@ const Icons = {
 export const Diagram: React.FC<DiagramProp> = ({
   className,
   icons = Icons,
- 
   beamSpeed = 9,
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null)
@@ -104,10 +110,10 @@ export const Diagram: React.FC<DiagramProp> = ({
   const div3Ref = useRef<HTMLDivElement>(null)
   const div4Ref = useRef<HTMLDivElement>(null)
   const div5Ref = useRef<HTMLDivElement>(null)
-   const [particleCount, setParticleCount] = useState<number>(200)
-  
+  const [particleCount, setParticleCount] = useState<number>(200)
+  const [forceHover, setForceHover] = useState([false, false, false, false, false]);
+
   useEffect(() => {
-  
     const updateParticleCount = () => {
       if (window.innerWidth < 640) { 
         setParticleCount(100)
@@ -117,88 +123,105 @@ export const Diagram: React.FC<DiagramProp> = ({
         setParticleCount(800)
       }
     }
-
     updateParticleCount()
-
     window.addEventListener('resize', updateParticleCount)
     return () => window.removeEventListener('resize', updateParticleCount)
   }, [])
 
-  return (
-   <>
-   
+  useEffect(() => {
+    // Trigger hover for all circles
+    setForceHover([true, true, true, true, true]);
+    const hoverDuration = 2000; // ms
+    const intervalDuration = (beamSpeed ?? 9) * 1000; // ms
 
-    <div
-      className={cn(
-        "relative flex w-full  mx-auto items-center -translate-y-6 justify-center bg-black overflow-hidden rounded-lg border bg-background",
-        "p-4 sm:p-6 md:p-10 md:shadow-xl", 
-        className,
-      )}
-      ref={containerRef}
-    >
+    const interval = setInterval(() => {
+      setForceHover([true, true, true, true, true]);
+      setTimeout(() => setForceHover([false, false, false, false, false]), hoverDuration);
+    }, intervalDuration);
+
+    // Initial trigger
+    const initialTimeout = setTimeout(() => setForceHover([false, false, false, false, false]), hoverDuration);
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(initialTimeout);
+    };
+  }, [beamSpeed]);
+
+  return (
+    <>
+      <div
+        className={cn(
+          "relative flex w-full  mx-auto items-center -translate-y-6 justify-center bg-black overflow-hidden rounded-lg border bg-background",
+          "p-4 sm:p-6 md:p-10 md:shadow-xl", 
+          className,
+        )}
+        ref={containerRef}
+      >
         <Particles
           className="absolute inset-0"
-        quantity={particleCount}
-        ease={30}
-        color='#67e8f9'
-        size={0.5}
-        refresh/>
-
-      <div className="flex h-full w-full flex-row items-stretch justify-between max-w-3xl">
-        <div className="flex flex-col justify-center gap-10 md:gap-24">
-          <Circle ref={div1Ref}>{icons.image1()}</Circle>
-          <Circle ref={div2Ref}>{icons.image2()}</Circle>
-          <Circle ref={div3Ref}>{icons.image3()}</Circle>
+          quantity={particleCount}
+          ease={30}
+         
+          size={0.5}
+          refresh/>
+        <div className="flex h-full w-full flex-row items-stretch justify-between max-w-3xl">
+          <div className="flex flex-col justify-center gap-10 md:gap-24">
+            <Circle ref={div1Ref} forceHover={forceHover[0]}>{icons.image1()}</Circle>
+            <Circle ref={div2Ref} forceHover={forceHover[1]}>{icons.image2()}</Circle>
+            <Circle ref={div3Ref} forceHover={forceHover[2]}>{icons.image3()}</Circle>
+          </div>
+          <div className="flex flex-col justify-center">
+            <Circle
+              ref={div4Ref}
+              className="w-10 h-10 sm:w-12 sm:h-12 md:p-4 md:w-20 md:h-20 "
+              forceHover={forceHover[3]}
+            >
+              {icons.image6()}
+            </Circle>
+          </div>
+          <div className="flex flex-col justify-center">
+            <Circle ref={div5Ref} forceHover={forceHover[4]}>{icons.image7()}</Circle>
+          </div>
         </div>
-        <div className="flex flex-col justify-center">
-          <Circle
-            ref={div4Ref}
-            className="w-10 h-10 sm:w-12 sm:h-12 md:p-4 md:w-20 md:h-20 border-[3px]" 
-          >
-            {icons.image6()}
-          </Circle>
-        </div>
-        <div className="flex flex-col justify-center">
-          <Circle ref={div5Ref}>{icons.image7()}</Circle>
-        </div>
+        <BeamAnimation
+          containerRef={containerRef}
+          fromRef={div1Ref}
+          toRef={div4Ref}
+          duration={beamSpeed}
+          gradientStartColor="#FFC300"
+          gradientStopColor="#A100FF"
+          
+        />
+        <BeamAnimation
+          containerRef={containerRef}
+          fromRef={div2Ref}
+          toRef={div4Ref}
+          duration={beamSpeed}
+          gradientStartColor="#FFC300"
+          gradientStopColor="#A100FF"
+          
+        />
+        <BeamAnimation
+          containerRef={containerRef}
+          fromRef={div3Ref}
+          toRef={div4Ref}
+          duration={beamSpeed}
+          gradientStartColor="#FFC300"
+          gradientStopColor="#A100FF"
+         
+        />
+        <BeamAnimation
+          containerRef={containerRef}
+          fromRef={div4Ref}
+          toRef={div5Ref}
+          duration={beamSpeed}
+          gradientStartColor="#FFC300"
+          gradientStopColor="#A100FF"
+         
+        />
       </div>
-
-      <BeamAnimation
-        containerRef={containerRef}
-        fromRef={div1Ref}
-        toRef={div4Ref}
-        duration={beamSpeed}
-        gradientStartColor='#FFC300'
-        gradientStopColor='#A100FF '
-      />
-      <BeamAnimation
-        containerRef={containerRef}
-        fromRef={div2Ref}
-        toRef={div4Ref}
-        duration={beamSpeed}
-    gradientStartColor='#FFC300'
-        gradientStopColor='#A100FF '
-      />
-      <BeamAnimation
-        containerRef={containerRef}
-        fromRef={div3Ref}
-        toRef={div4Ref}
-        duration={beamSpeed}
-        gradientStartColor='#FFC300'
-        gradientStopColor='#A100FF '
-      />
-    
-      <BeamAnimation
-        containerRef={containerRef}
-        fromRef={div4Ref}
-        toRef={div5Ref}
-        duration={beamSpeed}
-        gradientStartColor='#FFC300'
-        gradientStopColor='#A100FF '
-      />
-    </div>
-
-   </>
+    </>
   )
 }
 

@@ -108,7 +108,7 @@ function Navbar() {
             />
             <p
               className={clsx(
-                'font-poppins transition-all text-2xl lg:text-[29px] duration-500 ease-in-out overflow-hidden whitespace-nowrap',
+                'font-cinzel transition-all text-2xl lg:text-[29px] duration-500 ease-in-out overflow-hidden whitespace-nowrap',
                 IsScrolled ? 'max-w-xs opacity-100 lg:max-w-0 lg:opacity-0' : 'max-w-xs opacity-100'
               )}
             >
@@ -123,7 +123,7 @@ function Navbar() {
             <div
               ref={containerRef}
               className={clsx(
-                'flex justify-center items-center p-[3px] transition-all duration-500 ease-in-out hover:shadow-lg',
+                'flex justify-center items-center p-[3px] transition-all duration-500 ease-in-out ',
                 IsScrolled
                   ? 'rounded-none border-none backdrop-blur-none bg-transparent'
                   : 'rounded-full border border-[#d7d6d6cc] backdrop-blur-sm bg-[#DBF0FF]/30'
@@ -137,7 +137,7 @@ function Navbar() {
                    onMouseLeave={handleMouseLeave}
                   className={clsx( 
                     IsScrolled ? 'rounded-2xl ' : 'rounded-full ',
-                    'relative z-20 px-5 py-[8px] transition-all duration-300 text-black hover:text-[#004CBE] hover:scale-105 transform'
+                    'relative z-20 px-5 py-[8px] transition-all duration-300 text-black hover:text-[#272727] hover:scale-105 transform'
                   )}
                 >
                   {link.label}

@@ -8,8 +8,8 @@ module.exports = {
   theme: {
     extend: {
        fontFamily: {
-        poppins: ['var(--font-poppins)'],
         bricola: ['var(--font-bricolage-grotesque)'],
+        cinzel: ['var(--font-cinzel-decorative)'],
         body: ['inherit'],
       },
     },
