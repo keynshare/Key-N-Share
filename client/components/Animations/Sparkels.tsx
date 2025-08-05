@@ -3,7 +3,6 @@
 import { useEffect, useId, useState } from 'react';
 import Particles, { initParticlesEngine } from '@tsparticles/react';
 import { loadSlim } from '@tsparticles/slim';
-import type { ISourceOptions } from '@tsparticles/engine';
 
 interface SparklesProps {
   className?: string;
@@ -20,7 +19,7 @@ interface SparklesProps {
   mousemove?: boolean;
   hover?: boolean;
   background?: string;
-  options?: ISourceOptions; 
+  options?: string; 
 }
 
 export function Sparkles({
