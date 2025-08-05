@@ -37,7 +37,7 @@ export function Sparkles({
   mousemove = false,
   hover = false,
   background = 'transparent',
-  options = {},
+  options = '',
 }: SparklesProps) {
   const [isReady, setIsReady] = useState(false);
 

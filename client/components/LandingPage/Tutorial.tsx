@@ -3,7 +3,7 @@
 import Logo from '@/public/logo.svg'
 import Image from 'next/image';
 import HeroVideoDialog from "@/components/magicui/hero-video-dialog";
-
+import Thumbnail from '@/public/Thumbnail.svg'
 export default function Tutorial() { 
   return (
    <div className='p-4  bg-[#F2F2F2] relative mb-24 mt-28 sm:mb-64 sm:mt-40 px-5 sm:px-11 lg:px-20 xl:px-10 max-h-[400px] md:max-h-[540px] lg:max-h-[630px] mx-[5vw] xl:max-h-[650px] 2xl:max-h-[700px] xl:mx-[15vw] 2xl:mx-[18vw] 3xl:mx-[25vw] gap-10 rounded-xl md:rounded-3xl flex flex-col items-center justify-center '>
@@ -23,7 +23,7 @@ export default function Tutorial() {
   className="block rounded-full dark:hidden"
   animationStyle="from-center"
   videoSrc="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-  thumbnailSrc={"Thumbnail.svg"}
+  thumbnailSrc={Thumbnail}
   thumbnailAlt="Dummy Video Thumbnail"
 />
 
