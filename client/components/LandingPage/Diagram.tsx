@@ -12,10 +12,10 @@ const Circle = forwardRef<HTMLDivElement, { className?: string; children?: React
       <div
         ref={ref}
         className={cn(
-          "z-10 flex items-center cursor-pointer justify-center rounded-full transition-colors duration-500 border-2 border-[#686868] hover:border-[#80b4fa] bg-[#CFCFCF]/15 hover:bg-[#0d182b] backdrop-blur-3xl shadow-[0_0_20px_-12px_rgba(0,0,0,0.8)]",
+          "z-10 flex items-center cursor-pointer justify-center rounded-full transition-colors hover:shadow-[0px_1px_10px_0px_rgba(94,191,255,1.00)] duration-500 border-2 border-[#686868] hover:border-[#80b4fa] bg-[#CFCFCF]/15 hover:bg-[#0d182b] backdrop-blur-3xl shadow-[0_4px_20px_-12px_#ffff]",
           "w-12 h-12 p-2 sm:w-10 sm:h-10 sm:p-2.5 md:w-16 md:h-16 md:p-3",
           className,
-          forceHover ? "!border-[#5ebfff] !bg-[#0d182b]" : undefined
+          forceHover ? "!border-[#5ebfff] !shadow-[0px_1px_10px_0px_rgba(94,191,255,1.00)] !bg-[#0d182b] " : undefined
         )}
       >
         {children}
@@ -46,7 +46,7 @@ const Icons = {
   ),
   image2: () => (
    <svg width="39" height="39" className='p-[2.3px]' viewBox="0 0 39 39" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M6.5 35.75H29.25C30.112 35.75 30.9386 35.4076 31.5481 34.7981C32.1576 34.1886 32.5 33.362 32.5 32.5V11.375L24.375 3.25H9.75C8.88805 3.25 8.0614 3.59241 7.4519 4.2019C6.84241 4.8114 6.5 5.63805 6.5 6.5V8.125M22.75 3.25V9.75C22.75 10.612 23.0924 11.4386 23.7019 12.0481C24.3114 12.6576 25.138 13 26 13H32.5M13 21.125V17.875C13 17.013 12.6576 16.1864 12.0481 15.5769C11.4386 14.9674 10.612 14.625 9.75 14.625C8.88805 14.625 8.0614 14.9674 7.4519 15.5769C6.84241 16.1864 6.5 17.013 6.5 17.875V21.125M4.875 21.125H14.625C15.5225 21.125 16.25 21.8525 16.25 22.75V27.625C16.25 28.5225 15.5225 29.25 14.625 29.25H4.875C3.97754 29.25 3.25 28.5225 3.25 27.625V22.75C3.25 21.8525 3.97754 21.125 4.875 21.125Z" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M6.5 35.75H29.25C30.112 35.75 30.9386 35.4076 31.5481 34.7981C32.1576 34.1886 32.5 33.362 32.5 32.5V11.375L24.375 3.25H9.75C8.88805 3.25 8.0614 3.59241 7.4519 4.2019C6.84241 4.8114 6.5 5.63805 6.5 6.5V8.125M22.75 3.25V9.75C22.75 10.612 23.0924 11.4386 23.7019 12.0481C24.3114 12.6576 25.138 13 26 13H32.5M13 21.125V17.875C13 17.013 12.6576 16.1864 12.0481 15.5769C11.4386 14.9674 10.612 14.625 9.75 14.625C8.88805 14.625 8.0614 14.9674 7.4519 15.5769C6.84241 16.1864 6.5 17.013 6.5 17.875V21.125M4.875 21.125H14.625C15.5225 21.125 16.25 21.8525 16.25 22.75V27.625C16.25 28.5225 15.5225 29.25 14.625 29.25H4.875C3.97754 29.25 3.25 28.5225 3.25 27.625V22.75C3.25 21.8525 3.97754 21.125 4.875 21.125Z" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
 </svg>
 
   ),
@@ -85,7 +85,7 @@ const Icons = {
   ),
   image7: () => (
    <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M39.5834 43.75V39.5833C39.5834 37.3732 38.7055 35.2536 37.1426 33.6908C35.5798 32.128 33.4602 31.25 31.2501 31.25H18.7501C16.5399 31.25 14.4203 32.128 12.8575 33.6908C11.2947 35.2536 10.4167 37.3732 10.4167 39.5833V43.75M33.3334 14.5833C33.3334 19.1857 29.6025 22.9167 25.0001 22.9167C20.3977 22.9167 16.6668 19.1857 16.6668 14.5833C16.6668 9.98096 20.3977 6.25 25.0001 6.25C29.6025 6.25 33.3334 9.98096 33.3334 14.5833Z" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M39.5834 43.75V39.5833C39.5834 37.3732 38.7055 35.2536 37.1426 33.6908C35.5798 32.128 33.4602 31.25 31.2501 31.25H18.7501C16.5399 31.25 14.4203 32.128 12.8575 33.6908C11.2947 35.2536 10.4167 37.3732 10.4167 39.5833V43.75M33.3334 14.5833C33.3334 19.1857 29.6025 22.9167 25.0001 22.9167C20.3977 22.9167 16.6668 19.1857 16.6668 14.5833C16.6668 9.98096 20.3977 6.25 25.0001 6.25C29.6025 6.25 33.3334 9.98096 33.3334 14.5833Z" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
 </svg>
 
   ),
@@ -102,7 +102,7 @@ const Icons = {
 export const Diagram: React.FC<DiagramProp> = ({
   className,
   icons = Icons,
-  beamSpeed = 9,
+  beamSpeed = 6,
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const div1Ref = useRef<HTMLDivElement>(null)
@@ -116,7 +116,7 @@ export const Diagram: React.FC<DiagramProp> = ({
   useEffect(() => {
     const updateParticleCount = () => {
       if (window.innerWidth < 640) { 
-        setParticleCount(100)
+        setParticleCount(150)
       } else if (window.innerWidth < 1024) { 
         setParticleCount(200)
       } else {
@@ -158,13 +158,16 @@ export const Diagram: React.FC<DiagramProp> = ({
         )}
         ref={containerRef}
       >
+              <div className='absolute bottom-0 z-[-1] h-[460px] w-screen overflow-hidden  before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_bottom_center,#48b6ff90,transparent_90%)] before:opacity-30 after:absolute'>
+
         <Particles
-          className="absolute inset-0"
+          className="absolute  inset-0"
           quantity={particleCount}
           ease={30}
          
           size={0.5}
           refresh/>
+          </div>
         <div className="flex h-full w-full flex-row items-stretch justify-between max-w-3xl">
           <div className="flex flex-col justify-center gap-10 md:gap-24">
             <Circle ref={div1Ref} forceHover={forceHover[0]}>{icons.image1()}</Circle>

@@ -164,7 +164,7 @@ interface BeamAnimationProps {
           transition={{
             delay,
             duration,
-            ease: [0.16, 1, 0.3, 1],
+            ease: [0.16, 1, 1, 1],
             repeat: Number.POSITIVE_INFINITY,
             repeatDelay: 0,
           }}
