@@ -22,7 +22,7 @@ export default function Tutorial() {
         <HeroVideoDialog
   className="block rounded-full dark:hidden"
   animationStyle="from-center"
-  videoSrc="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+  videoSrc="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
   thumbnailSrc={Thumbnail}
   thumbnailAlt="Dummy Video Thumbnail"
 />
