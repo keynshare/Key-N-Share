@@ -4,11 +4,12 @@ import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
+import NavImage from '@/components/assets/Image.png'
 import Logo from "@/public/logo.svg";
 import PrimaryBtn from "@/components/SharedComponents/PrimaryBtn";
 import SecondaryBtn from "@/components/SharedComponents/SecondaryBtn";
 import clsx from "clsx";
+import WhiteLogo from '@/public/WhiteLogo.svg'
 
 const navLinks = [
   { label: "About Us", href: "/about" },
@@ -116,8 +117,8 @@ function Navbar() {
             </p>
           </div>
 
-          {/* Navigation Links with Animation */}
-          <div className={`relative hidden lg:block w-fit transform transition-all duration-700 ease-out delay-200 ${
+          {/* Navigation Links */}
+          <div className={`relative hidden lg:block w-fit transform transition-all duration-700 ease-out delay-100 ${
             isVisible ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-[-30px] opacity-0 scale-95'
           }`}>
             <div
@@ -154,7 +155,6 @@ function Navbar() {
             </div>
           </div>
 
-          {/* Auth Buttons with Animation */}
           <div className={`hidden lg:flex items-center gap-5 transform transition-all duration-700 ease-out delay-400 ${
             isVisible ? 'translate-x-0 opacity-100 scale-100' : 'translate-x-[50px] opacity-0 scale-95'
           }`}>
@@ -166,14 +166,14 @@ function Navbar() {
             </div>
           </div>
 
-          {/* Mobile Menu Button with Animation */}
-          <div className={`lg:hidden text-black flex bg-[#DBF0FF]/30 backdrop-blur-sm p-2 px-3 border border-gray-100 aspect-square rounded-full items-center transform transition-all duration-700 ease-out delay-400 hover:scale-110 hover:shadow-lg ${
+          {/* Mobile Menu Button */}
+          <div className={`lg:hidden text-black flex bg-[#DBF0FF]/30 backdrop-blur-md  border border-gray-100 aspect-square rounded-full items-center transform transition-all duration-500 ease-out delay-400 hover:scale-110 hover:shadow-lg shadow-blue-200 ${
             isVisible ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-[-20px] opacity-0 scale-95'
           }`}>
             <button 
               onClick={() => setMenuOpen(!menuOpen)} 
               aria-label="Toggle Menu"
-              className="transition-all duration-300 hover:rotate-90"
+              className="transition-all duration-300 hover:rotate-90 p-1 px-3"
             >
               {menuOpen ? 'X' : '|||'}
             </button>
@@ -182,11 +182,11 @@ function Navbar() {
         </div>
                 
       
-      
-
      
       </div>
-       {/* Mobile Menu with Animation */}
+
+
+       {/* Mobile Menu */}
       {menuOpen && (
         <div className={`lg:hidden mt-4 fixed flex w-[90%] md:w-[95%] justify-between gap-3 bg-[#DBF0FF]/30 backdrop-blur-xl border rounded-xl p-4 shadow-lg transform transition-all duration-500 ease-out ${
           menuOpen ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-[-20px] opacity-0 scale-95'
@@ -205,16 +205,23 @@ function Navbar() {
               {link.label}
             </Link>
           ))}
-          <div className="animate-bounce-slow">
+          <div className="">
             <SecondaryBtn className={'w-[156px]'} >Login</SecondaryBtn>
           </div>
-          <div className="animate-bounce-slow delay-200">
-            <PrimaryBtn sparkelClass='sm:!-top-3 -top-[15px]  w-[180px] ' className={'w-[156px]'}>Register</PrimaryBtn>
+          <div className=" delay-200">
+            <PrimaryBtn sparkelClass='sm:!-top-3 -top-[15.5px]  w-[180px] ' className={'!w-[156px]'}>Register</PrimaryBtn>
           </div>
         </div>
-        <div className="w-full bg-gray-300">
+       
+        <div className=" w-full rounded-lg relative ">
+  <Image
+    src={NavImage}
+    alt="Nav Visual Key N Share"
+    className="w-full h-[264px] md:h-[274px] rounded-lg object-fill"
+  />
 
-        </div>
+  <Image src={WhiteLogo} alt="Key N Share" className="absolute w-44 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+</div>        
         </div>
       )}
     </div>

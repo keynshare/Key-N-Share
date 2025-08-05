@@ -17,9 +17,9 @@ function CircleBG() {
       
     
       let hidden = 0
-      if (progress > 20) hidden = 1
-      if (progress > 30) hidden = 2
-      if (progress > 40) hidden = 3
+      if (progress > 10) hidden = 1
+      if (progress > 20) hidden = 2
+      if (progress > 30) hidden = 3
       
       setHiddenCircles(hidden)
     }
@@ -53,7 +53,7 @@ function CircleBG() {
       />
 
      
-     <div className=" h-[80vh] w-[30vw] lg:h-[65vw] lg:w-[20vw] -top-10 lg:-top-44  bg-white blur-2xl md:blur-3xl z-50 absolute left-1/2 -translate-x-1/2 aspect-square" />
+     <div className=" h-[80vh] w-[30vw] lg:h-[65vw] lg:w-[20vw] -top-10 lg:-top-44  bg-white/80 blur-2xl md:blur-3xl z-50 absolute left-1/2 -translate-x-1/2 aspect-square" />
 
 
     </div>
