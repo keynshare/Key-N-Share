@@ -216,6 +216,7 @@ function Navbar() {
     src={NavImage}
     alt="Nav Visual Key N Share"
     className="w-full h-[264px] md:h-[274px] rounded-lg object-fill"
+    priority 
   />
 
   <Image src={WhiteLogo} alt="Key N Share" className="absolute w-44 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
