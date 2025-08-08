@@ -1,11 +1,29 @@
 'use client';
-
+import { useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import Logo from '@/public/logo.svg';
+import India from '@/components/assets/India.svg'
 
 const Footer = () => {
+
+     const audioRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const togglePlay = () => {
+    if (!audioRef.current) return;
+
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
+
+    setIsPlaying(!isPlaying);
+  };
+
+
   return (
     <footer className="border-t pt-8 pb-4 bg-white">
       <div className=" mr-5 xl:pr-[80px] 2xl:px-[80px] 3xl:px-[150px] px-4 sm:px-6 lg:px-8">
@@ -82,8 +100,9 @@ const Footer = () => {
         </div>
 
         {/* Copyright */}
-        <div className="border-t pt-4 mt-8 text-center  md:text-lg text-gray-600">
-          Copyright © 2025 <span className="text-orange-500 font-medium">Cinfinite</span> | Designed & Developed by <span className="text-orange-500 font-medium">Cinfinite</span> 
+        <div className="border-t pt-4 mt-8 text-center flex items-center justify-center gap-1 flex-wrap  md:text-lg text-gray-600">
+          Copyright © 2025 <span className="text-orange-500 font-medium">Cinfinite</span> | Designed & Developed by <span className="text-orange-500 font-medium">Cinfinite</span> | Made in <button onClick={togglePlay}><Image src={India} width={18} alt="India" /></button> With ❤️  
+           <audio ref={audioRef} src='/Army.mp3' />
         </div>
       </div>
     </footer>
