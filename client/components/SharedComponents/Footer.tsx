@@ -8,7 +8,7 @@ import Logo from '@/public/logo.svg';
 const Footer = () => {
   return (
     <footer className="border-t pt-8 pb-4 bg-white">
-      <div className=" mx-5 xl:px-[80px] 3xl:px-[150px] px-4 sm:px-6 lg:px-8">
+      <div className=" mr-5 xl:pr-[80px] 2xl:px-[80px] 3xl:px-[150px] px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col xl:flex-row justify-between gap-10 lg:gap-14">
           {/* Logo Section */}
           <div className="flex-shrink-0">

@@ -3,10 +3,11 @@ import { useEffect, useState } from 'react'
 import CircleBG from './CircleBG'
 import Logo from '@/public/logo.svg'
 import Image from 'next/image'
-import PrimaryBtn from '../SharedComponents/PrimaryBtn'
-import SecondaryBtn from '../SharedComponents/SecondaryBtn'
+import PrimaryBtn from '../SharedComponents/Btns/PrimaryBtn'
+import SecondaryBtn from '../SharedComponents/Btns/SecondaryBtn'
 import Diagram from './Diagram'
 import { Sparkles } from '../Animations/Sparkels'
+import DatasetCard from '../SharedComponents/DatasetCompo/DatasetCard'
 function HeroSection() {
   const [isVisible, setIsVisible] = useState(false)
 
@@ -70,6 +71,8 @@ function HeroSection() {
    }`}>
      <Diagram/>
    </div>
+
+   
     
     </>
   )

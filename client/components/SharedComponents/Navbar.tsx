@@ -6,8 +6,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import NavImage from '@/components/assets/Image.png'
 import Logo from "@/public/logo.svg";
-import PrimaryBtn from "@/components/SharedComponents/PrimaryBtn";
-import SecondaryBtn from "@/components/SharedComponents/SecondaryBtn";
+import PrimaryBtn from "@/components/SharedComponents/Btns/PrimaryBtn";
+import SecondaryBtn from "@/components/SharedComponents/Btns/SecondaryBtn";
 import clsx from "clsx";
 import WhiteLogo from '@/public/WhiteLogo.svg'
 

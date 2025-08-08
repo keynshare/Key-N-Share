@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Cinzel_Decorative, Karla, Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/SharedComponents/Navbar";
 import clsx from "clsx";
 
 
