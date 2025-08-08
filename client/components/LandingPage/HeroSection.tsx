@@ -7,7 +7,7 @@ import PrimaryBtn from '../SharedComponents/Btns/PrimaryBtn'
 import SecondaryBtn from '../SharedComponents/Btns/SecondaryBtn'
 import Diagram from './Diagram'
 import { Sparkles } from '../Animations/Sparkels'
-import DatasetCard from '../SharedComponents/DatasetCompo/DatasetCard'
+import Features from './Features'
 function HeroSection() {
   const [isVisible, setIsVisible] = useState(false)
 
@@ -72,7 +72,7 @@ function HeroSection() {
      <Diagram/>
    </div>
 
-   
+   <Features/>
     
     </>
   )

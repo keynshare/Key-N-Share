@@ -2,7 +2,7 @@
 
 import Logo from '@/public/logo.svg'
 import Image from 'next/image';
-import HeroVideoDialog from "@/components/magicui/hero-video-dialog";
+import HeroVideoDialog from "@/components/LandingPage/hero-video-dialog";
 import Thumbnail from '@/public/Thumbnail.svg'
 export default function Tutorial() { 
   return (
