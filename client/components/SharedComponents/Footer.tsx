@@ -8,7 +8,7 @@ import India from '@/components/assets/India.svg'
 
 const Footer = () => {
 
-     const audioRef = useRef(null);
+     const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
   const togglePlay = () => {
