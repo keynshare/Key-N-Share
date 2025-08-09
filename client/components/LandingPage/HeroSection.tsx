@@ -2,14 +2,17 @@
 import { useEffect, useState } from 'react'
 import CircleBG from './CircleBG'
 import Logo from '@/public/logo.svg'
+import LogoDark from "@/public/DarkLogo.svg";
 import Image from 'next/image'
 import PrimaryBtn from '../SharedComponents/Btns/PrimaryBtn'
 import SecondaryBtn from '../SharedComponents/Btns/SecondaryBtn'
 import Diagram from './Diagram'
 import { Sparkles } from '../Animations/Sparkels'
-import Features from './Features'
+import { useTheme } from "@/lib/theme-context";
+
 function HeroSection() {
   const [isVisible, setIsVisible] = useState(false)
+  const { theme } = useTheme();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -24,12 +27,12 @@ function HeroSection() {
 
    <div className='flex flex-col z-50 relative items-center gap-9  justify-center h-screen md:h-[580px] xl:h-[700px] w-screen px-[5vw] '>
 
-      <div className={`flex justify-center items-center gap-3 [background:#192B42/25] backdrop-blur-xl shadow-[0_0_5px_0_#004CBE50_inset] px-[15px] py-[5px] rounded-full border-[0.75px] border-[rgba(25,43,66,0.25)] transform transition-all duration-1000 ease-out ${
+      <div className={`flex justify-center items-center  gap-3 [background:#192B42/25] backdrop-blur-xl shadow-[0_0_5px_0_#12e3ffde_inset] px-[15px] py-[5px] rounded-full border-[0.75px] border-[rgba(25,43,66,0.25)] transform transition-all duration-1000 ease-out ${
         isVisible ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-8 opacity-0 scale-95'
-      } hover:scale-105 hover:shadow-[0_0_15px_0_#004CBE70_inset] transition-all duration-300`}>
+      } hover:scale-105  transition-all duration-300`}>
         
-        <Image src={Logo} alt='Key N Share' className="w-[18px] sm:w-[25px] animate-pulse" />
-        <p className='text-[#004CBE] text-xs sm:text-base shiny-text animate-pulse'>  Discover. Download. Decrypt.</p>
+        <Image src={ theme === 'light' ? Logo : LogoDark} alt='Key N Share' className="w-[18px] sm:w-[25px] animate-pulse" />
+        <p className='text-[#004CBE] text-xs sm:text-base shiny-text animate-pulse'>  Sell Smarter. Share Safer.</p>
 
       </div>
 
@@ -39,7 +42,7 @@ function HeroSection() {
         <h1 className='font-bricola font-extrabold sm:font-bold text-lg sm:text-3xl md:text-[31px] lg:text-[42px] xl:text-5xl w-[320px] sm:w-3/4 text-center '>
           Own Your Data. Share It Securely. Get Paid Fairly.
         </h1>
-        <p className='text-[#3F3F3F] text-center text-base md:text-lg animate-fade-in-up delay-500  '> 
+        <p className='text-[#3F3F3F] dark:text-[#c4c4c4] text-center text-base md:text-lg animate-fade-in-up delay-500  '> 
           Own, protect, and monetize your data in the Web3 era. 
         </p>
       </div>
@@ -72,7 +75,7 @@ function HeroSection() {
      <Diagram/>
    </div>
 
-   <Features/>
+ 
     
     </>
   )

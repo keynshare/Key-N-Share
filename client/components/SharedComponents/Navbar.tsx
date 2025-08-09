@@ -6,10 +6,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import NavImage from '@/components/assets/Image.png'
 import Logo from "@/public/logo.svg";
+import LogoDark from "@/public/DarkLogo.svg";
 import PrimaryBtn from "@/components/SharedComponents/Btns/PrimaryBtn";
 import SecondaryBtn from "@/components/SharedComponents/Btns/SecondaryBtn";
 import clsx from "clsx";
 import WhiteLogo from '@/public/WhiteLogo.svg'
+import { SunMediumIcon,MoonStar } from 'lucide-react'
+import { useTheme } from "@/lib/theme-context";
+
 
 const navLinks = [
   { label: "About Us", href: "/about" },
@@ -19,6 +23,10 @@ const navLinks = [
 ];
 
 function Navbar() {
+
+  const { theme, setTheme, toggleTheme } = useTheme();
+
+
   const pathname = usePathname();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [tabStyle, setTabStyle] = useState<React.CSSProperties>({});
@@ -40,7 +48,7 @@ function Navbar() {
     const currentIndex = navLinks.findIndex((link) => link.href === pathname);
     setActiveIndex(currentIndex);
     moveTabTo(currentIndex);
-  }, [pathname]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [pathname]); 
 
   useEffect(() => {
     const handleScroll = () => {
@@ -91,16 +99,16 @@ function Navbar() {
           
             ' flex items-center min-w-[90vw] md:min-w-[700px] justify-between transition-[padding] duration-500 ease-in-out',
             IsScrolled
-              ? 'backdrop-blur-[5px] w-fit border border-gray-200 bg-[#DBF0FF]/30 p-2 gap-4 rounded-lg'
+              ? 'backdrop-blur-md w-fit border border-gray-200 dark:border-gray-400 bg-[#DBF0FF]/30 dark:bg-[#DBF0FF]/20 p-2 gap-4 rounded-lg'
               : 'p-0 gap-[18px] w-full bg-transparent' 
           )}
         >
          
-          <div className={`text-[29px] flex items-center gap-[18px] font-bold text-black transform transition-all duration-700 ease-out ${
+          <div className={`text-[29px] flex items-center gap-[18px] font-bold  transform transition-all duration-700 ease-out ${
             isVisible ? 'translate-x-0 opacity-100 scale-100' : 'translate-x-[-50px] opacity-0 scale-95'
           } `}>
-            <Image
-              src={Logo}
+          <Image
+              src={theme === 'light' ? Logo : LogoDark}
               alt="Key N Share"
               width={43}
               className="w-[30px] xl:w-[43.38px] "
@@ -125,7 +133,7 @@ function Navbar() {
                 'flex justify-center items-center p-[3px] transition-all duration-500 ease-in-out ',
                 IsScrolled
                   ? 'rounded-none border-none backdrop-blur-none bg-transparent'
-                  : 'rounded-full border border-[#d7d6d6cc] backdrop-blur-sm bg-[#DBF0FF]/30'
+                  : 'rounded-full border border-[#d7d6d6cc] dark:border-gray-400 backdrop-blur-sm bg-[#DBF0FF]/30 dark:bg-[#DBF0FF]/20'
               )}
             >
               {navLinks.map((link, index) => (
@@ -136,17 +144,18 @@ function Navbar() {
                    onMouseLeave={handleMouseLeave}
                   className={clsx( 
                     IsScrolled ? 'rounded-2xl ' : 'rounded-full ',
-                    'relative z-20 px-5 py-[8px] transition-all duration-300 text-black hover:text-[#272727] hover:scale-105 transform'
+                    'relative z-20 px-5 py-[8px] transition-all duration-300  hover:text-[#272727]  hover:scale-105 transform'
                   )}
                 >
                   {link.label}
                 </Link>
               ))}
+              <button onClick={toggleTheme} className="rounded-full ml-2 aspect-square w-8 mr-2 border border-gray-300 dark:border-gray-400 flex items-center justify-center hover:[background:linear-gradient(89deg,rgba(0,0,0,0.01)_11.29%,rgba(0,102,255,0.25)_96.93%)] dark:hover:[background:linear-gradient(89deg,rgba(255,255,255,0.01)_11.29%,rgba(0,102,255,0.25)_96.93%)] "> {theme === 'light' ? <MoonStar size={18} strokeWidth={1.5}/>  : <SunMediumIcon size={18}/>} </button>
               {/* Sliding BG */}
               <span
                 className={clsx( 
                   IsScrolled ? 'rounded-[10px]' : 'rounded-full',
-                  "absolute top-[3px] z-10 border border-gray-100 backdrop-blur-sm transition-all opacity-10 duration-300 ease-in-out [background:linear-gradient(89deg,rgba(0,0,0,0.01)_11.29%,rgba(0,102,255,0.25)_96.93%)]"
+                  "absolute top-[3px] z-10 border border-gray-100 dark:border-gray-400 backdrop-blur-sm transition-all opacity-10 duration-300 ease-in-out [background:linear-gradient(89deg,rgba(0,0,0,0.01)_11.29%,rgba(0,102,255,0.25)_96.93%)]"
                 )}
                 style={tabStyle}
               />
@@ -165,7 +174,7 @@ function Navbar() {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className={`lg:hidden text-black flex bg-[#DBF0FF]/30 backdrop-blur-md  border border-gray-100 aspect-square rounded-full items-center transform transition-all duration-500 ease-out delay-400 hover:scale-110 hover:shadow-lg shadow-blue-200 ${
+          <div className={`lg:hidden  flex bg-[#DBF0FF]/30 dark:bg-gray-800/30 backdrop-blur-md  border border-gray-100 dark:border-gray-700 aspect-square rounded-full items-center transform transition-all duration-500 ease-out delay-400 hover:scale-110 hover:shadow-lg shadow-blue-200 dark:shadow-blue-900 ${
             isVisible ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-[-20px] opacity-0 scale-95'
           }`}>
             <button 
@@ -186,7 +195,7 @@ function Navbar() {
 
        {/* Mobile Menu */}
       {menuOpen && (
-        <div className={`lg:hidden mt-4 fixed flex w-[90%] md:w-[95%] justify-between gap-3 bg-[#DBF0FF]/30 backdrop-blur-xl border rounded-xl p-4 shadow-lg transform transition-all duration-500 ease-out ${
+        <div className={`lg:hidden mt-4 fixed flex w-[90%] md:w-[95%] justify-between gap-3 bg-[#DBF0FF]/30 dark:bg-gray-800/30 backdrop-blur-xl border border-gray-200 dark:border-gray-700 rounded-xl p-4 shadow-lg transform transition-all duration-500 ease-out ${
           menuOpen ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-[-20px] opacity-0 scale-95'
         }`}>
         <div className="lg:hidden mt-4 flex flex-col gap-3">
@@ -195,7 +204,7 @@ function Navbar() {
               key={link.href}
               href={link.href}
               onClick={() => setMenuOpen(false)}
-              className={`text-black text-lg font-medium hover:text-blue-600 transition-all duration-300 transform hover:translate-x-2 hover:scale-105 ${
+              className={` text-lg font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-300 transform hover:translate-x-2 hover:scale-105 ${
                 isVisible ? 'opacity-100' : 'opacity-0'
               }`}
               style={{ transitionDelay: `${index * 100}ms` }}

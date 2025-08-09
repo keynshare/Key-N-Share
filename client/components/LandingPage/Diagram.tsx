@@ -152,7 +152,7 @@ export const Diagram: React.FC<DiagramProp> = ({
     <>
       <div
         className={cn(
-          "relative flex w-full  mx-auto items-center -translate-y-6 justify-center bg-black overflow-hidden rounded-lg border bg-background",
+          "relative flex w-full  mx-auto items-center -translate-y-6 justify-center bg-black overflow-hidden   bg-background",
           "p-4 sm:p-6 md:p-10 md:shadow-xl", 
           className,
         )}

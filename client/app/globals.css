@@ -26,7 +26,7 @@ body{
 .shiny-text {
   @apply bg-gradient-to-r from-[#3458bd] via-[#65faff] to-[#004CBE] text-transparent bg-clip-text;
   background-size: 200% auto;
-  animation: shine 5s linear infinite;
+  animation: shine 8s linear infinite;
 }
 
 
