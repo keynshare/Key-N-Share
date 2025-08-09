@@ -1,10 +1,9 @@
-
 "use client"
 
 import React from 'react'
-import { motion } from 'framer-motion'
+import { motion, Easing } from 'framer-motion'
 
-// Define TypeScript interfaces for better type safety
+
 interface PixelCanvasProps {
   gap?: number
   speed?: number
@@ -19,14 +18,6 @@ interface CardProps {
   canvasProps?: PixelCanvasProps
 }
 
-
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      'pixel-canvas': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
-    }
-  }
-}
 
 
 const PixelCanvas: React.FC<PixelCanvasProps> = ({ 
@@ -55,13 +46,14 @@ const PixelCards: React.FC<CardProps> = ({
 }) => {
   const hoverTransition = { 
     duration: 0.8, 
-    ease: [0.5, 1, 0.89, 1] 
+    ease: [0.5, 1, 0.89, 1] as Easing,
   }
 
   return (
     <div className='flex flex-col w-full gap-4 items-center justify-center'>
     <motion.div 
-      className="light:border-gray-900 relative dark:border-gray-900 w-full group  isolate grid aspect-[4/5] select-none place-items-center overflow-hidden rounded-xl border transition-all duration-200 hover:text-black dark:hover:text-white sm:aspect-square md:aspect-[4/4]"
+      className="light:border-gray-900 relative dark:border-gray-900 w-full group isolate grid aspect-[4/5] select-none place-items-center overflow-hidden rounded-xl border transition-all duration-200 hover:text-black dark:hover:text-white sm:aspect-square md:aspect-[4/4]"
+      style={{ transform: 'translateZ(0)' }} // Force hardware acceleration for better performance
     >
       <PixelCanvas {...canvasProps} />
       
@@ -72,19 +64,19 @@ const PixelCards: React.FC<CardProps> = ({
         transition={hoverTransition}
       />
       
-      <motion.div
+      {/* <motion.div
         className="absolute inset-0 m-auto w-38 aspect-square bg-[radial-gradient(circle,#f3f4f6,transparent_65%)] dark:bg-[radial-gradient(circle,#09090b,transparent_65%)]"
         initial={{ opacity: 0 }}
         whileHover={{ opacity: 1 }}
         transition={hoverTransition}
-      />
+      /> */}
       
       <motion.svg
         xmlns="http://www.w3.org/2000/svg"
         width="32"
         height="32"
         viewBox="0 0 256 256"
-        className="ease-[cubic-bezier(0.5,1,0.89,1)] relative z-10 h-auto w-[30%] text-gray-600 transition-all duration-300 group-hover:text-black dark:text-[#adadad] dark:group-hover:text-white sm:w-[40%] md:w-[35%] lg:w-[30%]"
+        className="ease-\[cubic-bezier(0.5,1,0.89,1)] relative z-10 h-auto w-[30%] text-gray-600 transition-all duration-300 group-hover:text-black dark:text-[#adadad] dark:group-hover:text-white sm:w-[40%] md:w-[35%] lg:w-[30%]"
         whileHover={{ 
           scale: 1.1,
           transition: hoverTransition 
@@ -105,4 +97,3 @@ const PixelCards: React.FC<CardProps> = ({
 }
 
 export default PixelCards;
-

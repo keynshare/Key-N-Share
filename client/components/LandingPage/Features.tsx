@@ -1,21 +1,22 @@
 "use client"
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import PixelCards from './PixelCards'
 
 export default function Features() {
   const [isScriptLoaded, setIsScriptLoaded] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
+  const sectionRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     setIsMounted(true)
     
-    // Check if the script is already loaded
     if (document.querySelector('script[src="/Animations/pixel.js"]')) {
       setIsScriptLoaded(true)
       return
     }
 
-    // Load the local pixel.js file
+  
     const script = document.createElement('script')
     script.src = '/Animations/pixel.js'
     script.async = true
@@ -32,11 +33,39 @@ export default function Features() {
     }
   }, [])
 
+  useEffect(() => {
+    const currentRef = sectionRef.current
+    if (!currentRef) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true)
+          }
+        })
+      },
+      {
+        threshold: 0.3,
+        rootMargin: '0px'
+      }
+    )
+
+    observer.observe(currentRef)
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef)
+      }
+    }
+  }, [isMounted])
+
   const cardConfigurations = [
     {
       icon: "M222,40V80a6,6,0,0,1-12,0V46H176a6,6,0,0,1,0-12h40A6,6,0,0,1,222,40ZM80,210H46V176a6,6,0,0,0-12,0v40a6,6,0,0,0,6,6H80a6,6,0,0,0,0-12Zm136-40a6,6,0,0,0-6,6v34H176a6,6,0,0,0,0,12h40a6,6,0,0,0,6-6V176A6,6,0,0,0,216,170ZM40,86a6,6,0,0,0,6-6V46H80a6,6,0,0,0,0-12H40a6,6,0,0,0-6,6V80A6,6,0,0,0,40,86ZM80,74h96a6,6,0,0,1,6,6v96a6,6,0,0,1-6,6H80a6,6,0,0,1-6-6V80A6,6,0,0,1,80,74Zm6,96h84V86H86Z",
       label: "Full Traceability",
-      color: { gap: 6, speed: 25,colors: "#4287f5, #5c9bff, #89c2ff",noFocus: true}
+      color:"#4287f5",
+      canvasProps: { gap: 6, speed: 25,colors: "#4287f5, #5c9bff, #89c2ff",noFocus: true}
     },
     {
       icon: "M188.24,164.24a6,6,0,0,1-8.48,0L158,142.49V208a6,6,0,0,1-12,0V142.49l-21.76,21.75a6,6,0,0,1-8.48-8.48l32-32a6,6,0,0,1,8.48,0l32,32A6,6,0,0,1,188.24,164.24ZM160,42A86.1,86.1,0,0,0,82.43,90.88,62,62,0,1,0,72,214h40a6,6,0,0,0,0-12H72a50,50,0,0,1,0-100,50.68,50.68,0,0,1,5.91.36A85.54,85.54,0,0,0,74,128a6,6,0,0,0,12,0,74,74,0,1,1,103.6,67.85,6,6,0,0,0,4.8,11A86,86,0,0,0,160,42Z",
@@ -59,23 +88,29 @@ export default function Features() {
   ]
 
   return (
-    <div className='flex flex-col gap-2 xl:px-12 pt-20'>
-    <h2 className="text-xl md:text-3xl lg:text-[42px] text-center font-bold font-bricola  mb-4">
-    Your Data. Your Rules. Our Technology.
-    </h2>   
-    <main className="m-auto grid min-h-[320px] w-full max-w-5xl grid-cols-1 gap-8 bg-background p-4 dark:bg-background sm:grid-cols-2 lg:grid-cols-4">
-      
-      
-         {isMounted && isScriptLoaded && cardConfigurations.map((cardConfig, index) => (
-        <PixelCards 
-          key={cardConfig.label}
-          icon={cardConfig.icon}
-          label={cardConfig.label}
-          color={cardConfig.color}
-          canvasProps={cardConfig.canvasProps}
-        />
-      ))}
-    </main>
+    <div ref={sectionRef} className='flex flex-col gap-2 xl:px-12 pt-20 relative'>
+     
+      <div className={`relative z-10 transform transition-all duration-1000 ease-out ${
+        isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+      }`}>
+        <h2 className="text-xl md:text-3xl lg:text-[42px] text-center font-bold font-bricola mb-4">
+          Your Data. Your Rules. Our Technology.
+        </h2>   
+      </div>
+
+      <main className="m-auto grid min-h-[320px] w-full max-w-5xl grid-cols-1 gap-8 bg-background p-4 dark:bg-background sm:grid-cols-2 lg:grid-cols-4 relative z-10">
+        {isMounted && isScriptLoaded && cardConfigurations.map((cardConfig,index) => (
+         
+              <PixelCards 
+              key={index}
+                icon={cardConfig.icon}
+                label={cardConfig.label}
+                color={cardConfig.color}
+                canvasProps={cardConfig.canvasProps}
+              />
+         
+        ))}
+      </main>
     </div>
   )
 }

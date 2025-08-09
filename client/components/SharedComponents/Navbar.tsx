@@ -24,7 +24,7 @@ const navLinks = [
 
 function Navbar() {
 
-  const { theme, setTheme, toggleTheme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
 
 
   const pathname = usePathname();
@@ -44,23 +44,7 @@ function Navbar() {
     return () => clearTimeout(timer);
   }, []);
 
-  useEffect(() => {
-    const currentIndex = navLinks.findIndex((link) => link.href === pathname);
-    setActiveIndex(currentIndex);
-    moveTabTo(currentIndex);
-  }, [pathname]); 
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      setIsScrolled(scrollTop > 100);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const moveTabTo = (index: number) => {
+   const moveTabTo = (index: number) => {
     if (!containerRef.current) return;
 
     if (index === -1) {
@@ -78,6 +62,23 @@ function Navbar() {
       });
     }
   };
+  useEffect(() => {
+    const currentIndex = navLinks.findIndex((link) => link.href === pathname);
+    setActiveIndex(currentIndex);
+    moveTabTo(currentIndex);
+  }, [pathname, moveTabTo]); 
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      setIsScrolled(scrollTop > 100);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+ 
 
   const handleMouseEnter = (index: number) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
