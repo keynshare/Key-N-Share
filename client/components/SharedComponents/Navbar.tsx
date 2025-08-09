@@ -213,6 +213,8 @@ function Navbar() {
               {link.label}
             </Link>
           ))}
+                        <button onClick={toggleTheme} className="rounded-full ml-2 aspect-square w-8 mr-2 border border-gray-300 dark:border-gray-400 flex items-center justify-center hover:[background:linear-gradient(89deg,rgba(0,0,0,0.01)_11.29%,rgba(0,102,255,0.25)_96.93%)] dark:hover:[background:linear-gradient(89deg,rgba(255,255,255,0.01)_11.29%,rgba(0,102,255,0.25)_96.93%)] "> {theme === 'light' ? <MoonStar size={18} strokeWidth={1.5}/>   : <SunMediumIcon size={18}/>} </button>
+
           <div className="">
             <SecondaryBtn className={'w-[156px]'} >Login</SecondaryBtn>
           </div>
