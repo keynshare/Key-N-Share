@@ -131,11 +131,8 @@ const Footer = () => {
               <h3 className="font-bold mb-2 text-lg xl:text-xl whitespace-nowrap font-bricola">Subscribe to our newsletter</h3>
               <p className=" mb-3 text-base md:w-[120%] 2xl:w-[110%] 3xl:w-auto">Lorem Ipsum is simply dummy text of the printing and industry.</p>
               <form className="flex flex-col gap-2">
-                <input
-                  type="email"
-                  placeholder="Enter The Email"
-                  className="px-4 py-[11px] border bg-transparent dark:border-gray-800  outline-none rounded-md text-sm"
-                />
+             <input className="w-full bg-gray-200/55 p-2 py-[10px] dark:bg-[#141414] rounded-md " type="text" placeholder="Enter First Name" />
+
                 <SecondaryBtn
                  className='w-fit !py-2'
                 >

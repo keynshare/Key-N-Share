@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { Cinzel_Decorative, Karla, Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/SharedComponents/Navbar";
 import { ThemeProvider } from "@/lib/theme-context";
 import clsx from "clsx";
-
+import NavbarWrapper from "@/components/SharedComponents/NavbarWrapper";
 
 const cinzel_decorative = Cinzel_Decorative({
   variable: "--font-cinzel-decorative",
@@ -39,7 +38,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={clsx(bricolage.variable ,karla.className ,  cinzel_decorative.variable, 'bg-white dark:bg-[#000000] text-black dark:text-white transition-colors duration-300')}>
         <ThemeProvider>
-          <Navbar />
+          <NavbarWrapper />
           {children}
         </ThemeProvider>
       </body>

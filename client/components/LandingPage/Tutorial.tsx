@@ -27,7 +27,7 @@ export default function Tutorial() {
         })
       },
       {
-        threshold: 0.2, // Trigger when 20% of the Tutorial section is visible
+        threshold: 0.2,
         rootMargin: '0px'
       }
     )
