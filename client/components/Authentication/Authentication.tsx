@@ -45,7 +45,7 @@ function Authentication() {
             className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-40 md:w-64"
             alt="logo"
           />
-          <button className="text-white flex gap-1 py-1 bg-white/30 rounded-full px-3 absolute z-50 left-2 hover:text-black hover:bg-white transition-colors duration-500 top-3 items-center justify-center backdrop-blur-md">
+          <button className="text-white flex gap-1 py-1 border-[0.1px] border-gray-400 bg-white/10 rounded-full px-3 absolute z-50 left-2 hover:text-black hover:bg-white transition-colors duration-500 top-3 items-center justify-center backdrop-blur-md">
             Back to Website <ArrowRight size={18} />
           </button>
         </div>

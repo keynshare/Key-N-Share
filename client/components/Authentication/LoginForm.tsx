@@ -1,15 +1,31 @@
 
+"use client";
 import Image from "next/image";
 import PrimaryBtn from "../SharedComponents/Btns/PrimaryBtn";
 import SecondaryBtn from "../SharedComponents/Btns/SecondaryBtn";
 import Google from "../assets/Google.svg";
-
+import { useConnect, useAccount, useBalance, useDisconnect } from 'wagmi'
+import { polygonAmoy } from 'wagmi/chains'
+import { Wallet } from "lucide-react";
+import clsx from "clsx";
 type LoginProp={
    isLoginMode?:boolean,
    toggleMode?:()=>void,
 }
 
 function LoginForm({isLoginMode,toggleMode}:LoginProp) {
+
+  const { connectors, connect, isPending } = useConnect();
+  const { address, isConnected } = useAccount();
+  const { disconnect } = useDisconnect();
+  const { data: balance } = useBalance({
+    address,
+    chainId: polygonAmoy.id,
+  });
+
+//take the first connector
+  const connector = connectors[0];
+
   return (
    <>
    
@@ -68,12 +84,28 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
               </span>
 
               <div className="flex flex-col lg:flex-row gap-3 w-full items-center justify-center">
-                <PrimaryBtn sparkelClass="hidden " className="w-full">
-                  Connect Wallet
-                </PrimaryBtn>
-                <SecondaryBtn className="w-full lg:w-[92%] bg-gray-200 dark:bg-[#3f3f3f] dark:hover:bg-[#575757] dark:!text-white !text-black hover:bg-slate-300/95">
-                  Disconnect Wallet
-                </SecondaryBtn>
+              
+            <PrimaryBtn
+              onClick={() => connector && connect({ connector })}
+              disabled={isPending}
+              sparkelClass="hidden " className={clsx(
+    isConnected
+      ? "bg-clip-text text-transparent [background:linear-gradient(105deg,#1070FF 0%,#BA8CFF 17%,rgba(167,108,255,0.8) 30%,#FFBEE6 40%,#FF9C4B 75%,#FFC18E 83%,#FF7A00 100%)]"
+      : "",
+    "w-full"
+  )}
+
+              Hovered={isConnected}
+            >
+             <Wallet size={22}/> {isConnected ? balance?.formatted : "Connect Wallet"}  
+            </PrimaryBtn>
+         
+           <SecondaryBtn
+                onClick={() => disconnect()}
+                className="w-full bg-gray-200 dark:bg-[#3f3f3f]"
+              >
+                Disconnect Wallet
+              </SecondaryBtn>
               </div>
             </div>
           </div>

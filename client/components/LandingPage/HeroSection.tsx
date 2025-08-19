@@ -9,6 +9,7 @@ import SecondaryBtn from '../SharedComponents/Btns/SecondaryBtn'
 import Diagram from './Diagram'
 import { Sparkles } from '../Animations/Sparkels'
 import { useTheme } from "@/lib/theme-context";
+import Link from 'next/link';
 
 function HeroSection() {
   const [isVisible, setIsVisible] = useState(false)
@@ -54,14 +55,14 @@ function HeroSection() {
           <SecondaryBtn>Upload Datasets</SecondaryBtn>
         
        
-          <PrimaryBtn sparkelClass='sm:!-top-3 -top-[15px] w-[200px]' className={'w-[156px] sm:w-fit'}>Get Started</PrimaryBtn>
+          <PrimaryBtn sparkelClass='sm:!-top-3 -top-[15px] w-[200px]' className={'w-[156px] sm:w-fit'}><Link href='/authentication' >Get Started</Link></PrimaryBtn>
         
       </div>
-      <div className='absolute bottom-0 z-[-1] h-[450px] w-screen overflow-hidden [mask-image:radial-gradient(100%_50%,white,transparent)] before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_bottom_center,#48b6ff,transparent_90%)] before:opacity-30 after:absolute'>
+      <div className='absolute bottom-0 z-[-1] h-[450px] w-screen  [mask-image:radial-gradient(100%_50%,white,transparent)] before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_bottom_center,#00CCFFFF,transparent_90%)] before:opacity-30 after:absolute'>
             <Sparkles
               density={1800}
               speed={1.2}
-              color='#48b6ff'
+              color='#00CCFFFF'
               direction='top'
               className='absolute inset-x-0 -bottom-52 h-full w-full '
             />
