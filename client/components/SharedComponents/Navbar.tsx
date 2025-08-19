@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect,useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -11,7 +11,7 @@ import PrimaryBtn from "@/components/SharedComponents/Btns/PrimaryBtn";
 import SecondaryBtn from "@/components/SharedComponents/Btns/SecondaryBtn";
 import clsx from "clsx";
 import WhiteLogo from '@/public/WhiteLogo.svg'
-import { SunMediumIcon,MoonStar } from 'lucide-react'
+import { SunMediumIcon,MoonStar,Menu,X } from 'lucide-react'
 import { useTheme } from "@/lib/theme-context";
 
 
@@ -44,7 +44,7 @@ function Navbar() {
     return () => clearTimeout(timer);
   }, []);
 
-   const moveTabTo = (index: number) => {
+   const moveTabTo = useCallback((index: number) => {
     if (!containerRef.current) return;
 
     if (index === -1) {
@@ -61,7 +61,9 @@ function Navbar() {
         opacity: 1,
       });
     }
-  };
+  },[]);
+
+
   useEffect(() => {
     const currentIndex = navLinks.findIndex((link) => link.href === pathname);
     setActiveIndex(currentIndex);
@@ -116,8 +118,8 @@ function Navbar() {
             />
             <p
               className={clsx(
-                'font-cinzel transition-all text-2xl lg:text-[29px] duration-500 ease-in-out overflow-hidden whitespace-nowrap',
-                IsScrolled ? 'max-w-xs opacity-100 lg:max-w-0 lg:opacity-0' : 'max-w-xs opacity-100'
+                'font-cinzel transition-all text-2xl xl:text-[29px] duration-500 ease-in-out overflow-hidden whitespace-nowrap',
+                IsScrolled ? 'max-w-xs opacity-100 xl:max-w-0 xl:opacity-0' : 'max-w-xs opacity-100'
               )}
             >
               Key N Share
@@ -125,7 +127,7 @@ function Navbar() {
           </div>
 
           {/* Navigation Links */}
-          <div className={`relative hidden lg:block w-fit transform transition-all duration-700 ease-out delay-100 ${
+          <div className={`relative hidden xl:block w-fit transform transition-all duration-700 ease-out delay-100 ${
             isVisible ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-[-30px] opacity-0 scale-95'
           }`}>
             <div
@@ -145,7 +147,7 @@ function Navbar() {
                    onMouseLeave={handleMouseLeave}
                   className={clsx( 
                     IsScrolled ? 'rounded-2xl ' : 'rounded-full ',
-                    'relative z-20 px-5 py-[8px] transition-all duration-300  hover:text-[#272727]  hover:scale-105 transform'
+                    'relative z-20 px-5 py-[8px] transition-all duration-300  hover:scale-105 transform'
                   )}
                 >
                   {link.label}
@@ -163,29 +165,25 @@ function Navbar() {
             </div>
           </div>
 
-          <div className={`hidden lg:flex items-center gap-5 transform transition-all duration-700 ease-out delay-400 ${
+          <div className={`hidden xl:flex items-center gap-5 transform transition-all duration-700 ease-out delay-400 ${
             isVisible ? 'translate-x-0 opacity-100 scale-100' : 'translate-x-[50px] opacity-0 scale-95'
           }`}>
             <div className="animate-bounce-slow">
-              <SecondaryBtn>Login</SecondaryBtn>
+              <SecondaryBtn Href="/authentication">Login</SecondaryBtn>
             </div>
             <div className="animate-bounce-slow delay-200">
-              <PrimaryBtn>Register</PrimaryBtn>
+              <PrimaryBtn Href="/authentication" sparkelClass="max-w-[128%]">Register</PrimaryBtn>
             </div>
           </div>
 
           {/* Mobile Menu Button */}
-          <div className={`lg:hidden  flex bg-[#DBF0FF]/30 dark:bg-gray-800/30 backdrop-blur-md  border border-gray-100 dark:border-gray-700 aspect-square rounded-full items-center transform transition-all duration-500 ease-out delay-400 hover:scale-110 hover:shadow-lg shadow-blue-200 dark:shadow-blue-900 ${
+          <button aria-label="Toggle Menu" onClick={() => setMenuOpen(!menuOpen)}  className={`xl:hidden hover:rotate-90 p-[1px] px-2 w-fit h-fit flex transition-all duration-500  bg-[#DBF0FF]/30 dark:bg-gray-800/30 backdrop-blur-md  border border-gray-100 dark:border-gray-700 aspect-square rounded-full items-center transform  ease-out delay-400 hover:scale-110 hover:shadow-lg shadow-blue-200 dark:shadow-blue-900 ${
             isVisible ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-[-20px] opacity-0 scale-95'
           }`}>
-            <button 
-              onClick={() => setMenuOpen(!menuOpen)} 
-              aria-label="Toggle Menu"
-              className="transition-all duration-300 hover:rotate-90 p-1 px-3"
-            >
-              {menuOpen ? 'X' : '|||'}
-            </button>
-          </div>
+           
+              {menuOpen ? <X size={20}/> : <Menu size={20}/>}
+           
+          </button>
 
         </div>
                 
@@ -196,10 +194,10 @@ function Navbar() {
 
        {/* Mobile Menu */}
       {menuOpen && (
-        <div className={`lg:hidden mt-4 fixed flex w-[90%] md:w-[95%] justify-between gap-3 bg-[#DBF0FF]/30 dark:bg-gray-800/30 backdrop-blur-xl border border-gray-200 dark:border-gray-700 rounded-xl p-4 shadow-lg transform transition-all duration-500 ease-out ${
+        <div className={`xl:hidden mt-4 fixed flex w-[90%] md:w-[95%] justify-between gap-3 bg-[#DBF0FF]/30 dark:bg-gray-800/30 backdrop-blur-xl border border-gray-200 dark:border-gray-700 rounded-xl p-4 shadow-lg transform transition-all duration-500 ease-out ${
           menuOpen ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-[-20px] opacity-0 scale-95'
         }`}>
-        <div className="lg:hidden mt-4 flex flex-col gap-3">
+        <div className="xl:hidden mt-4 flex flex-col gap-3">
           {navLinks.map((link, index) => (
             <Link
               key={link.href}
@@ -213,13 +211,13 @@ function Navbar() {
               {link.label}
             </Link>
           ))}
-                        <button onClick={toggleTheme} className="rounded-full ml-2 aspect-square w-8 mr-2 border border-gray-300 dark:border-gray-400 flex items-center justify-center hover:[background:linear-gradient(89deg,rgba(0,0,0,0.01)_11.29%,rgba(0,102,255,0.25)_96.93%)] dark:hover:[background:linear-gradient(89deg,rgba(255,255,255,0.01)_11.29%,rgba(0,102,255,0.25)_96.93%)] "> {theme === 'light' ? <MoonStar size={18} strokeWidth={1.5}/>   : <SunMediumIcon size={18}/>} </button>
+                        <button onClick={toggleTheme} className="rounded-full  aspect-square w-8 mr-2 border border-gray-300 dark:border-gray-400 flex items-center justify-center hover:[background:linear-gradient(89deg,rgba(0,0,0,0.01)_11.29%,rgba(0,102,255,0.25)_96.93%)] dark:hover:[background:linear-gradient(89deg,rgba(255,255,255,0.01)_11.29%,rgba(0,102,255,0.25)_96.93%)] "> {theme === 'light' ? <MoonStar size={18} strokeWidth={1.5}/>   : <SunMediumIcon size={18}/>} </button>
 
           <div className="">
-            <SecondaryBtn className={'w-[156px]'} >Login</SecondaryBtn>
+            <SecondaryBtn Href="/authentication" className={'w-[156px]'} >Login</SecondaryBtn>
           </div>
           <div className=" delay-200">
-            <PrimaryBtn sparkelClass='sm:!-top-3 -top-[15.5px]  w-[180px] ' className={'!w-[156px]'}>Register</PrimaryBtn>
+            <PrimaryBtn Href="/authentication" sparkelClass='sm:!-top-3 -top-[15.5px]  w-[180px] ' className={'!w-[156px]'}>Register</PrimaryBtn>
           </div>
         </div>
        
@@ -227,7 +225,7 @@ function Navbar() {
   <Image
     src={NavImage}
     alt="Nav Visual Key N Share"
-    className="w-full h-[264px] md:h-[274px] rounded-lg object-fill"
+    className="w-full h-[314px] sm:h-[324px] rounded-lg object-fill"
     priority 
   />
 

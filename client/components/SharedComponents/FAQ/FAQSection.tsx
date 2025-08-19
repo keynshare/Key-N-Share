@@ -22,7 +22,7 @@ const FAQSection: React.FC<FAQSectionProps> = ({
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
-  // Intersection Observer for scroll-triggered animations
+ 
   useEffect(() => {
     const currentRef = sectionRef.current
     if (!currentRef) return
@@ -36,7 +36,7 @@ const FAQSection: React.FC<FAQSectionProps> = ({
         })
       },
       {
-        threshold: 0.2, // Trigger when 20% of the FAQ section is visible
+        threshold: 0.2, 
         rootMargin: '0px'
       }
     )

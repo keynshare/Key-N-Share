@@ -6,11 +6,12 @@ import { Particles } from '../Animations/Particles'
 const cn = (...classes: (string | undefined)[]) => classes.filter(Boolean).join(" ")
 
 
-const Circle = forwardRef<HTMLDivElement, { className?: string; children?: React.ReactNode; forceHover?: boolean }>(
-  ({ className, children, forceHover }, ref) => {
+const Circle = forwardRef<HTMLDivElement, { className?: string; children?: React.ReactNode; forceHover?: boolean; Tooltip?: string }>(
+  ({ className, children, forceHover,Tooltip }, ref) => {
     return (
       <div
         ref={ref}
+        title={Tooltip}
         className={cn(
           "z-10 flex items-center cursor-pointer justify-center rounded-full transition-colors hover:shadow-[0px_1px_10px_0px_rgba(94,191,255,1.00)] duration-500 border-2 border-[#686868] hover:border-[#80b4fa] bg-[#CFCFCF]/15 hover:bg-[#0d182b] backdrop-blur-3xl shadow-[0_4px_20px_-12px_#ffff]",
           "w-12 h-12 p-2 sm:w-10 sm:h-10 sm:p-2.5 md:w-16 md:h-16 md:p-3",
@@ -170,12 +171,13 @@ export const Diagram: React.FC<DiagramProp> = ({
           </div>
         <div className="flex h-full w-full flex-row items-stretch justify-between max-w-3xl">
           <div className="flex flex-col justify-center gap-10 md:gap-24">
-            <Circle ref={div1Ref} forceHover={forceHover[0]}>{icons.image1()}</Circle>
-            <Circle ref={div2Ref} forceHover={forceHover[1]}>{icons.image2()}</Circle>
-            <Circle ref={div3Ref} forceHover={forceHover[2]}>{icons.image3()}</Circle>
+            <Circle Tooltip="Polygon Block Chain" ref={div1Ref} forceHover={forceHover[0]}>{icons.image1()}</Circle>
+            <Circle Tooltip='Encrypted File' ref={div2Ref} forceHover={forceHover[1]}>{icons.image2()}</Circle>
+            <Circle Tooltip='IPFS' ref={div3Ref} forceHover={forceHover[2]}>{icons.image3()}</Circle>
           </div>
           <div className="flex flex-col justify-center">
             <Circle
+            Tooltip='Combine'
               ref={div4Ref}
               className="w-10 h-10 sm:w-12 sm:h-12 md:p-4 md:w-20 md:h-20 "
               forceHover={forceHover[3]}
@@ -184,7 +186,7 @@ export const Diagram: React.FC<DiagramProp> = ({
             </Circle>
           </div>
           <div className="flex flex-col justify-center">
-            <Circle ref={div5Ref} forceHover={forceHover[4]}>{icons.image7()}</Circle>
+            <Circle Tooltip='YOU' ref={div5Ref} forceHover={forceHover[4]}>{icons.image7()}</Circle>
           </div>
         </div>
         <BeamAnimation
