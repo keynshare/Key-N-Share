@@ -3,12 +3,28 @@ import PrimaryBtn from "../SharedComponents/Btns/PrimaryBtn";
 import SecondaryBtn from "../SharedComponents/Btns/SecondaryBtn";
 import Image from 'next/image';
 import Google from "../assets/Google.svg";
+import { useConnect, useAccount, useBalance, useDisconnect } from 'wagmi'
+import { polygonAmoy } from 'wagmi/chains'
+import { Wallet } from "lucide-react";
+import WalletGradient from '@/components/assets/Wallet.svg'
 
 type SignupProp={
    isLoginMode?:boolean,
    toggleMode?:()=>void,
 }
 function Signupform({isLoginMode,toggleMode}:SignupProp) {
+
+ const { connectors, connect, isPending } = useConnect();
+  const { address, isConnected } = useAccount();
+  const { disconnect } = useDisconnect();
+  const { data: balance } = useBalance({
+    address,
+    chainId: polygonAmoy.id,
+  });
+
+//take the first connector
+  const connector = connectors[0];
+
   return (
    <>
    
@@ -49,13 +65,24 @@ function Signupform({isLoginMode,toggleMode}:SignupProp) {
                 placeholder="Enter Confirm Password"
               />
 
-              <label className="flex w-full items-center gap-2 lg:text-lg">
-                <input
-                  className="accent-orange-600 rounded-sm"
-                  type="checkbox"
-                />
-                accept terms and conditions
-              </label>
+               <label className="relative flex-1 items-center justify-start w-full py-4 pl-1 gap-2 max-h-3 flex" >
+            <input
+              className=" w-fit border p-1 rounded-lg"
+              required
+              id="t&c"
+              type="checkbox"
+            />
+            <span >
+              I agree with{' '}
+              <a href="/terms-and-conditions" target="_blank" className="hover:underline cursor-pointer text-[#ff9900]">
+                Terms of Use
+              </a>{' '}
+              and{' '}
+              <a href="/privacy-policy" target="_blank" className="hover:underline cursor-pointer text-[#ff9900]">
+                Privacy Policy
+              </a>
+            </span>
+          </label>
 
               <div className="flex flex-col lg:flex-row gap-3 w-full items-center justify-center">
                 <SecondaryBtn className="w-full">Create Account</SecondaryBtn>
@@ -72,12 +99,22 @@ function Signupform({isLoginMode,toggleMode}:SignupProp) {
               </span>
 
               <div className="flex flex-col lg:flex-row gap-3 w-full items-center justify-center">
-                <PrimaryBtn sparkelClass="hidden " className="w-full">
-                  Connect Wallet
-                </PrimaryBtn>
-                <SecondaryBtn className="w-full lg:w-[92%] bg-gray-200 dark:bg-[#3f3f3f] dark:hover:bg-[#575757] dark:!text-white !text-black hover:bg-slate-300/95">
-                  Disconnect Wallet
-                </SecondaryBtn>
+                 <PrimaryBtn
+              onClick={() => connector && connect({ connector })}
+              disabled={isPending}
+              sparkelClass="hidden " className="w-full"
+
+              Hovered={isConnected}
+            >
+             {!isConnected ? <Wallet size={22}/> : <Image src={WalletGradient} width={24} alt="wallet svg" />} {isConnected ? balance?.formatted : "Connect Wallet"}  
+            </PrimaryBtn>
+         
+           <SecondaryBtn
+                onClick={() => disconnect()}
+                className="w-full bg-gray-200 !text-black dark:!text-white dark:hover:!text-black dark:hover:bg-gray-400 hover:!text-white hover:bg-[#c2c2c2] dark:bg-[#3f3f3f]"
+              >
+                Disconnect Wallet
+              </SecondaryBtn>
               </div>
             </div>
           </div>

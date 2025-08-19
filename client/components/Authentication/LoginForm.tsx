@@ -7,7 +7,7 @@ import Google from "../assets/Google.svg";
 import { useConnect, useAccount, useBalance, useDisconnect } from 'wagmi'
 import { polygonAmoy } from 'wagmi/chains'
 import { Wallet } from "lucide-react";
-import clsx from "clsx";
+import WalletGradient from '@/components/assets/Wallet.svg'
 type LoginProp={
    isLoginMode?:boolean,
    toggleMode?:()=>void,
@@ -23,7 +23,7 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
     chainId: polygonAmoy.id,
   });
 
-//take the first connector
+//take the first connector which has injected
   const connector = connectors[0];
 
   return (
@@ -88,21 +88,16 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
             <PrimaryBtn
               onClick={() => connector && connect({ connector })}
               disabled={isPending}
-              sparkelClass="hidden " className={clsx(
-    isConnected
-      ? "bg-clip-text text-transparent [background:linear-gradient(105deg,#1070FF 0%,#BA8CFF 17%,rgba(167,108,255,0.8) 30%,#FFBEE6 40%,#FF9C4B 75%,#FFC18E 83%,#FF7A00 100%)]"
-      : "",
-    "w-full"
-  )}
+              sparkelClass="hidden " className="w-full"
 
               Hovered={isConnected}
             >
-             <Wallet size={22}/> {isConnected ? balance?.formatted : "Connect Wallet"}  
+             {!isConnected ? <Wallet size={22}/> : <Image src={WalletGradient} width={24} alt="wallet svg" />} {isConnected ? balance?.formatted : "Connect Wallet"}  
             </PrimaryBtn>
          
            <SecondaryBtn
                 onClick={() => disconnect()}
-                className="w-full bg-gray-200 dark:bg-[#3f3f3f]"
+                className="w-full bg-gray-200 !text-black dark:!text-white dark:hover:!text-black dark:hover:bg-gray-400 hover:!text-white hover:bg-[#c2c2c2] dark:bg-[#3f3f3f]"
               >
                 Disconnect Wallet
               </SecondaryBtn>
