@@ -41,12 +41,12 @@ function Dashboard() {
           {categories.map((category, index) => (
             <div
               key={index}
-              className="flex flex-col overflow-x-auto overflow-visible w-full h-fit gap-5 items-start justify-start"
+              className="flex flex-col w-full h-fit gap-5 items-start justify-start"
             >
               <h2 className="text-[25px] font-semibold font-bricola ">
                 {category}
               </h2>
-              <div className="flex  h-fit w-full  justify-between gap-4 items-center">
+              <div className="flex  h-fit w-full overflow-x-auto overflow-visible lg:overflow-visible scrollHidden  justify-between gap-4 items-center">
                 <DatasetCard />
                 <DatasetCard />
                 <DatasetCard />

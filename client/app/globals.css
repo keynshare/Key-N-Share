@@ -32,6 +32,13 @@ body{
   animation: shine 8s linear infinite;
 }
 
+.scrollHidden{
+  -ms-overflow-style: none;  
+  scrollbar-width: none; 
+}
+.scrollHidden::-webkit-scrollbar {
+  display: none;
+}
 
 
 input{

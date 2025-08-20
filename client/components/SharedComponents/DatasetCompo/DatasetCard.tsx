@@ -60,10 +60,10 @@ export default function DatasetCard() {
           <span className="">CSV</span>
                     <span className='flex items-center gap-1 text-black'><Image src={Matic} alt="matic" width={18} height={18} />45</span>
 
-          <button className='relative' onClick={() => {setIsHovered(true);}} onBlur={() => {setIsHovered(false);}}>
+          <button className='relative' onClick={() => {setIsHovered(!isHovered);}} onBlur={() => {setIsHovered(false);}}>
           <EllipsisVertical size={18}/>
            {isHovered && 
-           <div className='absolute top-6 right-0 z-10'>
+           <div className='absolute -top-6 lg:top-6 right-4 lg:right-0 z-10'>
             <CTAs/>
             </div>
             }
