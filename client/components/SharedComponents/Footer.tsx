@@ -147,8 +147,8 @@ const Footer = () => {
         <div className={`border-t dark:border-[#272727] pt-4 mt-8 text-center flex items-center justify-center gap-1 flex-wrap md:text-lg text-gray-600 dark:text-gray-300 transform transition-all duration-800 ease-out ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
         }`} style={{ transitionDelay: '800ms' }}>
-          Copyright © 2025 <span className="text-orange-500 font-medium">Cinfinite</span> | Designed & Developed by <span className="text-orange-500 font-medium">Cinfinite</span> | Made in <button className='onfocus:outline-none outline-none' onClick={togglePlay}><Image src={India} width={18} alt="India" /></button> With ❤️  
-           <audio ref={audioRef} src='/Army.mp3' />
+          Copyright © 2025 <span className="text-orange-500 font-medium">Key-N-Share</span> | {/*Designed & Developed by <span className="text-orange-500 font-medium">Cinfinite</span>| Made in <button className='onfocus:outline-none outline-none' onClick={togglePlay}><Image src={India} width={18} alt="India" /></button> With ❤️*/ }  
+           {/* <audio ref={audioRef} src='/Army.mp3' /> */}
         </div>
       </div>
     </footer>
