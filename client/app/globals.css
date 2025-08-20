@@ -47,7 +47,7 @@ input{
 
 input:focus{
  
-  @apply dark:border-[#FF7A00] border-[#FF7A00];
+  @apply dark:border-[#FF7A00] border-[#FF7A00] border;
 }
 
 input {

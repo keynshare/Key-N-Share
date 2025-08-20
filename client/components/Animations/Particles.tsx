@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect,useCallback, useRef, useState } from "react";
 
 interface MousePosition {
   x: number;
@@ -99,7 +99,8 @@ export const Particles: React.FC<ParticlesProps> = ({
     initCanvas();
   }, [refresh, quantity]);
 
-  const updateMousePosition = () => {
+
+  const updateMousePosition = useCallback(() => {
     if (!canvasRef.current) return;
     const rect = canvasRef.current.getBoundingClientRect();
     const { w, h } = canvasSize.current;
@@ -110,7 +111,7 @@ export const Particles: React.FC<ParticlesProps> = ({
       mouse.current.x = x;
       mouse.current.y = y;
     }
-  };
+  },[]);
 
   const resizeCanvas = () => {
     if (!canvasRef.current || !containerRef.current) return;
@@ -192,7 +193,7 @@ export const Particles: React.FC<ParticlesProps> = ({
     return Math.max(((value - start1) * (end2 - start2)) / (end1 - start1) + start2, 0);
   };
 
-  const animate = () => {
+  const animate = useCallback(() => {
     clearContext();
     const { w, h } = canvasSize.current;
 
@@ -231,12 +232,12 @@ export const Particles: React.FC<ParticlesProps> = ({
     });
 
     animationRef.current = requestAnimationFrame(animate);
-  };
+  },[]);
 
-  const initCanvas = () => {
+  const initCanvas = useCallback(() => {
     resizeCanvas();
     drawParticles();
-  };
+  },[]);
 
   return (
     <div className={className} ref={containerRef} aria-hidden="true">
