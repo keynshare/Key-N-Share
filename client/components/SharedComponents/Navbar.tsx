@@ -18,7 +18,7 @@ import { useTheme } from "@/lib/theme-context";
 const navLinks = [
   { label: "About Us", href: "/about" },
   { label: "Upload Dataset", href: "/contact" },
-  { label: "Catalogue", href: "/Catalogue" },
+  { label: "Catalogue", href: "/catalogue" },
   { label: "Orders", href: "/orders" },
 ];
 
@@ -100,7 +100,7 @@ function Navbar() {
         <div
           className={clsx(
           
-            ' flex items-center min-w-[90vw] md:min-w-[700px] justify-between transition-[padding] duration-500 ease-in-out',
+            ' flex items-center min-w-[90vw] lg:min-w-[80vw] xl:min-w-[700px] justify-between transition-[padding] duration-500 ease-in-out',
             IsScrolled
               ? 'backdrop-blur-md w-fit border border-gray-200 dark:border-gray-400 bg-[#DBF0FF]/30 dark:bg-[#DBF0FF]/20 p-2 gap-4 rounded-lg'
               : 'p-0 gap-[18px] w-full bg-transparent' 

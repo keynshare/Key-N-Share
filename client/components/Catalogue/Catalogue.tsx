@@ -4,15 +4,17 @@ import FilterSidebar from "@/components/SharedComponents/Filter/FilterSidebar";
 import DatasetCard from "../SharedComponents/DatasetCompo/DatasetCard";
 import { Search, Filter } from "lucide-react";
 import PrimaryBtn from "../SharedComponents/Btns/PrimaryBtn";
-import SecondaryBtn from "../SharedComponents/Btns/SecondaryBtn";
+import Pagination from "../SharedComponents/Pagination/Pagination";
 
-function Dashboard() {
+function Catalogue() {
   const categories = ["Trending", "Highest Rating", "Newly Added"];
   const [isOpen, setIsOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = 202; 
 
   return (
     <>
-      <div className="grid grid-cols-4  pb-20 px-3 md:px-10 xl:px-16 gap-5">
+      <div className="grid grid-cols-4  pb-20 px-3 md:px-10 xl:px-16  gap-5">
         {/* Sidebar for xl and up */}
         <div className="hidden sticky top-0 grid-cols-1 h-fit w-fit xl:block">
           <FilterSidebar />
@@ -41,25 +43,22 @@ function Dashboard() {
           {categories.map((category, index) => (
             <div
               key={index}
-              className="flex flex-col w-full h-fit gap-5 items-start justify-start"
+              className="flex flex-wrap w-full h-fit gap-5 justify-between items-start "
             >
-              <h2 className="text-[25px] font-semibold font-bricola ">
-                {category}
-              </h2>
-              <div className="flex  h-fit w-full overflow-x-auto overflow-visible lg:overflow-visible scrollHidden  justify-between gap-4 items-center">
                 <DatasetCard />
                 <DatasetCard />
                 <DatasetCard />
-              </div>
+              
             </div>
           ))}
 
-          <div className="flex flex-col gap-5 items-center justify-center ">
-            <h1 className="sm:font-semibold text-lg sm:text-3xl md:text-[31px] lg:text-[42px] xl:text-5xl text-center font-bricola ">
-              Didn&apos;t come across what you were expecting?
-            </h1>
-            <SecondaryBtn Href="/Catalogue">Discover All Datasets</SecondaryBtn>
-          </div>
+          {/* Pagination */}
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+
         </div>
       </div>
 
@@ -95,4 +94,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default Catalogue
