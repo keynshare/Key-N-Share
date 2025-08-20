@@ -5,13 +5,21 @@ import DatasetCard from "../SharedComponents/DatasetCompo/DatasetCard";
 import { Search, Filter } from "lucide-react";
 import PrimaryBtn from "../SharedComponents/Btns/PrimaryBtn";
 import SecondaryBtn from "../SharedComponents/Btns/SecondaryBtn";
+import Breadcrumb from "@/components/SharedComponents/Breadcrumb/Breadcrumb";
 
 function Dashboard() {
   const categories = ["Trending", "Highest Rating", "Newly Added"];
   const [isOpen, setIsOpen] = useState(false);
+ const breadcrumbItems = [
+    { label: "Dashboard", href: "/dashboard",isActive: true },
+  ]; 
+
 
   return (
     <>
+    {/* Breadcrumb */}
+    <Breadcrumb items={breadcrumbItems} className="mb-5 pl-10 xl:pl-16" />
+
       <div className="grid grid-cols-4  pb-20 px-3 md:px-10 xl:px-16 gap-5">
         {/* Sidebar for xl and up */}
         <div className="hidden sticky top-0 grid-cols-1 h-fit w-fit xl:block">

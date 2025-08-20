@@ -2,13 +2,16 @@
 import { useState } from "react";
 import Loginimg from "@/components/assets/Login.svg";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight,SunMediumIcon, MoonStar } from "lucide-react";
 import WhiteLogo from "@/public/WhiteLogo.svg";
 import Signupform from "./Signupform";
 import LoginForm from "./LoginForm";
 import Link from "next/link";
+import { useTheme } from "@/lib/theme-context";
+
 function Authentication() {
   const [isLoginMode, setIsLoginMode] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   const toggleMode = () => {
     setIsLoginMode(!isLoginMode);
@@ -48,6 +51,19 @@ function Authentication() {
           <Link href="/" className="text-white flex gap-1 py-1 border-[0.1px] border-gray-400 bg-white/10 rounded-full px-3 absolute z-50 left-2 hover:text-black hover:bg-white transition-colors duration-500 top-3 items-center justify-center backdrop-blur-md">
             Back to Website <ArrowRight size={18} />
           </Link>
+
+           <button
+            onClick={toggleTheme}
+            className="rounded-full ml-2 text-white aspect-square absolute z-50 right-2 top-3 w-8 mr-2 border border-gray-300 dark:border-gray-500 flex items-center justify-center hover:[background:linear-gradient(89deg,rgba(0,0,0,0.01)_11.29%,rgba(0,102,255,0.25)_96.93%)] dark:hover:[background:linear-gradient(89deg,rgba(255,255,255,0.01)_11.29%,rgba(0,102,255,0.25)_96.93%)] "
+            >
+            {" "}
+            {theme === "light" ? (
+            <MoonStar size={18} strokeWidth={1.5} />
+            ) : (
+            <SunMediumIcon size={18} />
+            )}{" "}
+            </button>
+
         </div>
 
       </div>

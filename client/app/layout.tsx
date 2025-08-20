@@ -5,7 +5,6 @@ import { ThemeProvider } from "@/lib/theme-context";
 import clsx from "clsx";
 import NavbarWrapper from "@/components/SharedComponents/NavbarWrapper";
 import {Providers} from "@/lib/Providers";
-import Footer from '../components/SharedComponents/Footer'
 
 const cinzel_decorative = Cinzel_Decorative({
   variable: "--font-cinzel-decorative",
@@ -41,9 +40,9 @@ export default function RootLayout({
       <body className={clsx(bricolage.variable ,karla.className ,  cinzel_decorative.variable, 'bg-white dark:bg-[#000000] text-black dark:text-white transition-colors duration-300')}>
         <ThemeProvider>
           <Providers>
-          <NavbarWrapper />
+          <NavbarWrapper>
           {children}
-          <Footer/>
+          </NavbarWrapper>
           </Providers>
         </ThemeProvider>
       </body>

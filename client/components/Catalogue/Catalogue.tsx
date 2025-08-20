@@ -5,15 +5,23 @@ import DatasetCard from "../SharedComponents/DatasetCompo/DatasetCard";
 import { Search, Filter } from "lucide-react";
 import PrimaryBtn from "../SharedComponents/Btns/PrimaryBtn";
 import Pagination from "../SharedComponents/Pagination/Pagination";
+import Breadcrumb from "@/components/SharedComponents/Breadcrumb/Breadcrumb";
 
 function Catalogue() {
   const categories = ["Trending", "Highest Rating", "Newly Added"];
   const [isOpen, setIsOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 202; 
+  const totalPages = 202;
+  
+  const breadcrumbItems = [
+    { label: "Dashboard", href: "/dashboard" },
+    { label: "Catalogue", isActive: true }
+  ]; 
 
   return (
     <>
+      {/* Breadcrumb */}
+          <Breadcrumb items={breadcrumbItems} className="mb-5 pl-10 xl:pl-16" />
       <div className="grid grid-cols-4  pb-20 px-3 md:px-10 xl:px-16  gap-5">
         {/* Sidebar for xl and up */}
         <div className="hidden sticky top-0 grid-cols-1 h-fit w-fit xl:block">
@@ -22,6 +30,7 @@ function Catalogue() {
 
         {/* Content */}
         <div className="flex flex-col col-span-full xl:col-span-3 gap-10 items-start justify-start">
+          
           {/* Search bar */}
           <div className="flex items-center w-full border overflow-hidden dark:border-gray-600 h-fit focus-within:border-orange-500 dark:focus-within:border-orange-500 rounded-lg ">
             <input
