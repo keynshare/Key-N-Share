@@ -11,7 +11,7 @@ export default function DatasetCard() {
     const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div className="max-w-xs rounded-xl min-w-[280px] shadow-md border border-gray-200 dark:border-gray-800 dark:bg-[#131313]  bg-white hover:shadow-lg transition">
+    <div className="max-w-[280px] rounded-xl min-w-[280px] shadow-md border border-gray-200 dark:border-gray-800 dark:bg-[#131313]  bg-white hover:shadow-lg transition">
       {/* Top Image */}
       <div className="relative rounded-t-xl overflow-hidden h-36 w-full">
         <Image
