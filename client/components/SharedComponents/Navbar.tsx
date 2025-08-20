@@ -107,7 +107,7 @@ function Navbar() {
           )}
         >
          
-          <div className={`text-[29px] flex items-center gap-[18px] font-bold  transform transition-all duration-700 ease-out ${
+          <Link href="/" className={`text-[29px] flex items-center gap-[18px] font-bold  transform transition-all duration-700 ease-out ${
             isVisible ? 'translate-x-0 opacity-100 scale-100' : 'translate-x-[-50px] opacity-0 scale-95'
           } `}>
           <Image
@@ -124,7 +124,7 @@ function Navbar() {
             >
               Key N Share
             </p>
-          </div>
+          </Link>
 
           {/* Navigation Links */}
           <div className={`relative hidden xl:block w-fit transform transition-all duration-700 ease-out delay-100 ${
