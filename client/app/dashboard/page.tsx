@@ -1,11 +1,10 @@
 import React from 'react'
-import DatasetCard from '@/components/SharedComponents/DatasetCompo/DatasetCard'
+import Dashboard from "@/components/Dashboard/Dashboard"
 function page() {
   return (
     <>
-    
-      <h1>Dashboard</h1>
-      <DatasetCard/>
+      <Dashboard />
+      
     </>
   )
 }

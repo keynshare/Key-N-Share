@@ -5,21 +5,23 @@ import Link from 'next/link'
 type PropTypes={
     children:React.ReactNode,
     onClick?:React.MouseEventHandler<HTMLButtonElement>,
-    className?:string
-    sparkelClass?:string
-    disabled?:boolean
-    Hovered?:boolean
-    Href?:string
+    className?:string,
+    classInner?:string,
+    classsecondInner?:string,
+    sparkelClass?:string,
+    disabled?:boolean,
+    Hovered?:boolean,
+    Href?:string,
 }
 
-function PrimaryBtn({children,onClick,sparkelClass,className,disabled,Hovered=false,Href}:PropTypes) {
+function PrimaryBtn({children,onClick,sparkelClass,className,classInner,classsecondInner,disabled,Hovered=false,Href}:PropTypes) {
   return (
    <>
    {Href ?
    <Link href={disabled ? "#" : Href} className='cursor-pointer'>
     <div  className={clsx( className ,"relative group w-fit h-fit")}> 
-<div className={clsx(Hovered === true ? "!bg-white" : "" ,"inline-block relative w-full z-10 rounded-lg p-[3px] [background:linear-gradient(105deg,#1070FF_0%,#BA8CFF_17%,rgba(167,108,255,0.8)_30%,#FFBEE6_40%,#FF9C4B_75%,#FFC18E_83%,#FF7A00_100%)]  hover:bg-white text-black  ")}>
-  <div className={clsx(Hovered === true ? "!bg-white group-hover:!text-black" : "" ,"text-sm flex items-center justify-center gap-2 sm:text-base px-6 py-[7px] group-hover:bg-white dark:group-hover:bg-[#131313] dark:group-hover:text-white text-[#292929] rounded-md transition-all duration-500 font-semibold w-full h-full")}>
+<div className={clsx( classInner, Hovered === true ? "!bg-white" : "" ,"inline-block relative w-full z-10 rounded-lg p-[3px] [background:linear-gradient(105deg,#1070FF_0%,#BA8CFF_17%,rgba(167,108,255,0.8)_30%,#FFBEE6_40%,#FF9C4B_75%,#FFC18E_83%,#FF7A00_100%)]  hover:bg-white text-black  ")}>
+  <div className={clsx(classsecondInner,Hovered === true ? "!bg-white group-hover:!text-black" : "" ,"text-sm flex items-center justify-center gap-2 sm:text-base px-6 py-[7px] group-hover:bg-white dark:group-hover:bg-[#131313] dark:group-hover:text-white text-[#292929] rounded-md transition-all duration-500 font-semibold w-full h-full")}>
    {children}
   </div>
   
@@ -32,8 +34,8 @@ function PrimaryBtn({children,onClick,sparkelClass,className,disabled,Hovered=fa
 :
 
 <button disabled={disabled} onClick={onClick} className={clsx( className ,"relative group w-fit h-fit")}> 
-<div className={clsx(Hovered === true ? "!bg-white" : "" ,"inline-block relative w-full z-10 rounded-lg p-[3px] [background:linear-gradient(105deg,#1070FF_0%,#BA8CFF_17%,rgba(167,108,255,0.8)_30%,#FFBEE6_40%,#FF9C4B_75%,#FFC18E_83%,#FF7A00_100%)]  hover:bg-white text-black  ")}>
-  <div className={clsx(Hovered === true ? "!bg-white  group-hover:!text-black" : "" ,"text-sm flex items-center justify-center gap-2 sm:text-base px-6 py-[7px] group-hover:bg-white dark:group-hover:bg-[#131313] dark:group-hover:text-white text-[#292929] rounded-md transition-all duration-500 font-semibold w-full h-full")}>
+<div className={clsx( classInner, Hovered === true ? "!bg-white" : "" ,"inline-block relative w-full z-10 rounded-lg p-[3px] [background:linear-gradient(105deg,#1070FF_0%,#BA8CFF_17%,rgba(167,108,255,0.8)_30%,#FFBEE6_40%,#FF9C4B_75%,#FFC18E_83%,#FF7A00_100%)]  hover:bg-white text-black  ")}>
+  <div className={clsx( classsecondInner,Hovered === true ? "!bg-white  group-hover:!text-black" : "" ,"text-sm flex items-center justify-center gap-2 sm:text-base px-6 py-[7px] group-hover:bg-white dark:group-hover:bg-[#131313] dark:group-hover:text-white text-[#292929] rounded-md transition-all duration-500 font-semibold w-full h-full")}>
    {children}
   </div>
   

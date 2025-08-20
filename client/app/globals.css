@@ -7,6 +7,9 @@ body{
     width: 100vw;
     overflow-x: hidden;
 }
+*{
+  transition: color 0.5s ease, background-color 0.5s ease;
+}
 
 .Btn{
     opacity: 1;
@@ -36,5 +39,10 @@ input{
 }
 
 input:focus{
-  border: 1px solid #FF7A00 !important;
+ 
+  @apply dark:border-[#FF7A00] border-[#FF7A00];
+}
+
+input {
+  @apply dark:bg-[#141414];
 }

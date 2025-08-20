@@ -18,7 +18,7 @@ import { useTheme } from "@/lib/theme-context";
 const navLinks = [
   { label: "About Us", href: "/about" },
   { label: "Upload Dataset", href: "/contact" },
-  { label: "Catalog", href: "/catalog" },
+  { label: "Catalogue", href: "/Catalogue" },
   { label: "Orders", href: "/orders" },
 ];
 
