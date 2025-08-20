@@ -5,13 +5,13 @@ import Cover from "@/components/assets/Cover.svg";
 import User from "@/components/assets/User.svg";
 import { Star,EllipsisVertical } from "lucide-react";
 import CTAs from "./CTAs";
-import Matic from "@/components/assets/Matic.svg"
+import Matic from "@/components/assets/Matic"
 export default function DatasetCard() {
 
     const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div className="max-w-xs rounded-xl min-w-[280px] shadow-md border border-gray-200  bg-white hover:shadow-lg transition">
+    <div className="max-w-xs rounded-xl min-w-[280px] shadow-md border border-gray-200 dark:border-gray-800 dark:bg-[#131313]  bg-white hover:shadow-lg transition">
       {/* Top Image */}
       <div className="relative rounded-t-xl overflow-hidden h-36 w-full">
         <Image
@@ -26,7 +26,7 @@ export default function DatasetCard() {
       <div className="p-4 py-3 flex flex-col gap-1">
        
 
-        <h2 className="font-semibold text-lg text-gray-900 line-clamp-2">
+        <h2 className="font-semibold text-lg text-gray-900 dark:text-white line-clamp-2">
           Top Spotify Listening History Songs in Cou
           Top Spotify Listening History Songs in Cou
           Top Spotify Listening History Songs in Cou
@@ -34,7 +34,7 @@ export default function DatasetCard() {
 
        
 
-        <p className=" text-gray-700 line-clamp-2">
+        <p className=" text-gray-700 dark:text-white line-clamp-2">
           This dataset contains detailed Spotify listening history
           This dataset contains detailed Spotify listening history
           This dataset contains detailed Spotify listening history
@@ -58,7 +58,7 @@ export default function DatasetCard() {
           </div>
           
           <span className="">CSV</span>
-                    <span className='flex items-center gap-1 text-black'><Image src={Matic} alt="matic" width={18} height={18} />45</span>
+                    <span className='flex items-center gap-1 '><Matic />45</span>
 
           <button className='relative' onClick={() => {setIsHovered(!isHovered);}} onBlur={() => {setIsHovered(false);}}>
           <EllipsisVertical size={18}/>
@@ -72,7 +72,7 @@ export default function DatasetCard() {
         </div>
 
         
-        <div className="flex gap-3 border-t items-center pt-2">
+        <div className="flex gap-3 border-t dark:border-gray-600 items-center pt-2">
           <Image
             src={User}
             alt="Author"
@@ -81,8 +81,8 @@ export default function DatasetCard() {
             className="rounded-full"
           />
           <div >
-            <p className=" font-medium text-gray-900">Mohammad Sumbul</p>
-            <p className="text-sm text-gray-500">Data Scientist</p>
+            <p className=" font-medium text-gray-900 dark:text-white">Mohammad Sumbul</p>
+            <p className="text-sm text-gray-500 dark:text-white">Data Scientist</p>
           </div>
         </div>
       </div>

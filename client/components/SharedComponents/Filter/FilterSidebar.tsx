@@ -24,7 +24,7 @@ const FilterSidebar = () => {
   ];
 
   return (
-    <div className="xl:w-72 bg-white dark:bg-[#131313] w-screen border-t dark:border-none border-gray-100 shadow-md h-fit rounded-2xl p-5 space-y-6 text-sm">
+    <div className="xl:w-72 bg-white dark:bg-[#131313] w-screen border-t dark:border-gray-800 dark:border-none border-gray-100 shadow-md h-fit rounded-2xl p-5 space-y-6 text-sm">
       {/* Header */}
       <h2 className="text-xl hidden xl:block font-semibold text-center">Filters</h2>
 

@@ -56,7 +56,7 @@ function Dashboard() {
 
           <div className="flex flex-col gap-5 items-center justify-center ">
             <h1 className="sm:font-semibold text-lg sm:text-3xl md:text-[31px] lg:text-[42px] xl:text-5xl text-center font-bricola ">
-              Didn't come across what you were expecting?
+              Didn&apos;t come across what you were expecting?
             </h1>
             <SecondaryBtn Href="/Catalogue">Discover All Datasets</SecondaryBtn>
           </div>
@@ -76,11 +76,11 @@ function Dashboard() {
       {/* Mobile Sidebar Drawer */}
       
       <div
-        className={`fixed top-0 left-0 h-full  bg-white shadow-lg overflow-y-auto z-20 pt-20 transform transition-transform duration-300 ${
+        className={`fixed top-0 left-0 h-full  bg-white dark:bg-[#131313] shadow-lg overflow-y-auto z-20 pt-20 transform transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex justify-between items-center p-4 border-b">
+        <div className="flex justify-between items-center p-4 border-b dark:border-gray-600">
           <h2 className="font-bold text-lg">Filters</h2>
           <button
             onClick={() => setIsOpen(false)}
