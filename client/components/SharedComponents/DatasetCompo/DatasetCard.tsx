@@ -11,7 +11,7 @@ export default function DatasetCard() {
     const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div className="max-w-xs rounded-xl shadow-md border border-gray-200  bg-white hover:shadow-lg transition">
+    <div className="max-w-xs rounded-xl min-w-[280px] shadow-md border border-gray-200  bg-white hover:shadow-lg transition">
       {/* Top Image */}
       <div className="relative rounded-t-xl overflow-hidden h-36 w-full">
         <Image
@@ -60,9 +60,13 @@ export default function DatasetCard() {
           <span className="">CSV</span>
                     <span className='flex items-center gap-1 text-black'><Image src={Matic} alt="matic" width={18} height={18} />45</span>
 
-          <button className='relative' onClick={() => {setIsHovered(true);}} onBlur={() => {setIsHovered(false);}}>
+          <button className='relative' onClick={() => {setIsHovered(!isHovered);}} onBlur={() => {setIsHovered(false);}}>
           <EllipsisVertical size={18}/>
-           {isHovered && <CTAs/>}
+           {isHovered && 
+           <div className='absolute -top-6 lg:top-6 right-4 lg:right-0 z-10'>
+            <CTAs/>
+            </div>
+            }
           </button>
            
         </div>
