@@ -233,7 +233,7 @@ function Navbar() {
                   disabled={isPending}
                   Hovered={isConnected}
                   sparkelClass="hidden"
-                  classsecondInner="px-1.5"
+                  classsecondInner="px-1"
                 >
                 {!isConnected ? <Wallet size={22}/> : <Image src={WalletGradient} width={24} alt="wallet svg" />} {isConnected ? balance?.formatted : "Connect"}  
                   
@@ -296,6 +296,10 @@ function Navbar() {
                 {link.label}
               </Link>
             ))}
+
+            <div className="flex flex-col gap-3 ">
+            {IsLogout ?
+             <>
             <button
               onClick={toggleTheme}
               className="rounded-full  aspect-square w-8 mr-2 border border-gray-300 dark:border-gray-400 flex items-center justify-center hover:[background:linear-gradient(89deg,rgba(0,0,0,0.01)_11.29%,rgba(0,102,255,0.25)_96.93%)] dark:hover:[background:linear-gradient(89deg,rgba(255,255,255,0.01)_11.29%,rgba(0,102,255,0.25)_96.93%)] "
@@ -322,13 +326,65 @@ function Navbar() {
                 Register
               </PrimaryBtn>
             </div>
+            </>
+            :
+            <>
+
+            <div className="flex items-center flex-wrap gap-2">
+            <button
+              onClick={toggleTheme}
+              className="rounded-full  aspect-square w-8 mr-2 border border-gray-300 dark:border-gray-400 flex items-center justify-center hover:[background:linear-gradient(89deg,rgba(0,0,0,0.01)_11.29%,rgba(0,102,255,0.25)_96.93%)] dark:hover:[background:linear-gradient(89deg,rgba(255,255,255,0.01)_11.29%,rgba(0,102,255,0.25)_96.93%)] "
+            >
+              {" "}
+              {theme === "light" ? (
+                <MoonStar size={18} strokeWidth={1.5} />
+              ) : (
+                <SunMediumIcon size={18} />
+              )}{" "}
+            </button>
+             <button className="p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white rounded-full">
+                  <ShoppingCart size={22} />
+                </button>
+                <button className="p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white rounded-full">
+                  <LucideFileHeart size={22} />
+                </button>
+                <button className="p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white rounded-full">
+                  <Bell size={22} />
+                </button>
+                <Link href="#" className="  text-white rounded-full">
+                  <Image
+                    className="object-cover w-10"
+                    src={User}
+                    alt="user svg"
+                  />
+                </Link>
+              </div>
+
+
+            <div className="">
+              <SecondaryBtn Href="/authentication" className={"w-[156px]"}>
+                Login
+              </SecondaryBtn>
+            </div>
+            <div className=" delay-200">
+              <PrimaryBtn
+                Href="/authentication"
+                sparkelClass="sm:!-top-3 -top-[15.5px]  w-[180px] "
+                className={"!w-[156px]"}
+              >
+                Register
+              </PrimaryBtn>
+            </div>
+            </>
+            }
+            </div>
           </div>
 
           <div className=" w-full rounded-lg relative ">
             <Image
               src={NavImage}
               alt="Nav Visual Key N Share"
-              className="w-full h-[314px] sm:h-[324px] rounded-lg object-fill"
+              className={clsx(IsLogout ? "h-[314px] sm:h-[324px]" : "h-[380px] sm:h-[390px]" ,"w-full rounded-lg object-fill")}
               priority
             />
 
