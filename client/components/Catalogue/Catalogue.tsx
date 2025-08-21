@@ -6,13 +6,20 @@ import { Search, Filter } from "lucide-react";
 import PrimaryBtn from "../SharedComponents/Btns/PrimaryBtn";
 import Pagination from "../SharedComponents/Pagination/Pagination";
 import Breadcrumb from "@/components/SharedComponents/Breadcrumb/Breadcrumb";
-
+import DatasetData from '@/components/assets/dataset.json'
 function Catalogue() {
   const categories = ["Trending", "Highest Rating", "Newly Added"];
   const [isOpen, setIsOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 202;
+
+   const itemsPerPage = 12; 
+  const totalItems = DatasetData.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
   
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = DatasetData.slice(startIndex, endIndex);
   const breadcrumbItems = [
     { label: "Dashboard", href: "/dashboard" },
     { label: "Catalogue", isActive: true }
@@ -53,9 +60,9 @@ function Catalogue() {
              
               className="flex flex-wrap w-full h-fit gap-5 justify-center items-start "
             >
-          {[1,2,3,4,4,5,55,5,5].map((category, index) => (
+          {DatasetData.map((category, index) => (
           
-                <DatasetCard />
+                <DatasetCard key={index} Data={category} />
               
            
           ))}
@@ -63,7 +70,7 @@ function Catalogue() {
 
           {/* Pagination */}
           <Pagination
-            currentPage={currentPage}
+             currentPage={currentPage}
             totalPages={totalPages}
             onPageChange={setCurrentPage}
           />

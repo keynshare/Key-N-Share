@@ -70,7 +70,7 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
               </div>
 
               <div className="flex flex-col lg:flex-row gap-3 w-full items-center justify-center">
-                <SecondaryBtn className="w-full">Login</SecondaryBtn>
+                <SecondaryBtn Href="/dashboard" className="w-full">Login</SecondaryBtn>
                 <SecondaryBtn className="w-full bg-slate-200 dark:bg-[#1f1f1f] dark:hover:bg-[#333333] dark:!text-white !text-black hover:bg-slate-300/95">
                   <Image src={Google} className="w-5" alt="google logo" />
                   Continue with Google
