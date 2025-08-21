@@ -65,7 +65,7 @@ const Footer = () => {
         <div className="flex flex-col xl:flex-row justify-between gap-10 lg:gap-14">
           {/* Logo Section */}
           <div className="flex-shrink-0">
-          <div className={`text-[29px] flex items-center gap-4 font-bold transform transition-all duration-1000 ease-out ${
+          <div className={`text-[29px] flex h-fit items-center gap-4 font-bold transform transition-all duration-1000 ease-out ${
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
           }`}>
             <Image
@@ -75,7 +75,7 @@ const Footer = () => {
               className="w-[30px] xl:w-[43.38px] "
             />
             <p
-              className='font-cinzel transition-all text-2xl xl:text-[29px] duration-500 ease-in-out overflow-hidden whitespace-nowrap'
+              className='font-cinzel transition-all text-2xl xl:text-[29px] leading-relaxed duration-500 ease-in-out overflow-hidden whitespace-nowrap'
             >
               Key N Share
             </p>
@@ -90,6 +90,7 @@ const Footer = () => {
             }`} style={{ transitionDelay: '200ms' }}>
               <h3 className="font-bold text-lg xl:text-xl mb-2 font-bricola">Pages</h3>
               <ul className="space-y-1 text-lg">
+                <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/dashboard">Dashboard</Link></li>
                 <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/about">About Us</Link></li>
                 <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/orders">Previous Orders</Link></li>
                 <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/datasets">Your Datasets</Link></li>
