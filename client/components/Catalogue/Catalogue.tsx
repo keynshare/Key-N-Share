@@ -49,17 +49,17 @@ function Catalogue() {
           </div>
 
           {/* Categories */}
-          {categories.map((category, index) => (
             <div
-              key={index}
-              className="flex flex-wrap w-full h-fit gap-5 justify-between items-start "
+             
+              className="flex flex-wrap w-full h-fit gap-5 justify-center items-start "
             >
-                <DatasetCard />
-                <DatasetCard />
+          {[1,2,3,4,4,5,55,5,5].map((category, index) => (
+          
                 <DatasetCard />
               
-            </div>
+           
           ))}
+           </div>
 
           {/* Pagination */}
           <Pagination
