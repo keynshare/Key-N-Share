@@ -3,8 +3,8 @@
     "id":1,
     "Title": "Steel Plate Fault",
     "Description": "This dataset contains information about steel plate faults. It includes 33 numeric attributes that describe various features of steel plates, and a 'Class' attribute that indicates the type of fault.",
-    "Price": "15 token",
-    "Categories/Tags": [
+    "Price": "15",
+    "Tags": [
       "Manufacturing",
       "Quality Control",
       "Defect Detection",
@@ -16,8 +16,8 @@
   {"id":2,
     "Title": "Tic-Tac-Toe Endgame",
     "Description": "This is a database of all possible endgame configurations for Tic-Tac-Toe. It's useful for developing and testing artificial intelligence and machine learning algorithms for game playing.",
-    "Price": "5 token",
-    "Categories/Tags": [
+    "Price": "5",
+    "Tags": [
       "Artificial Intelligence",
       "Machine Learning",
       "Game Theory",
@@ -29,8 +29,8 @@
   {"id":3,
     "Title": "Iris Flower Dataset",
     "Description": "A classic dataset in the field of machine learning and statistics. It contains measurements of sepal and petal length and width for three species of Iris flowers.",
-    "Price": "10 token",
-    "Categories/Tags": [
+    "Price": "10 ",
+    "Tags": [
       "Biology",
       "Botany",
       "Classification",
@@ -43,8 +43,8 @@
     "id":4,
     "Title": "High Popularity Spotify Data",
     "Description": "This dataset provides a comprehensive look at popular songs on Spotify. It includes various audio features like energy, tempo, and danceability, as well as track and artist information.",
-    "Price": "25 token",
-    "Categories/Tags": [
+    "Price": "25 ",
+    "Tags": [
       "Music",
       "Spotify",
       "Data Analysis",
@@ -57,8 +57,8 @@
     "id":5,
     "Title": "Boston Housing",
     "Description": "This dataset contains information about housing in the Boston area. It's often used in machine learning for regression tasks to predict housing prices.",
-    "Price": "20 token",
-    "Categories/Tags": [
+    "Price": "20 ",
+    "Tags": [
       "Real Estate",
       "Housing",
       "Regression",
@@ -71,8 +71,8 @@
     "id":6,
     "Title": "Valid Traded Symbols",
     "Description": "This dataset contains a list of valid traded symbols on the Nasdaq stock exchange. It includes information such as the security name, listing exchange, and ETF status.",
-    "Price": "30 token",
-    "Categories/Tags": [
+    "Price": "30 ",
+    "Tags": [
       "Finance",
       "Stock Market",
       "Trading",
@@ -85,8 +85,8 @@
     "id":7,
     "Title": "Spotify Dataset",
     "Description": "A comprehensive dataset of songs from Spotify, including track ID, artist, album name, track name, popularity, and various audio features. This dataset is great for music analysis and recommendation systems.",
-    "Price": "25 token",
-    "Categories/Tags": [
+    "Price": "25 ",
+    "Tags": [
       "Music",
       "Spotify",
       "Data Analysis",
@@ -99,8 +99,8 @@
     "id":1,
     "Title": "Steel Plate Fault",
     "Description": "This dataset contains information about steel plate faults. It includes 33 numeric attributes that describe various features of steel plates, and a 'Class' attribute that indicates the type of fault.",
-    "Price": "15 token",
-    "Categories/Tags": [
+    "Price": "15 ",
+    "Tags": [
       "Manufacturing",
       "Quality Control",
       "Defect Detection",
@@ -112,8 +112,8 @@
   {"id":2,
     "Title": "Tic-Tac-Toe Endgame",
     "Description": "This is a database of all possible endgame configurations for Tic-Tac-Toe. It's useful for developing and testing artificial intelligence and machine learning algorithms for game playing.",
-    "Price": "5 token",
-    "Categories/Tags": [
+    "Price": "5 ",
+    "Tags": [
       "Artificial Intelligence",
       "Machine Learning",
       "Game Theory",
@@ -125,8 +125,8 @@
   {"id":3,
     "Title": "Iris Flower Dataset",
     "Description": "A classic dataset in the field of machine learning and statistics. It contains measurements of sepal and petal length and width for three species of Iris flowers.",
-    "Price": "10 token",
-    "Categories/Tags": [
+    "Price": "10 ",
+    "Tags": [
       "Biology",
       "Botany",
       "Classification",
@@ -139,8 +139,8 @@
     "id":4,
     "Title": "High Popularity Spotify Data",
     "Description": "This dataset provides a comprehensive look at popular songs on Spotify. It includes various audio features like energy, tempo, and danceability, as well as track and artist information.",
-    "Price": "25 token",
-    "Categories/Tags": [
+    "Price": "25 ",
+    "Tags": [
       "Music",
       "Spotify",
       "Data Analysis",
@@ -152,8 +152,8 @@
     "id":5,
     "Title": "Boston Housing",
     "Description": "This dataset contains information about housing in the Boston area. It's often used in machine learning for regression tasks to predict housing prices.",
-    "Price": "20 token",
-    "Categories/Tags": [
+    "Price": "20 ",
+    "Tags": [
       "Real Estate",
       "Housing",
       "Regression",

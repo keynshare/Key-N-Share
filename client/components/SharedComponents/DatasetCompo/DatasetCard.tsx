@@ -6,10 +6,10 @@ import User from "@/components/assets/User.svg";
 import { Star,EllipsisVertical } from "lucide-react";
 import CTAs from "./CTAs";
 import Matic from "@/components/assets/Matic"
-
+import Link from 'next/link';
 
 interface Dataset {
-
+  id:number;
   Image: string;
   Title: string;
   Description: string;
@@ -45,7 +45,7 @@ export default function DatasetCard({Data}:DatasetCardProps) {
   }, []);
 
   return (
-    <div className="max-w-[280px] rounded-xl min-w-[280px] shadow-md border border-gray-200 dark:border-gray-800 dark:bg-[#131313]  bg-white hover:shadow-lg transition">
+    <Link href={`/specific-dataset/${Data.id}`} className="max-w-[280px] rounded-xl min-w-[280px] shadow-md border border-gray-200 dark:border-gray-800 dark:bg-[#131313]  bg-white hover:shadow-lg transition">
       {/* Top Image */}
       <div className="relative rounded-t-xl overflow-hidden h-36 w-full">
         <img
@@ -89,7 +89,7 @@ export default function DatasetCard({Data}:DatasetCardProps) {
           <span className="">{Data.Type}</span>
                     <span className='flex items-center gap-1 '><Matic />{Data.Price}</span>
 
-          <button className='relative' onClick={() => {setIsHovered(!isHovered);}} onBlur={() => {setIsHovered(false);}}>
+          <button title='Actions' className='relative p-1 hover:bg-gray-200 dark:hover:bg-[#252525] rounded-full' onClick={(e) => { e.stopPropagation(); e.preventDefault(); setIsHovered(!isHovered);}} onBlur={() => {setIsHovered(false);}}>
           <EllipsisVertical size={18}/>
            {isHovered && 
            <div className='absolute -top-6 lg:top-6 right-4 lg:right-0 z-10'>
@@ -115,6 +115,6 @@ export default function DatasetCard({Data}:DatasetCardProps) {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

@@ -21,7 +21,6 @@ function Catalogue() {
   const endIndex = startIndex + itemsPerPage;
   const currentItems = DatasetData.slice(startIndex, endIndex);
   const breadcrumbItems = [
-    { label: "Dashboard", href: "/dashboard" },
     { label: "Catalogue", isActive: true }
   ]; 
 
