@@ -16,9 +16,7 @@ function Dashboard() {
   const categories = ["Trending", "Highest Rating", "Newly Added"];
   const [isOpen, setIsOpen] = useState(false);
   
-  const breadcrumbItems = [
-    { label: "Dashboard", href: "/dashboard", isActive: true },
-  ];
+ 
 
   const getPreviewData = (category: string, count = 3) => {
     const startIndex = categories.indexOf(category) * count;
@@ -27,7 +25,7 @@ function Dashboard() {
 
   return (
     <>
-      <Breadcrumb items={breadcrumbItems} className="mb-5 pl-10 xl:pl-16" />
+      <Breadcrumb isHome={true}  className="mb-5 pl-10 xl:pl-16" />
 
       <div className="grid grid-cols-4 pb-20 px-3 md:px-10 xl:px-16 gap-5">
         <div className="hidden sticky top-0 grid-cols-1 h-fit w-fit xl:block">

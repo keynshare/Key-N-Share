@@ -4,20 +4,22 @@ import { ChevronRight, Home } from "lucide-react";
 import Link from "next/link";
 
 export interface BreadcrumbItem {
-  label: string;
+  label?: string;
   href?: string;
   isActive?: boolean;
 }
 
 interface BreadcrumbProps {
-  items: BreadcrumbItem[];
+  items?: BreadcrumbItem[];
   showHome?: boolean;
   className?: string;
+  isHome?: boolean
 }
 
 const Breadcrumb: React.FC<BreadcrumbProps> = ({ 
   items, 
   showHome = true, 
+  isHome=false,
   className = "" 
 }) => {
   return (
@@ -25,17 +27,17 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
       {showHome && (
         <>
           <Link 
-            href="/" 
-            className="flex items-center text-gray-500 hover:text-orange-500 transition-colors duration-200"
+            href="/dashboard" 
+            className={`${isHome ? 'text-orange-500' : ''} flex items-center text-gray-500 hover:text-orange-500 transition-colors duration-200`}
           >
             <Home size={16} className="mr-2" />
-            <span className="hidden sm:inline">Home</span>
+            <span className="hidden sm:inline">Dashboard</span>
           </Link>
           <ChevronRight size={16} className="text-gray-400" />
         </>
       )}
       
-      {items.map((item, index) => (
+      {items && items.map((item, index) => (
         <React.Fragment key={index}>
           {item.href && !item.isActive ? (
             <Link
@@ -46,10 +48,11 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
             </Link>
           ) : (
             <span 
+            title={item.label}
               className={`${
                 item.isActive 
-                  ? "text-orange-500 font-medium" 
-                  : "text-gray-400"
+                  ? "text-orange-500 font-medium max-w-[120px] sm:max-w-[300px] whitespace-nowrap overflow-hidden text-ellipsis" 
+                  : "text-gray-400 "
               }`}
             >
               {item.label}
