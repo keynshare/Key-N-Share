@@ -1,27 +1,23 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import FilterSidebar from "@/components/SharedComponents/Filter/FilterSidebar";
-import DatasetCard from "../SharedComponents/DatasetCompo/DatasetCard";
 import { Search, Filter } from "lucide-react";
 import PrimaryBtn from "../SharedComponents/Btns/PrimaryBtn";
 import SecondaryBtn from "../SharedComponents/Btns/SecondaryBtn";
 import Breadcrumb from "@/components/SharedComponents/Breadcrumb/Breadcrumb";
 import DatasetData from '@/components/assets/dataset.json'
-
+import CardsWithCategory from "./CardsWithCategory";
 
 
 
 
 function Dashboard() {
-  const categories = ["Trending", "Highest Rating", "Newly Added"];
+ 
   const [isOpen, setIsOpen] = useState(false);
   
  
+const categories = ["Trending", "Highest Rating", "Newly Added"];
 
-  const getPreviewData = (category: string, count = 3) => {
-    const startIndex = categories.indexOf(category) * count;
-    return DatasetData.slice(startIndex, startIndex + count);
-  };
 
   return (
     <>
@@ -41,26 +37,13 @@ function Dashboard() {
             />
             <PrimaryBtn
               className="!rounded-none h-full"
+              sparkelClass="hidden"
             >
-              <Search size={20} className="text-white" />
+              <Search size={20}  />
             </PrimaryBtn>
           </div>
 
-          {categories.map((category, index) => (
-            <div
-              key={index}
-              className="flex flex-col w-full h-fit gap-5 items-start justify-start"
-            >
-              <h2 className="text-[25px] font-semibold font-bricola ">
-                {category}
-              </h2>
-              <div className="flex h-fit w-full overflow-x-auto overflow-visible lg:overflow-visible scrollHidden justify-start gap-4 items-center pb-4">
-                {getPreviewData(category).map((item) => (
-                  <DatasetCard key={item.id} Data={item} />
-                ))}
-              </div>
-            </div>
-          ))}
+         <CardsWithCategory categories={categories} Data={DatasetData} />
 
           <div className="flex flex-col gap-5 items-center justify-center w-full pt-10">
             <h1 className="sm:font-semibold text-lg sm:text-3xl md:text-[31px] lg:text-[42px] xl:text-5xl text-center font-bricola ">
