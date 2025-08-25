@@ -9,6 +9,8 @@ body{
 }
 *{
   transition: color 0.5s ease, background-color 0.5s ease;
+  scrollbar-width:thin;
+  scrollbar-color:#006eff #acacac00;
 }
 
 .Btn{
@@ -33,8 +35,8 @@ body{
 }
 
 .scrollHidden{
-  -ms-overflow-style: none;  
-  scrollbar-width: none; 
+  
+  
 }
 .scrollHidden::-webkit-scrollbar {
   display: none;

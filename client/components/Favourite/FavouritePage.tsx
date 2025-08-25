@@ -19,7 +19,7 @@ const breadcrumbItems = [
     <>
       <div className=' px-3 md:px-5 mb-5 lg:px-10 xl:px-16 2xl:px-20'>  
         <Breadcrumb items={breadcrumbItems} />
-        <div className='flex lg:flex-col pb-10 md:flex-row mt-4 flex-wrap gap-5 items-center justify-center w-full '>
+        <div className='flex lg:flex-col pb-10 md:flex-row mt-4 flex-wrap gap-5 max-h-screen overflow-y-auto lg:flex-nowrap items-center justify-center w-full '>
             {
                 DatasetData.map((data,index)=>(
                        <React.Fragment key={index}>

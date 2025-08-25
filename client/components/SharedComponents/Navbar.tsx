@@ -21,7 +21,7 @@ import WalletGradient from '@/components/assets/Wallet.svg'
 
 const navLinks = [
   { label: "About Us", href: "/about" },
-  { label: "Upload Dataset", href: "/contact" },
+  { label: "Upload Dataset", href: "/upload" },
   { label: "Catalogue", href: "/catalogue" },
   { label: "Orders", href: "/orders" },
 ];

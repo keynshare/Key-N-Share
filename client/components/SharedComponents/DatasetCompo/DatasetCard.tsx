@@ -52,7 +52,7 @@ export default function DatasetCard({Data}:DatasetCardProps) {
           src={Data.Image}
           alt="Spotify Dataset Preview"
           
-          className="object-cover"
+          className="object-cover w-full h-full"
         />
       </div>
 
