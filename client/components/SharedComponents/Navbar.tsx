@@ -239,13 +239,13 @@ function Navbar() {
                   
                 </PrimaryBtn>
 
-                <button className="p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white rounded-full">
+                <Link title="Cart" href='/cart' className="p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white rounded-full">
                   <ShoppingCart size={22} />
-                </button>
-                <button className="p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white rounded-full">
+                </Link>
+                <Link title="Favorite Datasets" href='/favourite-datasets' className="p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white rounded-full">
                   <LucideFileHeart size={22} />
-                </button>
-                <button className="p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white rounded-full">
+                </Link>
+                <button title="Notifications" className="p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white rounded-full">
                   <Bell size={22} />
                 </button>
                 <Link href="#" className="  text-white rounded-full">

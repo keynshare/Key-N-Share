@@ -92,7 +92,7 @@ export default function DatasetCard({Data}:DatasetCardProps) {
           <button title='Actions' className='relative p-1 hover:bg-gray-200 dark:hover:bg-[#252525] rounded-full' onClick={(e) => { e.stopPropagation(); e.preventDefault(); setIsHovered(!isHovered);}} onBlur={() => {setIsHovered(false);}}>
           <EllipsisVertical size={18}/>
            {isHovered && 
-           <div className='absolute -top-6 lg:top-6 right-4 lg:right-0 z-10'>
+           <div className='absolute -top-6  right-4  z-10'>
             <CTAs/>
             </div>
             }

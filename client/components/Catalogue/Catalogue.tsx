@@ -50,7 +50,7 @@ function Catalogue() {
               className="h-full "
               sparkelClass="hidden"
             >
-              <Search size={20} className="text-gray-500" />
+              <Search size={20}  />
             </PrimaryBtn>
           </div>
 
