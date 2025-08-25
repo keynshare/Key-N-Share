@@ -5,17 +5,21 @@ import SecondaryBtn from '../Btns/SecondaryBtn'
 import { CircleMinus,Star } from 'lucide-react'
 
 
-type CheckOutDatasetCard = {
+
+
+type Data={
     id?:number,
- Image?: string;
-  Title?: string;
-  Description?: string;
-  Type?: string;
-  Price?: number | string;
-  Tags?: string[];
+    Image?: string;
+    Title?: string;
+    Description?: string;
+    Type?: string;
+    Price?: number | string;
+    Tags?: string[];
 }
 
-
+type CheckOutDatasetCard = {
+   Data:Data
+}
 function CheckOutDatasetCard({Data}:CheckOutDatasetCard) {
   return (
    <>

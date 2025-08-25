@@ -2,18 +2,18 @@ import React from 'react'
 import DatasetCard from '../SharedComponents/DatasetCompo/DatasetCard'
 
 type Data = {
-    id?:number,
- Image?: string;
-  Title?: string;
-  Description?: string;
-  Type?: string;
-  Price?: number | string;
-  Tags?: string[];
+    id:number,
+ Image: string;
+  Title: string;
+  Description: string;
+  Type: string;
+  Price: number | string;
+  Tags: string[];
 }
 
 type CardsWithCategoryProp={
     categories:string[],
-    Data:Data
+    Data:Data[]
 }
 
 
