@@ -38,13 +38,13 @@ export default function ProfileStatistics() {
           <div>
             <h2 className="text-xl font-semibold font-bricola">Bio</h2>
             <p className=" text-gray-700 dark:text-gray-300 mt-2 leading-relaxed line-clamp-6 ">
-              Hi, I'm Mohammad Khomeni.  
-              I'm a Data Scientist with over six years of hands-on experience in machine learning, deep learning, and delivering real-world computer vision projects.  
-              I'm driven by curiosity, exploration, and insights, and I aim to learn from the amazing work of others in the Kaggle community.  
+              Hi, I&apos;m Mohammad Khomeni.  
+              I&apos;m a Data Scientist with over six years of hands-on experience in machine learning, deep learning, and delivering real-world computer vision projects.  
+              I&apos;m driven by curiosity, exploration, and insights, and I aim to learn from the amazing work of others in the Kaggle community.  
               My biggest motivation is to connect with people who share the same passion for AI.  
-              I'm especially passionate about working with and processing data, from preprocessing and modeling to deployment and evaluation.  
-              Whether it’s medical imaging, automation, or applied AI in business, I enjoy turning complex challenges into clean, responsible, and scalable solutions.  
-              Feel free to follow me — let’s grow together and learn from each other’s experiences.
+              I&apos;m especially passionate about working with and processing data, from preprocessing and modeling to deployment and evaluation.  
+              Whether it&apos;s medical imaging, automation, or applied AI in business, I enjoy turning complex challenges into clean, responsible, and scalable solutions.  
+              Feel free to follow me — let&apos;s grow together and learn from each other&apos;s experiences.
             </p>
           </div>
 

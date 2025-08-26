@@ -1,6 +1,6 @@
 
 "use client";
-import React from "react";
+import React,{useState} from "react";
 import Image from "next/image";
 import PrimaryBtn from "../SharedComponents/Btns/PrimaryBtn";
 import SecondaryBtn from "../SharedComponents/Btns/SecondaryBtn";
@@ -9,6 +9,8 @@ import { useConnect, useAccount, useBalance, useDisconnect } from 'wagmi'
 import { polygonAmoy } from 'wagmi/chains'
 import { Wallet } from "lucide-react";
 import WalletGradient from '@/components/assets/Wallet.svg'
+import { useRouter } from "next/navigation";
+
 type LoginProp={
    isLoginMode?:boolean,
    toggleMode?:()=>void,
@@ -27,11 +29,12 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
 //take the first connector which has injected
   const connector = connectors[0];
 
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [rememberMe, setRememberMe] = React.useState(false);
-  const [submitting, setSubmitting] = React.useState(false);
-  const router = require('next/navigation').useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  
+  const router = useRouter();
 
   async function handleLogin() {
     if (!email || !password) return;
