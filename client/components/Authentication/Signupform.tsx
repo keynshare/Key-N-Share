@@ -1,4 +1,5 @@
-import React from 'react'
+"use client";
+import React,{useState} from 'react'
 import PrimaryBtn from "../SharedComponents/Btns/PrimaryBtn";
 import SecondaryBtn from "../SharedComponents/Btns/SecondaryBtn";
 import Image from 'next/image';
@@ -6,7 +7,8 @@ import Google from "../assets/Google.svg";
 import { useConnect, useAccount, useBalance, useDisconnect } from 'wagmi'
 import { polygonAmoy } from 'wagmi/chains'
 import { Wallet } from "lucide-react";
-import WalletGradient from '@/components/assets/Wallet.svg'
+import WalletGradient from '@/components/assets/Wallet.svg';
+import {useRouter} from 'next/navigation';
 
 type SignupProp={
    isLoginMode?:boolean,
@@ -25,14 +27,15 @@ function Signupform({isLoginMode,toggleMode}:SignupProp) {
 //take the first connector
   const connector = connectors[0];
 
-  const [firstName, setFirstName] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [confirmPassword, setConfirmPassword] = React.useState("");
-  const [termsAccepted, setTermsAccepted] = React.useState(false);
-  const [rememberMe, setRememberMe] = React.useState(false);
-  const [submitting, setSubmitting] = React.useState(false);
-  const router = require('next/navigation').useRouter();
+  const [firstName, setFirstName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
+  const router = useRouter();
 
   async function handleRegister() {
     if (!firstName || !email || !password || password !== confirmPassword) {
