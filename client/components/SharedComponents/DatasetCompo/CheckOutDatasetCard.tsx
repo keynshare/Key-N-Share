@@ -24,9 +24,9 @@ function CheckOutDatasetCard({Data}:CheckOutDatasetCard) {
   return (
    <>
    
-    <div className='flex flex-col max-w-[340px]  lg:max-w-max 2xl:max-w-[1400px] lg:flex-row gap-2 items-center justify-center p-3 shadow-[1px_1px_17px_0_rgba(0,0,0,0.10)] bg-white dark:bg-[#131313] rounded-lg '>
+    <div className='flex flex-col max-w-[300px]  lg:max-w-max 2xl:max-w-[1400px] lg:flex-row gap-2 items-center justify-center p-3 shadow-[1px_1px_17px_0_rgba(0,0,0,0.10)] bg-white dark:bg-[#131313] rounded-lg '>
 
-        <img src={Data?.Image} alt="checkout" className='object-cover border border-gray-100 dark:border-gray-600 rounded-md min-w-[300px] aspect-video' width={200} height={200} />
+        <img src={Data?.Image} alt="checkout" className='object-cover border border-gray-100 dark:border-gray-600 rounded-md w-full lg:min-w-[300px] lg:max-w-[300px] aspect-video' width={200} height={200} />
 
         <div className="">
       <h1 className=" md:text-lg font-bold font-bricola line-clamp-1">
@@ -52,7 +52,7 @@ function CheckOutDatasetCard({Data}:CheckOutDatasetCard) {
             <Matic size={32} /> 
             <h6 className="text-[42px]  ">{Data?.Price} </h6>
             </span>
-        <div className='flex lg:w-fit w-full gap-2 justify-center'>
+        <div className='flex flex-col lg:flex-row lg:w-fit w-full gap-2 justify-center'>
             <SecondaryBtn className='bg-red-600 dark:bg-red-600 hover:bg-[#fd5959] dark:hover:bg-[#fd5959] hover:text-white'> <CircleMinus size={20} /> Remove</SecondaryBtn>
             <SecondaryBtn>Send Request</SecondaryBtn>
             </div>
