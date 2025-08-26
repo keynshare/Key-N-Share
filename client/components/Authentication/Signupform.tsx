@@ -25,6 +25,37 @@ function Signupform({isLoginMode,toggleMode}:SignupProp) {
 //take the first connector
   const connector = connectors[0];
 
+  const [firstName, setFirstName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [confirmPassword, setConfirmPassword] = React.useState("");
+  const [submitting, setSubmitting] = React.useState(false);
+  const router = require('next/navigation').useRouter();
+
+  async function handleRegister() {
+    if (!firstName || !email || !password || password !== confirmPassword) {
+      alert('Please fill all fields and ensure passwords match');
+      return;
+    }
+    try {
+      setSubmitting(true);
+      const res = await fetch(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ firstName, email, password })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.message || 'Registration failed');
+      if (data?.token) localStorage.setItem('kns_token', data.token);
+      router.push('/dashboard');
+    } catch (err) {
+      console.error(err);
+      alert((err as Error).message);
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
   return (
    <>
    
@@ -48,21 +79,29 @@ function Signupform({isLoginMode,toggleMode}:SignupProp) {
                 className="w-full bg-gray-200/55 p-3 dark:bg-[#141414] rounded-md"
                 type="text"
                 placeholder="Enter First Name"
+                value={firstName}
+                onChange={(e)=>setFirstName(e.target.value)}
               />
               <input
                 className="w-full bg-gray-200/55 dark:bg-[#141414] p-3 rounded-md"
                 type="email"
                 placeholder="Enter Email"
+                value={email}
+                onChange={(e)=>setEmail(e.target.value)}
               />
               <input
                 className="w-full bg-gray-200/55 dark:bg-[#141414] p-3 rounded-md"
                 type="password"
                 placeholder="Enter Password"
+                value={password}
+                onChange={(e)=>setPassword(e.target.value)}
               />
               <input
                 className="w-full bg-gray-200/55 dark:bg-[#141414] p-3 rounded-md"
                 type="password"
                 placeholder="Enter Confirm Password"
+                value={confirmPassword}
+                onChange={(e)=>setConfirmPassword(e.target.value)}
               />
 
                <label className="relative flex-1 items-center justify-start w-full py-4 pl-1 gap-2 max-h-3 flex" >
@@ -85,7 +124,7 @@ function Signupform({isLoginMode,toggleMode}:SignupProp) {
           </label>
 
               <div className="flex flex-col lg:flex-row gap-3 w-full items-center justify-center">
-                <SecondaryBtn Href='/dashboard' className="w-full">Create Account</SecondaryBtn>
+                <SecondaryBtn onClick={handleRegister} className="w-full">{submitting ? 'Creating Account...' : 'Create Account'}</SecondaryBtn>
                 <SecondaryBtn className="w-full bg-slate-200 dark:bg-[#1f1f1f] dark:hover:bg-[#333333] dark:!text-white !text-black hover:bg-slate-300/95">
                   <Image src={Google} className="w-5" alt="google logo" />
                   Continue with Google

@@ -1,5 +1,6 @@
 
 "use client";
+import React from "react";
 import Image from "next/image";
 import PrimaryBtn from "../SharedComponents/Btns/PrimaryBtn";
 import SecondaryBtn from "../SharedComponents/Btns/SecondaryBtn";
@@ -14,7 +15,6 @@ type LoginProp={
 }
 
 function LoginForm({isLoginMode,toggleMode}:LoginProp) {
-
   const { connectors, connect, isPending } = useConnect();
   const { address, isConnected } = useAccount();
   const { disconnect } = useDisconnect();
@@ -22,6 +22,33 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
     address,
     chainId: polygonAmoy.id,
   });
+
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [submitting, setSubmitting] = React.useState(false);
+  const router = require('next/navigation').useRouter();
+
+  async function handleLogin() {
+    if (!email || !password) return;
+    try {
+      setSubmitting(true);
+      const res = await fetch(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.message || 'Login failed');
+      // Store token for subsequent requests if needed
+      if (data?.token) localStorage.setItem('kns_token', data.token);
+      router.push('/dashboard');
+    } catch (err) {
+      console.error(err);
+      alert((err as Error).message);
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
 //take the first connector which has injected
   const connector = connectors[0];
@@ -49,11 +76,15 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
                 className="w-full bg-gray-200/55 dark:bg-[#141414] p-3 rounded-md"
                 type="email"
                 placeholder="Enter Email"
+                value={email}
+                onChange={(e)=>setEmail(e.target.value)}
               />
               <input
                 className="w-full bg-gray-200/55 dark:bg-[#141414] p-3 rounded-md"
                 type="password"
                 placeholder="Enter Password"
+                value={password}
+                onChange={(e)=>setPassword(e.target.value)}
               />
 
               <div className="flex w-full items-center justify-between">
@@ -70,7 +101,7 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
               </div>
 
               <div className="flex flex-col lg:flex-row gap-3 w-full items-center justify-center">
-                <SecondaryBtn Href="/dashboard" className="w-full">Login</SecondaryBtn>
+                <SecondaryBtn onClick={handleLogin} className="w-full">{submitting ? 'Logging in...' : 'Login'}</SecondaryBtn>
                 <SecondaryBtn className="w-full bg-slate-200 dark:bg-[#1f1f1f] dark:hover:bg-[#333333] dark:!text-white !text-black hover:bg-slate-300/95">
                   <Image src={Google} className="w-5" alt="google logo" />
                   Continue with Google
