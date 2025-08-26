@@ -1,13 +1,11 @@
-const express = require('express');
-const app = express();
-const {PORT} = require("./constants");
+require('dotenv').config();
+const http = require('http');
+const app = require('./src/app');
 
-app.use(express.json());
+const PORT = process.env.PORT || 4000;
 
-app.get('/', (req, res) => {
-  res.send('Server is running: Key-N-Share');
-});
+const server = http.createServer(app);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Key-N-Share: Server running on port ${PORT}`);
 });

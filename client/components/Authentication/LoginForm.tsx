@@ -1,5 +1,6 @@
 
 "use client";
+import React from "react";
 import Image from "next/image";
 import PrimaryBtn from "../SharedComponents/Btns/PrimaryBtn";
 import SecondaryBtn from "../SharedComponents/Btns/SecondaryBtn";
@@ -26,6 +27,34 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
 //take the first connector which has injected
   const connector = connectors[0];
 
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [rememberMe, setRememberMe] = React.useState(false);
+  const [submitting, setSubmitting] = React.useState(false);
+  const router = require('next/navigation').useRouter();
+
+  async function handleLogin() {
+    if (!email || !password) return;
+    try {
+      setSubmitting(true);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}auth/login` || 'http://localhost:4000/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, rememberMe })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.message || 'Login failed');
+      // Store token for subsequent requests if needed
+      if (data?.token) localStorage.setItem('kns_token', data.token);
+      router.push('/dashboard');
+    } catch (err) {
+      console.error(err);
+      alert((err as Error).message);
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
   return (
    <>
    
@@ -49,11 +78,15 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
                 className="w-full bg-gray-200/55 dark:bg-[#141414] p-3 rounded-md"
                 type="email"
                 placeholder="Enter Email"
+                value={email}
+                onChange={(e)=>setEmail(e.target.value)}
               />
               <input
                 className="w-full bg-gray-200/55 dark:bg-[#141414] p-3 rounded-md"
                 type="password"
                 placeholder="Enter Password"
+                value={password}
+                onChange={(e)=>setPassword(e.target.value)}
               />
 
               <div className="flex w-full items-center justify-between">
@@ -61,8 +94,10 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
                   <input
                     className="accent-orange-600 rounded-sm"
                     type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
                   />
-                  Remember me
+                  Remember me for 1 month
                 </label>
                 <button className="text-[#FF7A00] underline underline-offset-2 hover:text-[#ff8c1a] transition-colors">
                   Forgot Password?
@@ -70,7 +105,7 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
               </div>
 
               <div className="flex flex-col lg:flex-row gap-3 w-full items-center justify-center">
-                <SecondaryBtn Href="/dashboard" className="w-full">Login</SecondaryBtn>
+                <SecondaryBtn onClick={handleLogin} className="w-full">{submitting ? 'Logging in...' : 'Login'}</SecondaryBtn>
                 <SecondaryBtn className="w-full bg-slate-200 dark:bg-[#1f1f1f] dark:hover:bg-[#333333] dark:!text-white !text-black hover:bg-slate-300/95">
                   <Image src={Google} className="w-5" alt="google logo" />
                   Continue with Google
@@ -84,7 +119,7 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
               </span>
 
               <div className="flex flex-col lg:flex-row gap-3 w-full items-center justify-center">
-              
+             
             <PrimaryBtn
               onClick={() => connector && connect({ connector })}
               disabled={isPending}
@@ -94,7 +129,7 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
             >
              {!isConnected ? <Wallet size={22}/> : <Image src={WalletGradient} width={24} alt="wallet svg" />} {isConnected ? balance?.formatted : "Connect Wallet"}  
             </PrimaryBtn>
-         
+        
            <SecondaryBtn
                 onClick={() => disconnect()}
                 className="w-full bg-gray-200 !text-black dark:!text-white dark:hover:!text-black dark:hover:bg-gray-400 hover:!text-white hover:bg-[#c2c2c2] dark:bg-[#3f3f3f]"
