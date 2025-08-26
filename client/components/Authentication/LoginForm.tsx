@@ -15,6 +15,7 @@ type LoginProp={
 }
 
 function LoginForm({isLoginMode,toggleMode}:LoginProp) {
+
   const { connectors, connect, isPending } = useConnect();
   const { address, isConnected } = useAccount();
   const { disconnect } = useDisconnect();
@@ -23,8 +24,12 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
     chainId: polygonAmoy.id,
   });
 
+//take the first connector which has injected
+  const connector = connectors[0];
+
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [rememberMe, setRememberMe] = React.useState(false);
   const [submitting, setSubmitting] = React.useState(false);
   const router = require('next/navigation').useRouter();
 
@@ -32,10 +37,10 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
     if (!email || !password) return;
     try {
       setSubmitting(true);
-      const res = await fetch(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/auth/login', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}auth/login` || 'http://localhost:4000/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password, rememberMe })
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data?.message || 'Login failed');
@@ -49,9 +54,6 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
       setSubmitting(false);
     }
   }
-
-//take the first connector which has injected
-  const connector = connectors[0];
 
   return (
    <>
@@ -92,8 +94,10 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
                   <input
                     className="accent-orange-600 rounded-sm"
                     type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
                   />
-                  Remember me
+                  Remember me for 1 month
                 </label>
                 <button className="text-[#FF7A00] underline underline-offset-2 hover:text-[#ff8c1a] transition-colors">
                   Forgot Password?
@@ -115,7 +119,7 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
               </span>
 
               <div className="flex flex-col lg:flex-row gap-3 w-full items-center justify-center">
-              
+             
             <PrimaryBtn
               onClick={() => connector && connect({ connector })}
               disabled={isPending}
@@ -125,7 +129,7 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
             >
              {!isConnected ? <Wallet size={22}/> : <Image src={WalletGradient} width={24} alt="wallet svg" />} {isConnected ? balance?.formatted : "Connect Wallet"}  
             </PrimaryBtn>
-         
+        
            <SecondaryBtn
                 onClick={() => disconnect()}
                 className="w-full bg-gray-200 !text-black dark:!text-white dark:hover:!text-black dark:hover:bg-gray-400 hover:!text-white hover:bg-[#c2c2c2] dark:bg-[#3f3f3f]"
