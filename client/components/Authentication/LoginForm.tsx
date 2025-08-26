@@ -93,7 +93,7 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
               />
 
               <div className="flex w-full items-center justify-between">
-                <label className="flex items-center gap-2 lg:text-lg">
+                <label className="flex items-center gap-2 ">
                   <input
                     className="accent-orange-600 rounded-sm"
                     type="checkbox"

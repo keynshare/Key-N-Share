@@ -83,7 +83,7 @@ function Navbar() {
         opacity: 1,
       });
     }
-  }, [tabStyle]);
+  }, []);
 
   useEffect(() => {
     const currentIndex = navLinks.findIndex((link) => link.href === pathname);
