@@ -40,8 +40,9 @@ export default function RootLayout({
       <body className={clsx(bricolage.variable ,karla.className ,  cinzel_decorative.variable, 'bg-white dark:bg-[#000000] text-black dark:text-white transition-colors duration-300')}>
         <ThemeProvider>
           <Providers>
-          <NavbarWrapper />
+          <NavbarWrapper>
           {children}
+          </NavbarWrapper>
           </Providers>
         </ThemeProvider>
       </body>

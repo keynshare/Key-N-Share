@@ -1,10 +1,10 @@
 import React from 'react'
-import Dashboard from "@/components/Dashboard/Dashboard"
+import FavouritePage from '@/components/Favourite/FavouritePage'
 function page() {
   return (
     <>
-      <Dashboard />
-      
+      <FavouritePage/>
+
     </>
   )
 }

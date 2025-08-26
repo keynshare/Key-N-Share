@@ -65,7 +65,7 @@ const Footer = () => {
         <div className="flex flex-col xl:flex-row justify-between gap-10 lg:gap-14">
           {/* Logo Section */}
           <div className="flex-shrink-0">
-          <div className={`text-[29px] flex items-center gap-4 font-bold transform transition-all duration-1000 ease-out ${
+          <div className={`text-[29px] flex h-fit items-center gap-4 font-bold transform transition-all duration-1000 ease-out ${
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
           }`}>
             <Image
@@ -75,7 +75,7 @@ const Footer = () => {
               className="w-[30px] xl:w-[43.38px] "
             />
             <p
-              className='font-cinzel transition-all text-2xl xl:text-[29px] duration-500 ease-in-out overflow-hidden whitespace-nowrap'
+              className='font-cinzel transition-all text-2xl xl:text-[29px] leading-relaxed duration-500 ease-in-out overflow-hidden whitespace-nowrap'
             >
               Key N Share
             </p>
@@ -90,11 +90,12 @@ const Footer = () => {
             }`} style={{ transitionDelay: '200ms' }}>
               <h3 className="font-bold text-lg xl:text-xl mb-2 font-bricola">Pages</h3>
               <ul className="space-y-1 text-lg">
+                <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/dashboard">Dashboard</Link></li>
                 <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/about">About Us</Link></li>
                 <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/orders">Previous Orders</Link></li>
                 <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/datasets">Your Datasets</Link></li>
                 <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/upload">Upload Datasets</Link></li>
-                <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/favourites">Favourites</Link></li>
+                <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/favourite-datasets">Favourites</Link></li>
                 <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/cart">Cart</Link></li>
               </ul>
             </div>
@@ -131,7 +132,7 @@ const Footer = () => {
               <h3 className="font-bold mb-2 text-lg xl:text-xl whitespace-nowrap font-bricola">Subscribe to our newsletter</h3>
               <p className=" mb-3 text-base md:w-[120%] 2xl:w-[110%] 3xl:w-auto">Lorem Ipsum is simply dummy text of the printing and industry.</p>
               <form className="flex flex-col gap-2">
-             <input className="w-full bg-gray-200/55 p-2 py-[10px] dark:bg-[#141414] rounded-md " type="text" placeholder="Enter First Name" />
+             <input className="w-full bg-gray-200/55 p-2 py-[10px]  dark:bg-[#141414] rounded-md " type="text" placeholder="Enter First Name" />
 
                 <SecondaryBtn
                  className='w-fit !py-2'

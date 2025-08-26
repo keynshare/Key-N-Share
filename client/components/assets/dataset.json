@@ -1,0 +1,165 @@
+[
+  {
+    "id":1,
+    "Title": "Steel Plate Fault",
+    "Description": "This dataset contains information about steel plate faults. It includes 33 numeric attributes that describe various features of steel plates, and a 'Class' attribute that indicates the type of fault.",
+    "Price": "15",
+    "Tags": [
+      "Manufacturing",
+      "Quality Control",
+      "Defect Detection",
+      "Steel Industry"
+    ],
+    "Type": "ARFF",
+    "Image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1zQSSyICzdA84-J8rjZOG2V9LolAhS67rYg&s"
+  },
+  {"id":2,
+    "Title": "Tic-Tac-Toe Endgame",
+    "Description": "This is a database of all possible endgame configurations for Tic-Tac-Toe. It's useful for developing and testing artificial intelligence and machine learning algorithms for game playing.",
+    "Price": "5",
+    "Tags": [
+      "Artificial Intelligence",
+      "Machine Learning",
+      "Game Theory",
+      "Board Games"
+    ],
+    "Type": "ARFF",
+    "Image": "https://static.vecteezy.com/system/resources/previews/006/409/900/non_2x/tic-tac-toe-sketched-isolated-vintage-game-in-hand-drawn-style-vector.jpg"
+  },
+  {"id":3,
+    "Title": "Iris Flower Dataset",
+    "Description": "A classic dataset in the field of machine learning and statistics. It contains measurements of sepal and petal length and width for three species of Iris flowers.",
+    "Price": "10 ",
+    "Tags": [
+      "Biology",
+      "Botany",
+      "Classification",
+      "Machine Learning"
+    ],
+    "Type": "CSV",
+    "Image": "https://static.vecteezy.com/system/resources/previews/049/573/737/non_2x/nature-of-white-flower-on-blurred-background-close-up-of-nature-view-flora-and-leaf-copy-space-using-plants-landscape-ecology-wallpaper-or-cover-concept-free-photo.jpg"
+  },
+  {
+    "id":4,
+    "Title": "High Popularity Spotify Data",
+    "Description": "This dataset provides a comprehensive look at popular songs on Spotify. It includes various audio features like energy, tempo, and danceability, as well as track and artist information.",
+    "Price": "25 ",
+    "Tags": [
+      "Music",
+      "Spotify",
+      "Data Analysis",
+      "Popular Culture"
+    ],
+    "Type": "CSV",
+    "Image": "https://blog.delivermytune.com/wp-content/uploads/2024/11/spotify-image.png"
+  },
+  {
+    "id":5,
+    "Title": "Boston Housing",
+    "Description": "This dataset contains information about housing in the Boston area. It's often used in machine learning for regression tasks to predict housing prices.",
+    "Price": "20 ",
+    "Tags": [
+      "Real Estate",
+      "Housing",
+      "Regression",
+      "Machine Learning"
+    ],
+    "Type": "CSV",
+    "Image": "https://www.wpb.org/files/assets/city/v/2/housing/images/housing-header.jpg?dimension=pageimagefullwidth&w=1140"
+  },
+  {
+    "id":6,
+    "Title": "Valid Traded Symbols",
+    "Description": "This dataset contains a list of valid traded symbols on the Nasdaq stock exchange. It includes information such as the security name, listing exchange, and ETF status.",
+    "Price": "30 ",
+    "Tags": [
+      "Finance",
+      "Stock Market",
+      "Trading",
+      "Investment"
+    ],
+    "Type": "CSV",
+    "Image": "https://eu-images.contentstack.com/v3/assets/bltaec35894448c7261/bltd08bdc6d52ca40b6/6748b729256a2c5f35fd1cd4/Trend_Trading_Strategies.jpg"
+  },
+  {
+    "id":7,
+    "Title": "Spotify Dataset",
+    "Description": "A comprehensive dataset of songs from Spotify, including track ID, artist, album name, track name, popularity, and various audio features. This dataset is great for music analysis and recommendation systems.",
+    "Price": "25 ",
+    "Tags": [
+      "Music",
+      "Spotify",
+      "Data Analysis",
+      "Recommendation Systems"
+    ],
+    "Type": "CSV",
+    "Image": "https://blog.delivermytune.com/wp-content/uploads/2024/11/spotify-image.png"
+  },
+  {
+    "id":1,
+    "Title": "Steel Plate Fault",
+    "Description": "This dataset contains information about steel plate faults. It includes 33 numeric attributes that describe various features of steel plates, and a 'Class' attribute that indicates the type of fault.",
+    "Price": "15 ",
+    "Tags": [
+      "Manufacturing",
+      "Quality Control",
+      "Defect Detection",
+      "Steel Industry"
+    ],
+    "Type": "ARFF",
+    "Image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1zQSSyICzdA84-J8rjZOG2V9LolAhS67rYg&s"
+  },
+  {"id":2,
+    "Title": "Tic-Tac-Toe Endgame",
+    "Description": "This is a database of all possible endgame configurations for Tic-Tac-Toe. It's useful for developing and testing artificial intelligence and machine learning algorithms for game playing.",
+    "Price": "5 ",
+    "Tags": [
+      "Artificial Intelligence",
+      "Machine Learning",
+      "Game Theory",
+      "Board Games"
+    ],
+    "Type": "ARFF",
+    "Image": "https://static.vecteezy.com/system/resources/previews/006/409/900/non_2x/tic-tac-toe-sketched-isolated-vintage-game-in-hand-drawn-style-vector.jpg"
+  },
+  {"id":3,
+    "Title": "Iris Flower Dataset",
+    "Description": "A classic dataset in the field of machine learning and statistics. It contains measurements of sepal and petal length and width for three species of Iris flowers.",
+    "Price": "10 ",
+    "Tags": [
+      "Biology",
+      "Botany",
+      "Classification",
+      "Machine Learning"
+    ],
+    "Type": "CSV",
+    "Image": "https://static.vecteezy.com/system/resources/previews/049/573/737/non_2x/nature-of-white-flower-on-blurred-background-close-up-of-nature-view-flora-and-leaf-copy-space-using-plants-landscape-ecology-wallpaper-or-cover-concept-free-photo.jpg"
+  },
+  {
+    "id":4,
+    "Title": "High Popularity Spotify Data",
+    "Description": "This dataset provides a comprehensive look at popular songs on Spotify. It includes various audio features like energy, tempo, and danceability, as well as track and artist information.",
+    "Price": "25 ",
+    "Tags": [
+      "Music",
+      "Spotify",
+      "Data Analysis",
+      "Popular Culture"
+    ],
+    "Type": "CSV",
+    "Image": "https://blog.delivermytune.com/wp-content/uploads/2024/11/spotify-image.png"
+  },  {
+    "id":5,
+    "Title": "Boston Housing",
+    "Description": "This dataset contains information about housing in the Boston area. It's often used in machine learning for regression tasks to predict housing prices.",
+    "Price": "20 ",
+    "Tags": [
+      "Real Estate",
+      "Housing",
+      "Regression",
+      "Machine Learning"
+    ],
+    "Type": "CSV",
+    "Image": "https://www.wpb.org/files/assets/city/v/2/housing/images/housing-header.jpg?dimension=pageimagefullwidth&w=1140"
+  }
+]

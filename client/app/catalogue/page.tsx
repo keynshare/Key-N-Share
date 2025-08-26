@@ -1,10 +1,9 @@
 import React from 'react'
-import Dashboard from "@/components/Dashboard/Dashboard"
+import Catalogue from "@/components/Catalogue/Catalogue"
 function page() {
   return (
     <>
-      <Dashboard />
-      
+        <Catalogue/>
     </>
   )
 }
