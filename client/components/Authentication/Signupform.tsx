@@ -142,7 +142,7 @@ function Signupform({isLoginMode,toggleMode}:SignupProp) {
             </span>
           </label>
 
-          <label className="flex items-center gap-2 lg:text-lg">
+          {/* <label className="flex items-center gap-2 lg:text-lg">
             <input
               className="accent-orange-600 rounded-sm"
               type="checkbox"
@@ -150,7 +150,7 @@ function Signupform({isLoginMode,toggleMode}:SignupProp) {
               onChange={(e) => setRememberMe(e.target.checked)}
             />
             Remember me for 1 month
-          </label>
+          </label> */}
 
               <div className="flex flex-col lg:flex-row gap-3 w-full items-center justify-center">
                 <SecondaryBtn onClick={handleRegister} className="w-full">{submitting ? 'Creating Account...' : 'Create Account'}</SecondaryBtn>
