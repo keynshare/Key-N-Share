@@ -15,8 +15,7 @@ import { SunMediumIcon, MoonStar, Menu, X } from "lucide-react";
 import { useTheme } from "@/lib/theme-context";
 import { Wallet, ShoppingCart, LucideFileHeart, Bell } from "lucide-react";
 import User from "@/components/assets/User.svg";
-import { useConnect, useAccount, useBalance, useDisconnect } from "wagmi";
-import { polygonAmoy } from "wagmi/chains";
+import {walletConnection} from "@/lib/Authentication/walletConnection";
 import WalletGradient from '@/components/assets/Wallet.svg'
 import { useLoginMode } from "@/lib/LoginModeContext";
 import { useRouter } from "next/navigation";
@@ -29,16 +28,8 @@ const navLinks = [
 ];
 
 function Navbar() {
-  const { connectors, connect, isPending } = useConnect();
-  const { address, isConnected } = useAccount();
-  const { disconnect } = useDisconnect();
-  const { data: balance } = useBalance({
-    address,
-    chainId: polygonAmoy.id,
-  });
 
-  //take the first connector which has injected
-  const connector = connectors[0];
+const { isConnected, balance, isPending, connectWallet, disconnectWallet } = walletConnection();
 
   const { theme, toggleTheme } = useTheme();
   const { toggleLoginMode } = useLoginMode();
@@ -243,7 +234,7 @@ function Navbar() {
             >
               <div className="animate-bounce-slow flex gap-4 items-center justify-center delay-200">
                 <PrimaryBtn
-                  onClick={() => !isConnected ? connector && connect({ connector }) : disconnect()}
+                  onClick={() => !isConnected ? connectWallet() : disconnectWallet()}
                   disabled={isPending}
                   Hovered={isConnected}
                   sparkelClass="hidden"
@@ -375,7 +366,7 @@ function Navbar() {
                 
               </div>
                <PrimaryBtn
-                  onClick={() => !isConnected ? connector && connect({ connector }) : disconnect()}
+                  onClick={() => !isConnected ? connectWallet() : disconnectWallet()}
                   disabled={isPending}
                   Hovered={isConnected}
                   sparkelClass="hidden"
