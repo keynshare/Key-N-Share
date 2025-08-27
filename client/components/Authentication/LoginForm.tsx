@@ -12,10 +12,11 @@ import WalletGradient from '@/components/assets/Wallet.svg'
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useNotifications } from "@/lib/notification-context";
 
 type LoginProp={
    isLoginMode?:boolean,
-   toggleMode?:()=>void,
+   toggleMode?:(value?:boolean)=>void,
 }
 
 function LoginForm({isLoginMode,toggleMode}:LoginProp) {
@@ -37,15 +38,16 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
   const [submitting, setSubmitting] = useState(false);
   
   const router = useRouter();
+  const { notify, reportError } = useNotifications();
 
   async function handleLogin() {
     if (!email || !password) return;
      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      alert("Please enter a valid email address");
+      notify({ type: "warning", message: "Please enter a valid email address" });
       return;
     }
     if(!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(password)){
-      alert("Password must be 8+ chars with letters & numbers");
+      notify({ type: "warning", message: "Password must be 8+ chars with letters & numbers" });
       return;
     }
 
@@ -61,11 +63,13 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
                    Cookies.set("kns_token", res.data.token, { expires: maxAge })
                    Cookies.set("Email", res.data.user.email, { expires: maxAge })
                  }
+
+    notify({ type: "success", message: "Login successful!" });
     router.push("/dashboard");
   
     } catch (err) {
       console.error(err);
-      alert((err as Error).message);
+      reportError((err as Error).message);
     } finally {
       setSubmitting(false);
     }
@@ -83,7 +87,7 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
               <span className="w-full text-center md:text-left">
                 Don&apos;t have an account?{" "}
                 <button 
-                  onClick={toggleMode}
+                  onClick={() => toggleMode && toggleMode(false)}
                   className="text-[#FF7A00] underline underline-offset-2 hover:text-[#ff8c1a] transition-colors"
                 >
                   Sign Up

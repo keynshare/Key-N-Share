@@ -82,7 +82,7 @@ export default function HeroVideoDialog({
       <button
         type="button"
         aria-label="Play video"
-        className="group relative z-[999999999999999] cursor-pointer border-0 bg-transparent p-0"
+        className="group relative z-50 cursor-pointer border-0 bg-transparent p-0"
         onClick={() => setIsVideoOpen(true)}
       >
         <Image
@@ -131,7 +131,7 @@ export default function HeroVideoDialog({
               <motion.button className="absolute -top-16 right-0 rounded-full bg-neutral-900/50 p-2 text-xl text-white ring-1 backdrop-blur-md dark:bg-neutral-100/50 dark:text-black">
                 <XIcon className="size-5" />
               </motion.button>
-              <div className="relative isolate z-[1] size-full overflow-hidden rounded-2xl border-2 border-white">
+              <div className="relative isolate z-[999999999999999999999999] size-full overflow-hidden rounded-2xl border-2 border-white">
                 <iframe
                   src={videoSrc}
                   title="Hero Video player"

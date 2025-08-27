@@ -11,10 +11,11 @@ import WalletGradient from '@/components/assets/Wallet.svg';
 import {useRouter} from 'next/navigation';
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useNotifications } from "@/lib/notification-context";
 
 type SignupProp={
    isLoginMode?:boolean,
-   toggleMode?:()=>void,
+   toggleMode?:(value?:boolean)=>void,
 }
 function Signupform({isLoginMode,toggleMode}:SignupProp) {
 
@@ -38,24 +39,25 @@ function Signupform({isLoginMode,toggleMode}:SignupProp) {
   const [submitting, setSubmitting] = useState(false);
 
   const router = useRouter();
+  const { notify, reportError } = useNotifications();
 
   async function handleRegister() {
    
     if (!firstName || !email || !password || !confirmPassword || !termsAccepted) return;
      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      alert("Please enter a valid email address");
+      notify({ type: "warning", message: "Please enter a valid email address" });
       return;
     }
     if(!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(password)){
-      alert("Password must be 8+ chars with letters & numbers");
+      notify({ type: "warning", message: "Password must be 8+ chars with letters & numbers" });
       return;
     }
     if(password !== confirmPassword){
-      alert("Password and confirm password do not match");
+      notify({ type: "warning", message: "Password and confirm password do not match" });
       return;
     }
     if(!termsAccepted){
-      alert("Please accept the terms and conditions to register");
+      notify({ type: "warning", message: "Please accept the terms and conditions to register" });
       return;
     }
 
@@ -74,10 +76,11 @@ function Signupform({isLoginMode,toggleMode}:SignupProp) {
         Cookies.set("kns_token", res.data.token, { expires: 7 })
         Cookies.set("Email", res.data.user.email, { expires: 7 })
       }
+       notify({ type: "success", message: "Registration successful!" });
       router.push('/dashboard');
     } catch (err) {
       console.error(err);
-      alert((err as Error).message);
+      reportError((err as Error).message);
     } finally {
       setSubmitting(false);
     }
@@ -96,7 +99,7 @@ function Signupform({isLoginMode,toggleMode}:SignupProp) {
               <span className="w-full text-center md:text-left">
                 Already have an account?{" "}
                 <button 
-                  onClick={toggleMode}
+                  onClick={()=>toggleMode && toggleMode(false)}
                   className="text-[#FF7A00] underline underline-offset-2 hover:text-[#ff8c1a] transition-colors"
                 >
                   Login
