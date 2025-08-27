@@ -10,6 +10,8 @@ import { polygonAmoy } from 'wagmi/chains'
 import { Wallet } from "lucide-react";
 import WalletGradient from '@/components/assets/Wallet.svg'
 import { useRouter } from "next/navigation";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 type LoginProp={
    isLoginMode?:boolean,
@@ -38,18 +40,29 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
 
   async function handleLogin() {
     if (!email || !password) return;
-    try {
-      setSubmitting(true);
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}auth/login` || 'http://localhost:4000/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, rememberMe })
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.message || 'Login failed');
-      // Store token for subsequent requests if needed
-      if (data?.token) localStorage.setItem('kns_token', data.token);
-      router.push('/dashboard');
+     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      alert("Please enter a valid email address");
+      return;
+    }
+    if(!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(password)){
+      alert("Password must be 8+ chars with letters & numbers");
+      return;
+    }
+
+     try {
+    setSubmitting(true);
+
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}auth/login` || "http://localhost:4000/api/auth/login",
+      { email, password, rememberMe }
+    );
+        const maxAge = rememberMe ? 30 : 7;
+            if (res.data?.token) { 
+                   Cookies.set("kns_token", res.data.token, { expires: maxAge })
+                   Cookies.set("Email", res.data.user.email, { expires: maxAge })
+                 }
+    router.push("/dashboard");
+  
     } catch (err) {
       console.error(err);
       alert((err as Error).message);
@@ -66,7 +79,7 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
              Hey, Welcome Back Login To Key N Share And Get Started
             </h1>
 
-            <div className="flex flex-col px-2 xl:px-4 w-full items-center justify-center gap-4">
+            <form onSubmit={(e) => { e.preventDefault(); handleLogin(); }} className="flex flex-col px-2 xl:px-4 w-full items-center justify-center gap-4">
               <span className="w-full text-center md:text-left">
                 Don&apos;t have an account?{" "}
                 <button 
@@ -90,6 +103,8 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
                 placeholder="Enter Password"
                 value={password}
                 onChange={(e)=>setPassword(e.target.value)}
+                required
+                minLength={6}
               />
 
               <div className="flex w-full items-center justify-between">
@@ -99,6 +114,7 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
                     type="checkbox"
                     checked={rememberMe}
                     onChange={(e) => setRememberMe(e.target.checked)}
+                    required
                   />
                   Remember me for 1 month
                 </label>
@@ -108,7 +124,7 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
               </div>
 
               <div className="flex flex-col lg:flex-row gap-3 w-full items-center justify-center">
-                <SecondaryBtn onClick={handleLogin} className="w-full">{submitting ? 'Logging in...' : 'Login'}</SecondaryBtn>
+                <SecondaryBtn  className="w-full">{submitting ? 'Logging in...' : 'Login'}</SecondaryBtn>
                 <SecondaryBtn className="w-full bg-slate-200 dark:bg-[#1f1f1f] dark:hover:bg-[#333333] dark:!text-white !text-black hover:bg-slate-300/95">
                   <Image src={Google} className="w-5" alt="google logo" />
                   Continue with Google
@@ -140,7 +156,7 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
                 Disconnect Wallet
               </SecondaryBtn>
               </div>
-            </div>
+            </form>
           </div>
 
    </>
