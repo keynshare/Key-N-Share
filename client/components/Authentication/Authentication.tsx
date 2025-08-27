@@ -8,14 +8,11 @@ import Signupform from "./Signupform";
 import LoginForm from "./LoginForm";
 import Link from "next/link";
 import { useTheme } from "@/lib/theme-context";
+import { useLoginMode } from "@/lib/LoginModeContext";
 
 function Authentication() {
-  const [isLoginMode, setIsLoginMode] = useState(false);
+  const { isLoginMode, toggleLoginMode } = useLoginMode();
   const { theme, toggleTheme } = useTheme();
-
-  const toggleMode = () => {
-    setIsLoginMode(!isLoginMode);
-  };
 
   return (
     <div className="w-full min-h-screen flex items-center justify-center lg:min-h-0 lg:h-screen p-2">
@@ -27,10 +24,10 @@ function Authentication() {
         }`}>
 
          
-         <Signupform isLoginMode={isLoginMode} toggleMode={toggleMode} />
+         <Signupform isLoginMode={isLoginMode} toggleMode={toggleLoginMode} />
           
          
-         <LoginForm isLoginMode={isLoginMode} toggleMode={toggleMode} />
+         <LoginForm isLoginMode={isLoginMode} toggleMode={toggleLoginMode} />
 
         </div>
 

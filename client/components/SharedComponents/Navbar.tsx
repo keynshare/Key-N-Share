@@ -18,6 +18,8 @@ import User from "@/components/assets/User.svg";
 import { useConnect, useAccount, useBalance, useDisconnect } from "wagmi";
 import { polygonAmoy } from "wagmi/chains";
 import WalletGradient from '@/components/assets/Wallet.svg'
+import { useLoginMode } from "@/lib/LoginModeContext";
+import { useRouter } from "next/navigation";
 
 const navLinks = [
   { label: "About Us", href: "/about" },
@@ -39,6 +41,8 @@ function Navbar() {
   const connector = connectors[0];
 
   const { theme, toggleTheme } = useTheme();
+  const { toggleLoginMode } = useLoginMode();
+  const router = useRouter();
 
   const pathname = usePathname();
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -110,6 +114,16 @@ function Navbar() {
     timeoutRef.current = setTimeout(() => {
       moveTabTo(activeIndex);
     }, 100);
+  };
+
+  const handleLoginClick = () => {
+    toggleLoginMode(true); 
+    router.push('/authentication');
+  };
+
+  const handleRegisterClick = () => {
+    toggleLoginMode(false);
+    router.push('/authentication');
   };
 
   return (
@@ -211,10 +225,10 @@ function Navbar() {
               }`}
             >
               <div className="animate-bounce-slow">
-                <SecondaryBtn Href="/authentication">Login</SecondaryBtn>
+                <SecondaryBtn onClick={handleLoginClick}>Login</SecondaryBtn>
               </div>
               <div className="animate-bounce-slow delay-200">
-                <PrimaryBtn Href="/authentication" sparkelClass="max-w-[128%]">
+                <PrimaryBtn onClick={handleRegisterClick} sparkelClass="max-w-[128%]">
                   Register
                 </PrimaryBtn>
               </div>
@@ -313,13 +327,13 @@ function Navbar() {
             </button>
 
             <div className="">
-              <SecondaryBtn Href="/authentication" className={"w-[156px]"}>
+              <SecondaryBtn onClick={handleLoginClick} className={"w-[156px]"}>
                 Login
               </SecondaryBtn>
             </div>
             <div className=" delay-200">
               <PrimaryBtn
-                Href="/authentication"
+                onClick={handleRegisterClick}
                 sparkelClass="sm:!-top-3 -top-[15.5px]  w-[180px] "
                 className={"!w-[156px]"}
               >
@@ -330,7 +344,7 @@ function Navbar() {
             :
             <>
 
-            <div className="flex items-center flex-wrap gap-2">
+            <div className="flex items-center mb-2 flex-wrap gap-2">
             <button
               onClick={toggleTheme}
               className="rounded-full  aspect-square w-8 mr-2 border border-gray-300 dark:border-gray-400 flex items-center justify-center hover:[background:linear-gradient(89deg,rgba(0,0,0,0.01)_11.29%,rgba(0,102,255,0.25)_96.93%)] dark:hover:[background:linear-gradient(89deg,rgba(255,255,255,0.01)_11.29%,rgba(0,102,255,0.25)_96.93%)] "
@@ -351,30 +365,26 @@ function Navbar() {
                 <button className="p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white rounded-full">
                   <Bell size={22} />
                 </button>
-                <Link href="#" className="  text-white rounded-full">
+                <Link href="#" className="  text-white  rounded-full">
                   <Image
                     className="object-cover w-10"
                     src={User}
                     alt="user svg"
                   />
                 </Link>
+                
               </div>
+               <PrimaryBtn
+                  onClick={() => !isConnected ? connector && connect({ connector }) : disconnect()}
+                  disabled={isPending}
+                  Hovered={isConnected}
+                  sparkelClass="hidden"
+                  classsecondInner="px-1"
+                >
+                {!isConnected ? <Wallet size={22}/> : <Image src={WalletGradient} width={24} alt="wallet svg" />} {isConnected ? balance?.formatted : "Connect"}  
+                  
+                </PrimaryBtn>
 
-
-            <div className="">
-              <SecondaryBtn Href="/authentication" className={"w-[156px]"}>
-                Login
-              </SecondaryBtn>
-            </div>
-            <div className=" delay-200">
-              <PrimaryBtn
-                Href="/authentication"
-                sparkelClass="sm:!-top-3 -top-[15.5px]  w-[180px] "
-                className={"!w-[156px]"}
-              >
-                Register
-              </PrimaryBtn>
-            </div>
             </>
             }
             </div>
@@ -384,7 +394,7 @@ function Navbar() {
             <Image
               src={NavImage}
               alt="Nav Visual Key N Share"
-              className={clsx(IsLogout ? "h-[314px] sm:h-[324px]" : "h-[380px] sm:h-[390px]" ,"w-full rounded-lg object-fill")}
+              className={clsx(IsLogout ? "h-[314px] sm:h-[324px]" : "h-[330px] sm:h-[335px]" ,"w-full rounded-lg object-fill")}
               priority
             />
 

@@ -6,7 +6,9 @@ import { WagmiProvider, createConfig, http } from "wagmi";
 import { polygonAmoy } from "wagmi/chains";
 import { injected, metaMask, walletConnect } from "wagmi/connectors";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
+import { NotificationProvider } from "@/lib/notification-context";
+import NotificationCenter from "@/components/SharedComponents/NotificationCenter";
+import {LoginModeProvider} from "@/lib/LoginModeContext";
 
 export const config = createConfig({
   chains: [polygonAmoy],
@@ -28,7 +30,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <ThemeProvider>
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
-          {children}
+          <NotificationProvider>
+            <LoginModeProvider>
+            {children}
+            </LoginModeProvider>
+            <NotificationCenter />
+          </NotificationProvider>
         </QueryClientProvider>
       </WagmiProvider>
     </ThemeProvider>

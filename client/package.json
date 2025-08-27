@@ -9,14 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.85.3",
+    "@tanstack/react-query": "^5.85.5",
     "@tsparticles/preset-stars": "^3.2.0",
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.9.1",
     "@walletconnect/ethereum-provider": "^2.21.8",
+    "axios": "^1.11.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.12",
+    "js-cookie": "^3.0.5",
     "lucide-react": "^0.536.0",
     "motion": "^12.23.12",
     "next": "15.4.3",
@@ -24,22 +26,23 @@
     "react-dom": "19.1.0",
     "recharts": "^3.1.2",
     "tailwind-merge": "^3.3.1",
-    "tailwind-variants": "^3.0.0",
+    "tailwind-variants": "^3.1.0",
     "tailwindcss-animate": "^1.0.7",
-    "tsparticles": "^3.9.0",
-    "viem": "^2.34.0",
-    "wagmi": "^2.16.3"
+    "tsparticles": "^3.9.1",
+    "viem": "^2.36.0",
+    "wagmi": "^2.16.8"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
+    "@eslint/eslintrc": "^3.3.1",
+    "@types/js-cookie": "^3.0.6",
+    "@types/node": "^20.19.11",
+    "@types/react": "^19.1.11",
+    "@types/react-dom": "^19.1.8",
     "autoprefixer": "^10.4.21",
-    "eslint": "^9",
+    "eslint": "^9.34.0",
     "eslint-config-next": "15.4.3",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17",
-    "typescript": "^5"
+    "typescript": "^5.9.2"
   }
 }

@@ -9,10 +9,13 @@ import { polygonAmoy } from 'wagmi/chains'
 import { Wallet } from "lucide-react";
 import WalletGradient from '@/components/assets/Wallet.svg';
 import {useRouter} from 'next/navigation';
+import axios from "axios";
+import Cookies from "js-cookie";
+import { useNotifications } from "@/lib/notification-context";
 
 type SignupProp={
    isLoginMode?:boolean,
-   toggleMode?:()=>void,
+   toggleMode?:(value?:boolean)=>void,
 }
 function Signupform({isLoginMode,toggleMode}:SignupProp) {
 
@@ -32,45 +35,56 @@ function Signupform({isLoginMode,toggleMode}:SignupProp) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [termsAccepted, setTermsAccepted] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
+  // const [rememberMe, setRememberMe] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   const router = useRouter();
+  const { notify, reportError } = useNotifications();
 
   async function handleRegister() {
-    if (!firstName || !email || !password || password !== confirmPassword) {
-      alert('Please fill all fields and ensure passwords match');
+   
+    if (!firstName || !email || !password || !confirmPassword || !termsAccepted) return;
+     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      notify({ type: "warning", message: "Please enter a valid email address" });
       return;
     }
-
-    if (!termsAccepted) {
-      alert('You must accept the terms and conditions to register');
+    if(!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(password)){
+      notify({ type: "warning", message: "Password must be 8+ chars with letters & numbers" });
+      return;
+    }
+    if(password !== confirmPassword){
+      notify({ type: "warning", message: "Password and confirm password do not match" });
+      return;
+    }
+    if(!termsAccepted){
+      notify({ type: "warning", message: "Please accept the terms and conditions to register" });
       return;
     }
 
     try {
       setSubmitting(true);
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}auth/register` || 'http://localhost:4000/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          firstName, 
-          email, 
-          password, 
-          termsAccepted, 
-          rememberMe 
-        })
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}auth/register` || 'http://localhost:4000/api/auth/register', {
+        firstName,
+        email,
+        password,
+        confirmPassword,
+        termsAccepted,
+        remeberMe: false
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.message || 'Registration failed');
-      if (data?.token) localStorage.setItem('kns_token', data.token);
+      
+      if (res.data?.token) { 
+        Cookies.set("kns_token", res.data.token, { expires: 7 })
+        Cookies.set("Email", res.data.user.email, { expires: 7 })
+      }
+       notify({ type: "success", message: "Registration successful!" });
       router.push('/dashboard');
     } catch (err) {
       console.error(err);
-      alert((err as Error).message);
+      reportError((err as Error).message);
     } finally {
       setSubmitting(false);
     }
+   
   }
 
   return (
@@ -81,11 +95,11 @@ function Signupform({isLoginMode,toggleMode}:SignupProp) {
               Create An Account And Get Started With Key N Share
             </h1>
 
-            <div className="flex flex-col px-2 xl:px-4 w-full items-center justify-center gap-4">
+            <form onSubmit={(e) => { e.preventDefault(); handleRegister(); }} className="flex flex-col px-2 xl:px-4 w-full items-center justify-center gap-4">
               <span className="w-full text-center md:text-left">
                 Already have an account?{" "}
                 <button 
-                  onClick={toggleMode}
+                  onClick={()=>toggleMode && toggleMode(false)}
                   className="text-[#FF7A00] underline underline-offset-2 hover:text-[#ff8c1a] transition-colors"
                 >
                   Login
@@ -98,6 +112,7 @@ function Signupform({isLoginMode,toggleMode}:SignupProp) {
                 placeholder="Enter First Name"
                 value={firstName}
                 onChange={(e)=>setFirstName(e.target.value)}
+                required
               />
               <input
                 className="w-full bg-gray-200/55 dark:bg-[#141414] p-3 rounded-md"
@@ -105,6 +120,7 @@ function Signupform({isLoginMode,toggleMode}:SignupProp) {
                 placeholder="Enter Email"
                 value={email}
                 onChange={(e)=>setEmail(e.target.value)}
+                required
               />
               <input
                 className="w-full bg-gray-200/55 dark:bg-[#141414] p-3 rounded-md"
@@ -112,6 +128,7 @@ function Signupform({isLoginMode,toggleMode}:SignupProp) {
                 placeholder="Enter Password"
                 value={password}
                 onChange={(e)=>setPassword(e.target.value)}
+                required
               />
               <input
                 className="w-full bg-gray-200/55 dark:bg-[#141414] p-3 rounded-md"
@@ -119,6 +136,7 @@ function Signupform({isLoginMode,toggleMode}:SignupProp) {
                 placeholder="Enter Confirm Password"
                 value={confirmPassword}
                 onChange={(e)=>setConfirmPassword(e.target.value)}
+                required
               />
 
                <label className="relative flex-1 items-center justify-start w-full py-4 pl-1 gap-2 max-h-3 flex" >
@@ -153,7 +171,7 @@ function Signupform({isLoginMode,toggleMode}:SignupProp) {
           </label> */}
 
               <div className="flex flex-col lg:flex-row gap-3 w-full items-center justify-center">
-                <SecondaryBtn onClick={handleRegister} className="w-full">{submitting ? 'Creating Account...' : 'Create Account'}</SecondaryBtn>
+                <SecondaryBtn className="w-full">{submitting ? 'Creating Account...' : 'Create Account'}</SecondaryBtn>
                 <SecondaryBtn className="w-full bg-slate-200 dark:bg-[#1f1f1f] dark:hover:bg-[#333333] dark:!text-white !text-black hover:bg-slate-300/95">
                   <Image src={Google} className="w-5" alt="google logo" />
                   Continue with Google
@@ -184,7 +202,7 @@ function Signupform({isLoginMode,toggleMode}:SignupProp) {
                 Disconnect Wallet
               </SecondaryBtn>
               </div>
-            </div>
+            </form>
           </div>
    
    </>
