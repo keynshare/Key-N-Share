@@ -1,55 +1,65 @@
 
 "use client";
-import React from "react";
+import React,{useState} from "react";
 import Image from "next/image";
 import PrimaryBtn from "../SharedComponents/Btns/PrimaryBtn";
 import SecondaryBtn from "../SharedComponents/Btns/SecondaryBtn";
 import Google from "../assets/Google.svg";
-import { useConnect, useAccount, useBalance, useDisconnect } from 'wagmi'
-import { polygonAmoy } from 'wagmi/chains'
 import { Wallet } from "lucide-react";
 import WalletGradient from '@/components/assets/Wallet.svg'
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { useNotifications } from "@/lib/notification-context";
+import {walletConnection} from "@/lib/Authentication/walletConnection";
+
 type LoginProp={
    isLoginMode?:boolean,
-   toggleMode?:()=>void,
+   toggleMode?:(value?:boolean)=>void,
 }
 
 function LoginForm({isLoginMode,toggleMode}:LoginProp) {
 
-  const { connectors, connect, isPending } = useConnect();
-  const { address, isConnected } = useAccount();
-  const { disconnect } = useDisconnect();
-  const { data: balance } = useBalance({
-    address,
-    chainId: polygonAmoy.id,
-  });
+const { isConnected, balance, isPending, connectWallet, disconnectWallet } = walletConnection();
 
-//take the first connector which has injected
-  const connector = connectors[0];
-
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [rememberMe, setRememberMe] = React.useState(false);
-  const [submitting, setSubmitting] = React.useState(false);
-  const router = require('next/navigation').useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  
+  const router = useRouter();
+  const { notify, reportError } = useNotifications();
 
   async function handleLogin() {
     if (!email || !password) return;
-    try {
-      setSubmitting(true);
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}auth/login` || 'http://localhost:4000/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, rememberMe })
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.message || 'Login failed');
-      // Store token for subsequent requests if needed
-      if (data?.token) localStorage.setItem('kns_token', data.token);
-      router.push('/dashboard');
+     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      notify({ type: "warning", message: "Please enter a valid email address" });
+      return;
+    }
+    if(!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(password)){
+      notify({ type: "warning", message: "Password must be 8+ chars with letters & numbers" });
+      return;
+    }
+
+     try {
+    setSubmitting(true);
+
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}auth/login` || "http://localhost:4000/api/auth/login",
+      { email, password, rememberMe }
+    );
+        const maxAge = rememberMe ? 30 : 7;
+            if (res.data?.token) { 
+                   Cookies.set("kns_token", res.data.token, { expires: maxAge })
+                   Cookies.set("Email", res.data.user.email, { expires: maxAge })
+                 }
+
+    notify({ type: "success", message: "Login successful!" });
+    router.push("/dashboard");
+  
     } catch (err) {
       console.error(err);
-      alert((err as Error).message);
+      reportError((err as Error).message);
     } finally {
       setSubmitting(false);
     }
@@ -63,11 +73,11 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
              Hey, Welcome Back Login To Key N Share And Get Started
             </h1>
 
-            <div className="flex flex-col px-2 xl:px-4 w-full items-center justify-center gap-4">
+            <form onSubmit={(e) => { e.preventDefault(); handleLogin(); }} className="flex flex-col px-2 xl:px-4 w-full items-center justify-center gap-4">
               <span className="w-full text-center md:text-left">
                 Don&apos;t have an account?{" "}
                 <button 
-                  onClick={toggleMode}
+                  onClick={() => toggleMode && toggleMode(false)}
                   className="text-[#FF7A00] underline underline-offset-2 hover:text-[#ff8c1a] transition-colors"
                 >
                   Sign Up
@@ -87,15 +97,18 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
                 placeholder="Enter Password"
                 value={password}
                 onChange={(e)=>setPassword(e.target.value)}
+                required
+                minLength={6}
               />
 
               <div className="flex w-full items-center justify-between">
-                <label className="flex items-center gap-2 lg:text-lg">
+                <label className="flex items-center gap-2 ">
                   <input
                     className="accent-orange-600 rounded-sm"
                     type="checkbox"
                     checked={rememberMe}
                     onChange={(e) => setRememberMe(e.target.checked)}
+                   
                   />
                   Remember me for 1 month
                 </label>
@@ -105,7 +118,7 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
               </div>
 
               <div className="flex flex-col lg:flex-row gap-3 w-full items-center justify-center">
-                <SecondaryBtn onClick={handleLogin} className="w-full">{submitting ? 'Logging in...' : 'Login'}</SecondaryBtn>
+                <SecondaryBtn Type="submit" className="w-full">{submitting ? 'Logging in...' : 'Login'}</SecondaryBtn>
                 <SecondaryBtn className="w-full bg-slate-200 dark:bg-[#1f1f1f] dark:hover:bg-[#333333] dark:!text-white !text-black hover:bg-slate-300/95">
                   <Image src={Google} className="w-5" alt="google logo" />
                   Continue with Google
@@ -121,23 +134,23 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
               <div className="flex flex-col lg:flex-row gap-3 w-full items-center justify-center">
              
             <PrimaryBtn
-              onClick={() => connector && connect({ connector })}
+              onClick={connectWallet}
               disabled={isPending}
               sparkelClass="hidden " className="w-full"
 
               Hovered={isConnected}
             >
-             {!isConnected ? <Wallet size={22}/> : <Image src={WalletGradient} width={24} alt="wallet svg" />} {isConnected ? balance?.formatted : "Connect Wallet"}  
+             {!isConnected ? <Wallet size={22}/> : <Image src={WalletGradient} width={24} alt="wallet svg" />} {isConnected ? balance : "Connect Wallet"}  
             </PrimaryBtn>
         
            <SecondaryBtn
-                onClick={() => disconnect()}
+                onClick={disconnectWallet}
                 className="w-full bg-gray-200 !text-black dark:!text-white dark:hover:!text-black dark:hover:bg-gray-400 hover:!text-white hover:bg-[#c2c2c2] dark:bg-[#3f3f3f]"
               >
                 Disconnect Wallet
               </SecondaryBtn>
               </div>
-            </div>
+            </form>
           </div>
 
    </>

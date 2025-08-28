@@ -27,7 +27,7 @@ export default function Header({Size='256 mb',Extention='CSV',Price='46' ,Tags=[
     <>
     <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
       <div className="lg:col-span-2 relative overflow-hidden rounded-xl border dark:border-2 border-gray-200 dark:border-gray-400">
-        <img
+        <Image
           src={CoverImage}
           alt={Title}
           width={1600}
