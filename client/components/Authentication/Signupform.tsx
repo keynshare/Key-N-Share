@@ -182,7 +182,7 @@ const { isConnected, balance, isPending, connectWallet, disconnectWallet } = wal
 
               Hovered={isConnected}
             >
-             {!isConnected ? <Wallet size={22}/> : <Image src={WalletGradient} width={24} alt="wallet svg" />} {isConnected ? balance?.formatted : "Connect Wallet"}  
+             {!isConnected ? <Wallet size={22}/> : <Image src={WalletGradient} width={24} alt="wallet svg" />} {isConnected ? balance : "Connect Wallet"}  
             </PrimaryBtn>
         
            <SecondaryBtn
