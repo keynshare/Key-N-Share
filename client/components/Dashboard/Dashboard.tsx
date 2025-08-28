@@ -49,7 +49,7 @@ const categories = ["Trending", "Highest Rating", "Newly Added"];
             <h1 className="sm:font-semibold text-lg sm:text-3xl md:text-[31px] lg:text-[42px] xl:text-5xl text-center font-bricola ">
               Didn&apos;t come across what you were expecting?
             </h1>
-            <SecondaryBtn Href="/Catalogue">Discover All Datasets</SecondaryBtn>
+            <SecondaryBtn Href="/catalogue">Discover All Datasets</SecondaryBtn>
           </div>
         </div>
       </div>

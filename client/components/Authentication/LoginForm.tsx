@@ -5,14 +5,13 @@ import Image from "next/image";
 import PrimaryBtn from "../SharedComponents/Btns/PrimaryBtn";
 import SecondaryBtn from "../SharedComponents/Btns/SecondaryBtn";
 import Google from "../assets/Google.svg";
-import { useConnect, useAccount, useBalance, useDisconnect } from 'wagmi'
-import { polygonAmoy } from 'wagmi/chains'
 import { Wallet } from "lucide-react";
 import WalletGradient from '@/components/assets/Wallet.svg'
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useNotifications } from "@/lib/notification-context";
+import {walletConnection} from "@/lib/Authentication/walletConnection";
 
 type LoginProp={
    isLoginMode?:boolean,
@@ -21,16 +20,7 @@ type LoginProp={
 
 function LoginForm({isLoginMode,toggleMode}:LoginProp) {
 
-  const { connectors, connect, isPending } = useConnect();
-  const { address, isConnected } = useAccount();
-  const { disconnect } = useDisconnect();
-  const { data: balance } = useBalance({
-    address,
-    chainId: polygonAmoy.id,
-  });
-
-//take the first connector which has injected
-  const connector = connectors[0];
+const { isConnected, balance, isPending, connectWallet, disconnectWallet } = walletConnection();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -118,7 +108,7 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
                     type="checkbox"
                     checked={rememberMe}
                     onChange={(e) => setRememberMe(e.target.checked)}
-                    required
+                   
                   />
                   Remember me for 1 month
                 </label>
@@ -128,7 +118,7 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
               </div>
 
               <div className="flex flex-col lg:flex-row gap-3 w-full items-center justify-center">
-                <SecondaryBtn  className="w-full">{submitting ? 'Logging in...' : 'Login'}</SecondaryBtn>
+                <SecondaryBtn Type="submit" className="w-full">{submitting ? 'Logging in...' : 'Login'}</SecondaryBtn>
                 <SecondaryBtn className="w-full bg-slate-200 dark:bg-[#1f1f1f] dark:hover:bg-[#333333] dark:!text-white !text-black hover:bg-slate-300/95">
                   <Image src={Google} className="w-5" alt="google logo" />
                   Continue with Google
@@ -144,17 +134,17 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
               <div className="flex flex-col lg:flex-row gap-3 w-full items-center justify-center">
              
             <PrimaryBtn
-              onClick={() => connector && connect({ connector })}
+              onClick={connectWallet}
               disabled={isPending}
               sparkelClass="hidden " className="w-full"
 
               Hovered={isConnected}
             >
-             {!isConnected ? <Wallet size={22}/> : <Image src={WalletGradient} width={24} alt="wallet svg" />} {isConnected ? balance?.formatted : "Connect Wallet"}  
+             {!isConnected ? <Wallet size={22}/> : <Image src={WalletGradient} width={24} alt="wallet svg" />} {isConnected ? balance : "Connect Wallet"}  
             </PrimaryBtn>
         
            <SecondaryBtn
-                onClick={() => disconnect()}
+                onClick={disconnectWallet}
                 className="w-full bg-gray-200 !text-black dark:!text-white dark:hover:!text-black dark:hover:bg-gray-400 hover:!text-white hover:bg-[#c2c2c2] dark:bg-[#3f3f3f]"
               >
                 Disconnect Wallet

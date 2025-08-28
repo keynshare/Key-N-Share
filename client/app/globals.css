@@ -10,7 +10,7 @@ body{
 *{
   transition: color 0.5s ease, background-color 0.5s ease;
   scrollbar-width:thin;
-  scrollbar-color:#006eff #acacac00;
+  scrollbar-color:#ff9900 #acacac00;
 }
 
 .Btn{

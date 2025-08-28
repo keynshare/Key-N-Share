@@ -4,8 +4,7 @@ import PrimaryBtn from "../SharedComponents/Btns/PrimaryBtn";
 import SecondaryBtn from "../SharedComponents/Btns/SecondaryBtn";
 import Image from 'next/image';
 import Google from "../assets/Google.svg";
-import { useConnect, useAccount, useBalance, useDisconnect } from 'wagmi'
-import { polygonAmoy } from 'wagmi/chains'
+import {walletConnection} from "@/lib/Authentication/walletConnection";
 import { Wallet } from "lucide-react";
 import WalletGradient from '@/components/assets/Wallet.svg';
 import {useRouter} from 'next/navigation';
@@ -19,16 +18,7 @@ type SignupProp={
 }
 function Signupform({isLoginMode,toggleMode}:SignupProp) {
 
- const { connectors, connect, isPending } = useConnect();
-  const { address, isConnected } = useAccount();
-  const { disconnect } = useDisconnect();
-  const { data: balance } = useBalance({
-    address,
-    chainId: polygonAmoy.id,
-  });
-
-//take the first connector
-  const connector = connectors[0];
+const { isConnected, balance, isPending, connectWallet, disconnectWallet } = walletConnection();
 
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
@@ -99,7 +89,7 @@ function Signupform({isLoginMode,toggleMode}:SignupProp) {
               <span className="w-full text-center md:text-left">
                 Already have an account?{" "}
                 <button 
-                  onClick={()=>toggleMode && toggleMode(false)}
+                  onClick={()=>toggleMode && toggleMode(true)}
                   className="text-[#FF7A00] underline underline-offset-2 hover:text-[#ff8c1a] transition-colors"
                 >
                   Login
@@ -171,7 +161,7 @@ function Signupform({isLoginMode,toggleMode}:SignupProp) {
           </label> */}
 
               <div className="flex flex-col lg:flex-row gap-3 w-full items-center justify-center">
-                <SecondaryBtn className="w-full">{submitting ? 'Creating Account...' : 'Create Account'}</SecondaryBtn>
+                <SecondaryBtn Type="submit" className="w-full">{submitting ? 'Creating Account...' : 'Create Account'}</SecondaryBtn>
                 <SecondaryBtn className="w-full bg-slate-200 dark:bg-[#1f1f1f] dark:hover:bg-[#333333] dark:!text-white !text-black hover:bg-slate-300/95">
                   <Image src={Google} className="w-5" alt="google logo" />
                   Continue with Google
@@ -186,17 +176,17 @@ function Signupform({isLoginMode,toggleMode}:SignupProp) {
 
               <div className="flex flex-col lg:flex-row gap-3 w-full items-center justify-center">
                  <PrimaryBtn
-              onClick={() => connector && connect({ connector })}
+              onClick={connectWallet}
               disabled={isPending}
               sparkelClass="hidden " className="w-full"
 
               Hovered={isConnected}
             >
-             {!isConnected ? <Wallet size={22}/> : <Image src={WalletGradient} width={24} alt="wallet svg" />} {isConnected ? balance?.formatted : "Connect Wallet"}  
+             {!isConnected ? <Wallet size={22}/> : <Image src={WalletGradient} width={24} alt="wallet svg" />} {isConnected ? balance : "Connect Wallet"}  
             </PrimaryBtn>
         
            <SecondaryBtn
-                onClick={() => disconnect()}
+                onClick={disconnectWallet}
                 className="w-full bg-gray-200 !text-black dark:!text-white dark:hover:!text-black dark:hover:bg-gray-400 hover:!text-white hover:bg-[#c2c2c2] dark:bg-[#3f3f3f]"
               >
                 Disconnect Wallet
