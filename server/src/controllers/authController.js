@@ -1,9 +1,10 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const {JWT_SECRET} = require('../../constants');
 
 function generateToken(userId, rememberMe = false) {
-  const secret = process.env.JWT_SECRET || 'dev_secret';
+  const secret = JWT_SECRET;
   // If remember me is checked, extend token to 1 month, otherwise 7 days
   const expiresIn = rememberMe ? '30d' : '7d';
   return jwt.sign({ sub: userId }, secret, { expiresIn });
@@ -115,5 +116,4 @@ async function login(req, res, next) {
 }
 
 module.exports = { register, login };
-
 

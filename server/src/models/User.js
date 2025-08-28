@@ -16,13 +16,19 @@ const userSchema = new mongoose.Schema(
       rememberMe: { type: Boolean, default: false },
       lastLoginAt: { type: Date },
       loginCount: { type: Number, default: 0 }
+    },
+    walletAddress: {
+      type: String,
+      required: false,
+      unique: true,
+      trim: true
     }
   },
   { timestamps: true }
 );
 
 // Update lastLoginAt and increment loginCount on each login
-userSchema.methods.updateLoginStats = function() {
+userSchema.methods.updateLoginStats = function () {
   this.preferences.lastLoginAt = new Date();
   this.preferences.loginCount += 1;
   return this.save();
