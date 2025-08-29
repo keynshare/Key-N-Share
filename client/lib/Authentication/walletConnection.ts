@@ -4,7 +4,7 @@ import { polygonAmoy } from "wagmi/chains";
 import { useNotifications } from "@/lib/notification-context";
 import { useEffect, useRef, useCallback } from "react";
 
-export function walletConnection() {
+export function useWalletConnection() {
   const { connectors, connect, error, status: connectStatus, isPending } = useConnect();
   const { address, status: accountStatus } = useAccount();
   const { disconnect } = useDisconnect();
