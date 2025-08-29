@@ -17,7 +17,22 @@ export default function NotificationCenter() {
   );
 }
 
-function SlideIn({ n, remove }: any) {
+type Notification = {
+  id: string;
+  title?: string;
+  message: string;
+  type: "success" | "error" | "warning" | "feedback" | "info";
+  actionLabel?: string;
+  onAction?: () => void;
+};
+
+
+interface SlideInProps {
+  n: Notification;
+  remove: (id: string) => void;
+}
+
+function SlideIn({ n, remove }: SlideInProps) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {

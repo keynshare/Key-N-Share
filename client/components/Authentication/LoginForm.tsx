@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useNotifications } from "@/lib/notification-context";
-import {walletConnection} from "@/lib/Authentication/walletConnection";
+import {useWalletConnection} from "@/lib/Authentication/walletConnection";
 
 type LoginProp={
    isLoginMode?:boolean,
@@ -20,7 +20,7 @@ type LoginProp={
 
 function LoginForm({isLoginMode,toggleMode}:LoginProp) {
 
-const { isConnected, balance, isPending, connectWallet, disconnectWallet } = walletConnection();
+const { isConnected, balance, isPending, connectWallet, disconnectWallet } = useWalletConnection();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

@@ -4,7 +4,7 @@ import PrimaryBtn from "../SharedComponents/Btns/PrimaryBtn";
 import SecondaryBtn from "../SharedComponents/Btns/SecondaryBtn";
 import Image from 'next/image';
 import Google from "../assets/Google.svg";
-import {walletConnection} from "@/lib/Authentication/walletConnection";
+import {useWalletConnection} from "@/lib/Authentication/walletConnection";
 import { Wallet } from "lucide-react";
 import WalletGradient from '@/components/assets/Wallet.svg';
 import {useRouter} from 'next/navigation';
@@ -18,7 +18,7 @@ type SignupProp={
 }
 function Signupform({isLoginMode,toggleMode}:SignupProp) {
 
-const { isConnected, balance, isPending, connectWallet, disconnectWallet } = walletConnection();
+const { isConnected, balance, isPending, connectWallet, disconnectWallet } = useWalletConnection();
 
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");

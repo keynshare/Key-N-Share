@@ -15,7 +15,7 @@ import { SunMediumIcon, MoonStar, Menu, X } from "lucide-react";
 import { useTheme } from "@/lib/theme-context";
 import { Wallet, ShoppingCart, LucideFileHeart, Bell } from "lucide-react";
 import User from "@/components/assets/User.svg";
-import {walletConnection} from "@/lib/Authentication/walletConnection";
+import {useWalletConnection} from "@/lib/Authentication/walletConnection";
 import WalletGradient from '@/components/assets/Wallet.svg'
 import { useLoginMode } from "@/lib/LoginModeContext";
 import { useRouter } from "next/navigation";
@@ -29,7 +29,7 @@ const navLinks = [
 
 function Navbar() {
 
-const { isConnected, balance, isPending, connectWallet, disconnectWallet } = walletConnection();
+const { isConnected, balance, isPending, connectWallet, disconnectWallet } = useWalletConnection();
 
   const { theme, toggleTheme } = useTheme();
   const { toggleLoginMode } = useLoginMode();
@@ -240,7 +240,7 @@ const { isConnected, balance, isPending, connectWallet, disconnectWallet } = wal
                   sparkelClass="hidden"
                   classsecondInner="px-1"
                 >
-                {!isConnected ? <Wallet size={22}/> : <Image src={WalletGradient} width={24} alt="wallet svg" />} {isConnected ? balance?.formatted : "Connect"}  
+                {!isConnected ? <Wallet size={22}/> : <Image src={WalletGradient} width={24} alt="wallet svg" />} {isConnected ? balance : "Connect"}  
                   
                 </PrimaryBtn>
 
@@ -372,7 +372,7 @@ const { isConnected, balance, isPending, connectWallet, disconnectWallet } = wal
                   sparkelClass="hidden"
                   classsecondInner="px-1"
                 >
-                {!isConnected ? <Wallet size={22}/> : <Image src={WalletGradient} width={24} alt="wallet svg" />} {isConnected ? balance?.formatted : "Connect"}  
+                {!isConnected ? <Wallet size={22}/> : <Image src={WalletGradient} width={24} alt="wallet svg" />} {isConnected ? balance : "Connect"}  
                   
                 </PrimaryBtn>
 
