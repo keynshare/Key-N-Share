@@ -1,8 +1,12 @@
+import PrivateRoute from '@/lib/Authentication/PrivateRoute'
 import React from 'react'
 import CartPage from '@/components/CartPage/CartPage'
+
 function page() {
   return (
-  <CartPage/>
+    <PrivateRoute>
+      <CartPage />
+    </PrivateRoute>
   )
 }
 

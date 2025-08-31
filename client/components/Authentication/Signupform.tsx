@@ -99,7 +99,7 @@ const { isConnected, balance, isPending, connectWallet, disconnectWallet } = use
               <input
                 className="w-full bg-gray-200/55 p-3 dark:bg-[#141414] rounded-md"
                 type="text"
-                placeholder="Enter First Name"
+                placeholder="Enter User Name"
                 value={firstName}
                 onChange={(e)=>setFirstName(e.target.value)}
                 required
