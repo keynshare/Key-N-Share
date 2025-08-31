@@ -18,7 +18,7 @@ type SignupProp={
 }
 function Signupform({isLoginMode,toggleMode}:SignupProp) {
 
-const { isConnected, balance, isPending, connectWallet, disconnectWallet } = useWalletConnection();
+const { isConnected, balance, address, isPending, connectWallet, disconnectWallet } = useWalletConnection();
 const { login } = useAuth();
 
   const [firstName, setFirstName] = useState("");
@@ -52,6 +52,11 @@ const { login } = useAuth();
       return;
     }
 
+    if(!address || address === null) {
+      notify({ type: "warning", message: "Please connect your wallet to register" });
+      return;
+    }
+
     try {
       setSubmitting(true);
       const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}auth/register` || 'http://localhost:4000/api/auth/register', {
@@ -60,19 +65,26 @@ const { login } = useAuth();
         password,
         confirmPassword,
         termsAccepted,
+        walletAddress: address,
         remeberMe: false
       });
       
       if (res.data?.token && res.data?.user.email) { 
         login( res.data.user.email,res.data.token, false);
       }
-       notify({ type: "success", message: "Registration successful!" });
+      
+      notify({ type: "success", message: "Registration successful!" });
       router.push('/dashboard');
     } catch (err) {
       console.error(err);
       reportError((err as Error).message);
     } finally {
       setSubmitting(false);
+      setFirstName("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      setTermsAccepted(false);
     }
    
   }

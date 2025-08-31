@@ -86,6 +86,7 @@ export function useWalletConnection() {
 
   return {
     isConnected: accountStatus === "connected",
+    address,
     balance: balance?.formatted,
     isPending,
     connectWallet,
