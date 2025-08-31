@@ -9,7 +9,7 @@ import { Wallet } from "lucide-react";
 import WalletGradient from '@/components/assets/Wallet.svg';
 import {useRouter} from 'next/navigation';
 import axios from "axios";
-import Cookies from "js-cookie";
+import { useAuth } from '@/lib/Authentication/AuthContext';
 import { useNotifications } from "@/lib/notification-context";
 
 type SignupProp={
@@ -19,6 +19,7 @@ type SignupProp={
 function Signupform({isLoginMode,toggleMode}:SignupProp) {
 
 const { isConnected, balance, isPending, connectWallet, disconnectWallet } = useWalletConnection();
+const { login } = useAuth();
 
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
@@ -62,9 +63,8 @@ const { isConnected, balance, isPending, connectWallet, disconnectWallet } = use
         remeberMe: false
       });
       
-      if (res.data?.token) { 
-        Cookies.set("kns_token", res.data.token, { expires: 7 })
-        Cookies.set("Email", res.data.user.email, { expires: 7 })
+      if (res.data?.token && res.data?.user.email) { 
+        login( res.data.user.email,res.data.token, false);
       }
        notify({ type: "success", message: "Registration successful!" });
       router.push('/dashboard');

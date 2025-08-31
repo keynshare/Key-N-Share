@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { NotificationProvider } from "@/lib/notification-context";
 import NotificationCenter from "@/components/SharedComponents/NotificationCenter";
 import {LoginModeProvider} from "@/lib/LoginModeContext";
+import {AuthProvider} from "@/lib/Authentication/AuthContext";
 
 export const config = createConfig({
   chains: [polygonAmoy],
@@ -32,7 +33,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
         <QueryClientProvider client={queryClient}>
           <NotificationProvider>
             <LoginModeProvider>
-            {children}
+              <AuthProvider>
+                {children}
+              </AuthProvider>
             </LoginModeProvider>
             <NotificationCenter />
           </NotificationProvider>

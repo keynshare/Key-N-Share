@@ -98,7 +98,7 @@ export default function Features() {
         </h2>   
       </div>
 
-      <main className="m-auto grid min-h-[320px] w-full max-w-5xl grid-cols-1 gap-8 bg-background p-4 dark:bg-background sm:grid-cols-2 lg:grid-cols-4 relative z-10">
+      <main className="m-auto grid min-h-[320px] w-full max-w-5xl grid-cols-1 gap-8 p-4  sm:grid-cols-2 lg:grid-cols-4 relative z-10">
         {isMounted && isScriptLoaded && cardConfigurations.map((cardConfig,index) => (
          
               <PixelCards 

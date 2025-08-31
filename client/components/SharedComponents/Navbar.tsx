@@ -19,7 +19,7 @@ import {useWalletConnection} from "@/lib/Authentication/walletConnection";
 import WalletGradient from '@/components/assets/Wallet.svg'
 import { useLoginMode } from "@/lib/LoginModeContext";
 import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
+import { useAuth } from "@/lib/Authentication/AuthContext";
 
 const navLinks = [
   { label: "About Us", href: "/about" },
@@ -31,6 +31,7 @@ const navLinks = [
 function Navbar() {
 
 const { isConnected, balance, isPending, connectWallet, disconnectWallet } = useWalletConnection();
+const { isAuthenticated } = useAuth();
 
   const { theme, toggleTheme } = useTheme();
   const { toggleLoginMode } = useLoginMode();
@@ -47,15 +48,15 @@ const { isConnected, balance, isPending, connectWallet, disconnectWallet } = use
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
-  const token = Cookies.get("token");
+  
 
   useEffect(() => {
-    if (token) {
-      setIsLogout(true);
-    } else {
+    if (isAuthenticated) {
       setIsLogout(false);
+    } else {
+      setIsLogout(true);
     }
-  }, [pathname]);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     const timer = setTimeout(() => {

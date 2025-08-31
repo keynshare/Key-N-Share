@@ -3,12 +3,12 @@ import React from "react";
 import { usePathname } from "next/navigation";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import Cookies from "js-cookie";
+import { useAuth } from "@/lib/Authentication/AuthContext";
 
 export default function NavbarWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const token = Cookies.get("token");
-  const hideNavAndFooter = pathname === "/authentication" || !token;
+  const { isAuthenticated } = useAuth();
+  const hideNavAndFooter = pathname === "/authentication" || (!isAuthenticated && pathname !== "/");
 
   return (
     <>

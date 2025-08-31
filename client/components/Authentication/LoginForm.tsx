@@ -9,7 +9,7 @@ import { Wallet } from "lucide-react";
 import WalletGradient from '@/components/assets/Wallet.svg'
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import Cookies from "js-cookie";
+import { useAuth } from "@/lib/Authentication/AuthContext";
 import { useNotifications } from "@/lib/notification-context";
 import {useWalletConnection} from "@/lib/Authentication/walletConnection";
 
@@ -21,12 +21,13 @@ type LoginProp={
 function LoginForm({isLoginMode,toggleMode}:LoginProp) {
 
 const { isConnected, balance, isPending, connectWallet, disconnectWallet } = useWalletConnection();
-
+ const { login } = useAuth();
+ 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  
+ 
   const router = useRouter();
   const { notify, reportError } = useNotifications();
 
@@ -48,11 +49,12 @@ const { isConnected, balance, isPending, connectWallet, disconnectWallet } = use
       `${process.env.NEXT_PUBLIC_API_URL}auth/login` || "http://localhost:4000/api/auth/login",
       { email, password, rememberMe }
     );
-        const maxAge = rememberMe ? 30 : 7;
+        
             if (res.data?.token) { 
-                   Cookies.set("kns_token", res.data.token, { expires: maxAge })
-                   Cookies.set("Email", res.data.user.email, { expires: maxAge })
-                 }
+                
+                   login( res.data.user.email,res.data.token, rememberMe);
+                
+                  }
 
     notify({ type: "success", message: "Login successful!" });
     router.push("/dashboard");
