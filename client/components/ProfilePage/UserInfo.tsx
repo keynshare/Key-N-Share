@@ -1,9 +1,14 @@
+"use client"
 import React from 'react'
 import SecondaryBtn from '../SharedComponents/Btns/SecondaryBtn'
 import User from '@/components/assets/User.svg'
 import CoverProfile from '@/components/assets/CoverProfile.svg'
 import Image from 'next/image'
+import { useAuth } from '@/lib/Authentication/AuthContext'
+import { LogOut } from 'lucide-react'
+
 function UserInfo() {
+  const { logout } = useAuth()
   return (
    <>
    
@@ -31,9 +36,12 @@ function UserInfo() {
         </div>
 
         {/* Edit Profile Button */}
-        <div className="w-full md:w-fit">
+        <div className="w-full md:w-fit flex gap-3">
           <SecondaryBtn className='w-full md:w-fit' >
-            Edit Profile
+            Edit Bio
+          </SecondaryBtn>
+          <SecondaryBtn onClick={logout} Title='Logout' className='p-2  bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white rounded-full' >
+            <LogOut size={20}/>
           </SecondaryBtn>
         </div>
       </div>
