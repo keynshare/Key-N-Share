@@ -1,9 +1,12 @@
 
 import Authentication from "@/components/Authentication/Authentication"
+import PrivateRoute from "@/lib/Authentication/PrivateRoute"
 function page() {
   return (
     <>
-      <Authentication/>
+      <PrivateRoute>
+        <Authentication/>
+      </PrivateRoute>
     </>
   )
 }

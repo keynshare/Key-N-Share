@@ -5,6 +5,7 @@ import Cookies from "js-cookie";
 
 type AuthContextType = {
   isAuthenticated: boolean;
+  isInitialized: boolean;
   email: string | null;
   token: string | null;
   login: (email: string, token: string, rememberMe?: boolean) => void;
@@ -15,31 +16,45 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
   const [email, setEmail] = useState<string | null>(null);
   const [token, setToken] = useState<string | null>(null);
 
   // On mount read from cookie
   useEffect(() => {
-    const stored = Cookies.get("kns_token");
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-        if (parsed?.Token) {
-          setIsAuthenticated(true);
-          setEmail(parsed.Email || null);
-          setToken(parsed.Token || null);
+    const initializeAuth = () => {
+      const stored = Cookies.get("kns_token");
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+    
+          if (parsed?.token) {
+            setIsAuthenticated(true);
+            setEmail(parsed.email || null);
+            setToken(parsed.token || null);
+            console.log("[Auth Debug] Authentication successful");
+          }
+        } catch (err) {
+          console.error("[Auth Debug] Cookie parse error:", err);
         }
-      } catch (err) {
-        console.error("Invalid cookie format:", err);
       }
-    }
+      setIsInitialized(true);
+    };
+
+    initializeAuth();
   }, []);
+
+
 
   const login = (email: string, token: string, rememberMe?: boolean) => {
     Cookies.set(
       "kns_token",
-      JSON.stringify({ Token: token, Email: email }),
-      { expires: rememberMe ? 30 : 7 }
+      JSON.stringify({ token, email }),
+      { 
+        expires: rememberMe ? 30 : 7,
+        secure: true,
+        sameSite: 'strict'
+      }
     );
     setIsAuthenticated(true);
     setEmail(email);
@@ -53,8 +68,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setToken(null);
   };
 
+  if (!isInitialized) {
+    return null; 
+  }
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, email, token, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, isInitialized, email, token, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
