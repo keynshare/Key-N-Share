@@ -7,7 +7,7 @@ function UserInfo() {
   return (
    <>
    
-    <div className="w-full rounded-xl shadow-md border dark:border-gray-600 overflow-hidden">
+    <div className="w-full rounded-xl mt-4 shadow-md border dark:border-gray-600 overflow-hidden">
       {/* Banner */}
       <div className="relative h-40 md:h-72 bg-white dark:bg-[#0e0e0e] border-b dark:border-gray-600 ">
         <Image src={CoverProfile} alt='Profile Cover for Key n Share' className=" object-cover object-right-top h-full w-screen md:h-full "/>

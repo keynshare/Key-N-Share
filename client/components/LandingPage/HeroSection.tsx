@@ -9,10 +9,11 @@ import SecondaryBtn from '../SharedComponents/Btns/SecondaryBtn'
 import Diagram from './Diagram'
 import { Sparkles } from '../Animations/Sparkels'
 import { useTheme } from "@/lib/theme-context";
-
+import { useAuth } from '@/lib/Authentication/AuthContext';
 function HeroSection() {
   const [isVisible, setIsVisible] = useState(false)
   const { theme } = useTheme();
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -51,10 +52,10 @@ function HeroSection() {
         isVisible ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-16 opacity-0 scale-90'
       }`}>
       
-          <SecondaryBtn>Upload Datasets</SecondaryBtn>
+          <SecondaryBtn Href='/upload-dataset'>Upload Datasets</SecondaryBtn>
         
        
-          <PrimaryBtn Href='/authentication'  sparkelClass='sm:!-top-3 -top-[15px] w-[200px]' className={'w-[156px] sm:w-fit'}>Get Started</PrimaryBtn>
+          <PrimaryBtn Href={isAuthenticated ? '/dashboard' : '/authentication'}  sparkelClass='sm:!-top-3 -top-[15px] w-[200px]' className={'w-[156px] sm:w-fit'}>Get Started</PrimaryBtn>
         
       </div>
       <div className='absolute bottom-0 z-[-1] h-[450px] w-screen  [mask-image:radial-gradient(100%_50%,white,transparent)] before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_bottom_center,#00CCFFFF,transparent_90%)] before:opacity-30 after:absolute'>

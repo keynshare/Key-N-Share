@@ -1,12 +1,14 @@
+import PrivateRoute from '@/lib/Authentication/PrivateRoute'
+
 import React from 'react'
 import ProfilePage from '@/components/ProfilePage/ProfilePage'
 function page() {
   return (
     <>
-    
-    <ProfilePage/>
-
-    </>
+    <PrivateRoute>
+      <ProfilePage />
+    </PrivateRoute>
+      </>
   )
 }
 

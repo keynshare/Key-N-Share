@@ -19,6 +19,7 @@ import {useWalletConnection} from "@/lib/Authentication/walletConnection";
 import WalletGradient from '@/components/assets/Wallet.svg'
 import { useLoginMode } from "@/lib/LoginModeContext";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/lib/Authentication/AuthContext";
 
 const navLinks = [
   { label: "About Us", href: "/about" },
@@ -30,6 +31,7 @@ const navLinks = [
 function Navbar() {
 
 const { isConnected, balance, isPending, connectWallet, disconnectWallet } = useWalletConnection();
+const { isAuthenticated } = useAuth();
 
   const { theme, toggleTheme } = useTheme();
   const { toggleLoginMode } = useLoginMode();
@@ -46,13 +48,15 @@ const { isConnected, balance, isPending, connectWallet, disconnectWallet } = use
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
+  
+
   useEffect(() => {
-    if (pathname === "/") {
-      setIsLogout(true);
-    } else {
+    if (isAuthenticated) {
       setIsLogout(false);
+    } else {
+      setIsLogout(true);
     }
-  }, [pathname]);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -253,7 +257,7 @@ const { isConnected, balance, isPending, connectWallet, disconnectWallet } = use
                 <button title="Notifications" className="p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white rounded-full">
                   <Bell size={22} />
                 </button>
-                <Link href="#" className="  text-white rounded-full">
+                <Link href="/profile" className="  text-white rounded-full">
                   <Image
                     className="object-cover w-10"
                     src={User}
@@ -356,7 +360,7 @@ const { isConnected, balance, isPending, connectWallet, disconnectWallet } = use
                 <button className="p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white rounded-full">
                   <Bell size={22} />
                 </button>
-                <Link href="#" className="  text-white  rounded-full">
+                <Link href="/profile" className="  text-white  rounded-full">
                   <Image
                     className="object-cover w-10"
                     src={User}

@@ -9,7 +9,7 @@ import { Wallet } from "lucide-react";
 import WalletGradient from '@/components/assets/Wallet.svg';
 import {useRouter} from 'next/navigation';
 import axios from "axios";
-import Cookies from "js-cookie";
+import { useAuth } from '@/lib/Authentication/AuthContext';
 import { useNotifications } from "@/lib/notification-context";
 
 type SignupProp={
@@ -18,7 +18,8 @@ type SignupProp={
 }
 function Signupform({isLoginMode,toggleMode}:SignupProp) {
 
-const { isConnected, balance, isPending, connectWallet, disconnectWallet } = useWalletConnection();
+const { isConnected, balance, address, isPending, connectWallet, disconnectWallet } = useWalletConnection();
+const { login } = useAuth();
 
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
@@ -51,6 +52,11 @@ const { isConnected, balance, isPending, connectWallet, disconnectWallet } = use
       return;
     }
 
+    if(!address || address === null) {
+      notify({ type: "warning", message: "Please connect your wallet to register" });
+      return;
+    }
+
     try {
       setSubmitting(true);
       const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}auth/register` || 'http://localhost:4000/api/auth/register', {
@@ -59,20 +65,26 @@ const { isConnected, balance, isPending, connectWallet, disconnectWallet } = use
         password,
         confirmPassword,
         termsAccepted,
+        walletAddress: address,
         remeberMe: false
       });
       
-      if (res.data?.token) { 
-        Cookies.set("kns_token", res.data.token, { expires: 7 })
-        Cookies.set("Email", res.data.user.email, { expires: 7 })
+      if (res.data?.token && res.data?.user.email) { 
+        login( res.data.user.email,res.data.token, false);
       }
-       notify({ type: "success", message: "Registration successful!" });
+      
+      notify({ type: "success", message: "Registration successful!" });
       router.push('/dashboard');
     } catch (err) {
       console.error(err);
       reportError((err as Error).message);
     } finally {
       setSubmitting(false);
+      setFirstName("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      setTermsAccepted(false);
     }
    
   }
@@ -99,7 +111,7 @@ const { isConnected, balance, isPending, connectWallet, disconnectWallet } = use
               <input
                 className="w-full bg-gray-200/55 p-3 dark:bg-[#141414] rounded-md"
                 type="text"
-                placeholder="Enter First Name"
+                placeholder="Enter User Name"
                 value={firstName}
                 onChange={(e)=>setFirstName(e.target.value)}
                 required
