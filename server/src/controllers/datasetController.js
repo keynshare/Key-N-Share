@@ -1,59 +1,54 @@
-const { PinataSDK } = require('pinata');
-const axios = require('axios');
+const stream = require('stream');
+const pinataSDK = require('@pinata/sdk');
 
-const pinata = new PinataSDK({
-    pinataJwt: process.env.PINATA_JWT,
-    pinataGateway: process.env.PINATA_GATEWAY,
-});
+const pinata = new pinataSDK(
+    process.env.PINATA_API_KEY,
+    process.env.PINATA_SECRET_KEY
+);
 
 const uploadDataset = async (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ success: false, message: "No file provided" });
+    }
+
+    // Convert buffer → stream so Pinata accepts it
+    const bufferStream = new stream.PassThrough();
+    bufferStream.end(req.file.buffer);
+
+    const options = {
+        pinataMetadata: { name: req.file.originalname },
+        pinataOptions: { cidVersion: 1 }
+    };
+
     try {
-        if (!req.file) {
-            return res.status(400).json({
-                success: false,
-                message: 'No file uploaded. Please select a dataset file.'
-            });
-        }
-
-        console.log('File received:', {
-            filename: req.file.originalname,
-            size: `${(req.file.size / 1024 / 1024).toFixed(2)} MB`,
-            mimetype: req.file.mimetype
-        });
-
-        const upload = await pinata.upload.buffer(req.file.buffer, {
-            name: req.file.originalname,
-            mimeType: req.file.mimetype
-        });
+        const result = await pinata.pinFileToIPFS(bufferStream, options);
 
         res.status(201).json({
             success: true,
             message: 'Dataset uploaded to IPFS successfully',
             data: {
-                id: upload.id,
-                cid: upload.cid,
-                filename: req.file.originalname,
+                cid: result.IpfsHash,
                 size: req.file.size,
+                filename: req.file.originalname,
                 mimetype: req.file.mimetype,
-                uploadedAt: upload.created_at,
+                timestamp: result.Timestamp,
                 urls: {
-                    gateway: `https://${process.env.PINATA_GATEWAY}/ipfs/${upload.cid}`,
-                    ipfs: `https://ipfs.io/ipfs/${upload.cid}`,
-                    cloudflare: `https://cloudflare-ipfs.com/ipfs/${upload.cid}`
+                    gateway: `https://${process.env.PINATA_GATEWAY}/ipfs/${result.IpfsHash}`,
+                    ipfs: `https://ipfs.io/ipfs/${result.IpfsHash}`,
+                    cloudflare: `https://cloudflare-ipfs.com/ipfs/${result.IpfsHash}`
                 }
             }
         });
-
     } catch (error) {
-        console.error('Upload error:', error.message);
-
+        console.error("Pinata error:", error);
         res.status(500).json({
             success: false,
-            message: 'Failed to upload dataset to IPFS',
-            error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
+            message: "IPFS upload failed",
+            error: error.message
         });
     }
 };
+
 
 const deleteDataset = async (req, res) => {
     try {
@@ -67,25 +62,14 @@ const deleteDataset = async (req, res) => {
             });
         }
 
-        // Find the file by CID
-        const files = await pinata.listFiles().cid(cid);
-
-        if (!files.files || files.files.length === 0) {
-            return res.status(404).json({
-                success: false,
-                message: 'Dataset not found in your pinned files'
-            });
-        }
-
-        const fileId = files.files[0].id;
-
-        await pinata.files.delete([fileId]);
+        // Unpin directly by CID
+        await pinata.unpin(cid);
 
         res.status(200).json({
             success: true,
             message: `Dataset with CID ${cid} has been deleted`,
             data: {
-                cid: cid,
+                cid,
                 deletedAt: new Date().toISOString()
             }
         });
@@ -100,6 +84,7 @@ const deleteDataset = async (req, res) => {
         });
     }
 };
+;
 
 const getDatasetByCID = async (req, res) => {
     try {

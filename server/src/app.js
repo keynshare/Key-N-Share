@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const { connectToDatabase } = require('./config/db');
 
 const authRoutes = require('./routes/authRoutes');
+const datasetRoutes = require('./routes/datasets');
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.get('/', (_req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api/datasets', datasetRoutes);
 
 
 // 404 handler
