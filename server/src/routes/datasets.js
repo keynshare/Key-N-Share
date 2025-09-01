@@ -9,6 +9,8 @@ const upload = multer({
     limits: { fileSize: 100 * 1024 * 1024 }
 });
 
-router.post('/datasets/upload', upload.single('dataset'), uploadDataset);
-router.get('/datasets/:cid', getDatasetByCID);
-router.delete('/datasets/:cid', deleteDataset);
+router.post('/upload', upload.single('dataset'), uploadDataset);
+router.get('/:cid', getDatasetByCID);
+router.delete('/:cid', deleteDataset);
+
+module.exports = router;

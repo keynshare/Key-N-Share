@@ -5,7 +5,7 @@ const datasetCatalogueSchema = new mongoose.Schema(
         userId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
 
         // Dataset ID from the smart contract, for indexing
-        datasetId: { type: Number, required: true, unique: true },
+        // datasetId: { type: Number, required: true, unique: true },
 
         // Core on-chain metadata (from the smart contract)
         sellerAddress: { type: String, required: true, trim: true },
