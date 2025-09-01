@@ -4,7 +4,7 @@ This document outlines all the available APIs for the profile section of the Key
 
 ## Base URL
 ```
-http://localhost:5000/api/profile
+http://localhost:4000/api/profile
 ```
 
 ## Authentication

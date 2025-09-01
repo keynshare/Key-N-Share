@@ -45,17 +45,16 @@ const userSchema = new mongoose.Schema(
       ipAddress: { type: String },
       userAgent: { type: String }
     },
-    // preferences: {
-    //   rememberMe: { type: Boolean, default: false },
-    //   lastLoginAt: { type: Date },
-    //   loginCount: { type: Number, default: 0 }
-    // },
-    // walletAddress: {
-    //   type: String,
-    //   required: false,
-    //   unique: true,
-    //   trim: true
-    // },
+    preferences: {
+      rememberMe: { type: Boolean, default: false },
+      lastLoginAt: { type: Date },
+      loginCount: { type: Number, default: 0 }
+    },
+    walletAddress: {
+      type: String,
+      required: false,
+      trim: true
+    },
     sellerRating: {
       totalRating: { type: Number, default: 0 },
       numberOfRatings: { type: Number, default: 0 },

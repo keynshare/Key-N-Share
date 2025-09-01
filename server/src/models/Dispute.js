@@ -6,7 +6,6 @@ const disputeSchema = new mongoose.Schema(
     disputeId: {
       type: String,
       required: true,
-      unique: true,
       trim: true
     },
     
@@ -236,7 +235,7 @@ const disputeSchema = new mongoose.Schema(
 );
 
 // Indexes for better query performance
-disputeSchema.index({ disputeId: 1 });
+disputeSchema.index({ disputeId: 1 }, { unique: true });
 disputeSchema.index({ status: 1 });
 disputeSchema.index({ type: 1 });
 disputeSchema.index({ priority: 1 });

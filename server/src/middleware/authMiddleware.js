@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { SECRET_KEY } = require('../../constants');
+const { JWT_SECRET } = require('../../constants');
 
 const authenticate = (req, res, next) => {
     try {
@@ -13,7 +13,7 @@ const authenticate = (req, res, next) => {
             return res.status(401).json({ message: 'Access denied. Invalid token format.' });
         }
 
-        const decoded = jwt.verify(token, SECRET_KEY);
+        const decoded = jwt.verify(token, JWT_SECRET);
 
         req.user = decoded;
         next();
