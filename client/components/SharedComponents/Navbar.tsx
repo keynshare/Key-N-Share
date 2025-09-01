@@ -257,7 +257,7 @@ const { isAuthenticated } = useAuth();
                 <button title="Notifications" className="p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white rounded-full">
                   <Bell size={22} />
                 </button>
-                <Link href="#" className="  text-white rounded-full">
+                <Link href="/profile" className="  text-white rounded-full">
                   <Image
                     className="object-cover w-10"
                     src={User}
@@ -360,7 +360,7 @@ const { isAuthenticated } = useAuth();
                 <button className="p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white rounded-full">
                   <Bell size={22} />
                 </button>
-                <Link href="#" className="  text-white  rounded-full">
+                <Link href="/profile" className="  text-white  rounded-full">
                   <Image
                     className="object-cover w-10"
                     src={User}
