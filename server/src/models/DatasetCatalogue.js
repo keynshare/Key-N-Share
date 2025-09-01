@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 
 const datasetCatalogueSchema = new mongoose.Schema(
     {
-        // A direct reference to the User model for easy identification and joins
         userId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
 
         // Dataset ID from the smart contract, for indexing
