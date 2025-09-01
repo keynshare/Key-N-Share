@@ -77,7 +77,7 @@ const { isConnected, balance, isPending, connectWallet, disconnectWallet } = use
              Hey, Welcome Back Login To Key N Share And Get Started
             </h1>
 
-            <form onSubmit={handleLogin} className="flex flex-col px-2 xl:px-4 w-full items-center justify-center gap-4">
+            <form onSubmit={(e) => { e.preventDefault(); handleLogin(); }} className="flex flex-col px-2 xl:px-4 w-full items-center justify-center gap-4">
               <span className="w-full text-center md:text-left">
                 Don&apos;t have an account?{" "}
                 <button 
