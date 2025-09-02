@@ -1,14 +1,13 @@
 const mongoose = require('mongoose');
+const { MONGODB_URI } = require('../../constants');
 
 let isConnected = false;
 
 async function connectToDatabase() {
   if (isConnected) return;
 
-  const mongoUri = process.env.MONGODB_URI 
-
   try {
-    await mongoose.connect(mongoUri, {
+    await mongoose.connect(MONGODB_URI, {
       autoIndex: true,
       serverSelectionTimeoutMS: 15000,
     });

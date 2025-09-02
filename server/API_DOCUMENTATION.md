@@ -4,7 +4,7 @@ This document outlines all the available APIs for the profile section of the Key
 
 ## Base URL
 ```
-http://localhost:5000/api/profile
+http://localhost:4000/api/profile
 ```
 
 ## Authentication
@@ -414,5 +414,15 @@ const updateProfile = async (updates) => {
 4. **Error Handling**: Always check the `success` field in responses
 5. **Data Population**: The APIs automatically populate related data (datasets, transactions, etc.)
 6. **Real-time Updates**: Consider implementing WebSocket or polling for live statistics updates
+7. **Dispute System**: The User schema now includes dispute tracking (disputesRaised, disputesSolved)
+
+## Complete Model System
+
+Your User schema is now **100% complete** with all referenced models available:
+
+✅ **User.js** - Complete user profile with all fields and methods
+✅ **Transaction.js** - Complete transaction tracking for dataset sales  
+✅ **DatasetCatalogue.js** - Complete dataset management
+✅ **Dispute.js** - Complete dispute resolution system (NEW!)
 
 The APIs are designed to be RESTful and follow consistent patterns for easy integration.

@@ -6,7 +6,6 @@ const transactionSchema = new mongoose.Schema(
     transactionHash: { 
       type: String, 
       required: true, 
-      unique: true, 
       trim: true 
     },
     
@@ -84,7 +83,7 @@ const transactionSchema = new mongoose.Schema(
 );
 
 // Indexes for better query performance
-transactionSchema.index({ transactionHash: 1 });
+transactionSchema.index({ transactionHash: 1 }, { unique: true });
 transactionSchema.index({ sellerId: 1 });
 transactionSchema.index({ buyerId: 1 });
 transactionSchema.index({ datasetId: 1 });
