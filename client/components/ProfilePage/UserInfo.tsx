@@ -8,6 +8,8 @@ import { useAuth } from '@/lib/Authentication/AuthContext'
 import { LogOut } from 'lucide-react'
 import { profileApi } from '@/lib/api/ProfileApi'
 import { useNotifications } from '@/lib/notification-context'
+import EditProfileDialog from './EditProfileDialog'
+import UserInfoSkeleton from '@/components/Skeletons/ProfilePage/UserInfoSkeleton'
 
 interface ProfileData {
   _id: string;
@@ -25,6 +27,7 @@ function UserInfo() {
   const { notify, reportError } = useNotifications()
   const [profile, setProfile] = useState<ProfileData | null>(null)
   const [loading, setLoading] = useState(true)
+  const [isEditOpen, setIsEditOpen] = useState(false)
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -58,24 +61,27 @@ function UserInfo() {
   // Don't render anything until auth is initialized to prevent hydration issues
   if (!isInitialized) {
     return (
-      <div className="w-full rounded-xl mt-4 shadow-md border dark:border-gray-600 overflow-hidden">
-        <div className="animate-pulse">
-          <div className="h-40 md:h-72 bg-gray-200 rounded"></div>
-          <div className="p-4 md:p-6">
-            <div className="h-32 w-32 bg-gray-200 rounded-full mb-4"></div>
-            <div className="h-6 w-40 bg-gray-200 rounded mb-2"></div>
-            <div className="h-4 w-60 bg-gray-200 rounded mb-1"></div>
-            <div className="h-4 w-32 bg-gray-200 rounded"></div>
-          </div>
-        </div>
-      </div>
+      <UserInfoSkeleton/>
     )
   }
 
   const handleEditBio = () => {
-    // Implement edit bio functionality
-    // This could open a modal or navigate to an edit page
-    notify({ type: "info", message: "Edit bio functionality will be implemented soon" })
+    setIsEditOpen(true)
+  }
+
+  async function handleSave(updates: { role?: string; bio?: string }) {
+    if (!token) return
+    try {
+      const response = await profileApi.updateUserProfile(updates, token)
+      if (response?.success) {
+        setProfile(response.data)
+        notify({ type: 'success', message: 'Profile updated successfully' })
+      } else if (response?.message) {
+        notify({ type: 'warning', message: response.message })
+      }
+    } catch (error: any) {
+      reportError(error?.response?.data?.message || 'Failed to update profile')
+    }
   }
 
   return (
@@ -115,7 +121,7 @@ function UserInfo() {
         {/* Edit Profile Button */}
         <div className="w-full md:w-fit flex gap-3">
           <SecondaryBtn className='w-full md:w-fit' onClick={handleEditBio}>
-            Edit Bio
+            Edit Profile
           </SecondaryBtn>
           <SecondaryBtn onClick={logout} Title='Logout' className='p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white rounded-full' >
             <LogOut size={20}/>
@@ -123,6 +129,14 @@ function UserInfo() {
         </div>
       </div>
     </div>
+
+    <EditProfileDialog
+        isOpen={isEditOpen}
+        currentRole={profile?.role || ""}
+        currentBio={profile?.bio || ""}
+        onClose={() => setIsEditOpen(false)}
+        onSave={handleSave}
+      />
    </>
   )
 }

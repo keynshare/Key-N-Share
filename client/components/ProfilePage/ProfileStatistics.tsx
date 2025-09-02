@@ -55,7 +55,7 @@ export default function ProfileStatistics() {
       }
     };
 
-    // Only fetch if auth is initialized and we have a token
+    // Only fetch if auth is initialized
     if (isInitialized && token) {
       fetchProfile();
     } else if (isInitialized && !token) {
