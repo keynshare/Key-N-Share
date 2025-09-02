@@ -5,7 +5,7 @@ import Image from "next/image";
 import PrimaryBtn from "../SharedComponents/Btns/PrimaryBtn";
 import SecondaryBtn from "../SharedComponents/Btns/SecondaryBtn";
 import Google from "../assets/Google.svg";
-import { Wallet } from "lucide-react";
+import { Wallet, Eye, EyeOff } from "lucide-react";
 import WalletGradient from '@/components/assets/Wallet.svg'
 import { useRouter } from "next/navigation";
 import axios from "axios";
@@ -27,6 +27,7 @@ const { isConnected, balance, isPending, connectWallet, disconnectWallet } = use
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
  
   const router = useRouter();
   const { notify, reportError } = useNotifications();
@@ -58,14 +59,15 @@ const { isConnected, balance, isPending, connectWallet, disconnectWallet } = use
 
     notify({ type: "success", message: "Login successful!" });
     router.push("/dashboard");
+      setEmail("");
+      setPassword("");
   
     } catch (err) {
       console.error(err);
       reportError((err as Error).message);
     } finally {
       setSubmitting(false);
-      setEmail("");
-      setPassword("");
+    
     }
   }
 
@@ -95,15 +97,24 @@ const { isConnected, balance, isPending, connectWallet, disconnectWallet } = use
                 value={email}
                 onChange={(e)=>setEmail(e.target.value)}
               />
-              <input
-                className="w-full bg-gray-200/55 dark:bg-[#141414] p-3 rounded-md"
-                type="password"
-                placeholder="Enter Password"
-                value={password}
-                onChange={(e)=>setPassword(e.target.value)}
-                required
-                minLength={6}
-              />
+              <div className="relative w-full">
+            <input
+              className="w-full bg-gray-200/55 dark:bg-[#141414] p-3 rounded-md pr-10"
+              type={showPassword ? "text" : "password"}
+              placeholder="Enter Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              minLength={6}
+            />
+            <button
+              type="button"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 dark:text-gray-300"
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          </div>
 
               <div className="flex w-full items-center justify-between">
                 <label className="flex items-center gap-2 ">
