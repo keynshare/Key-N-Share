@@ -7,6 +7,7 @@ const { connectToDatabase } = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const datasetRoutes = require('./routes/datasets');
 const profileRoutes = require('./routes/profileRoutes');
+const catalogueRoutes = require('./routes/datasetCatalogue')
 
 const app = express();
 
@@ -38,6 +39,7 @@ app.get('/', (_req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/datasets', datasetRoutes);
 app.use('/api/profile', profileRoutes);
+app.use('/api/dataset-catalogue', catalogueRoutes);
 
 
 // 404 handler
