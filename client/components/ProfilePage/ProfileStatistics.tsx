@@ -6,6 +6,7 @@ import { profileApi } from "@/lib/api/ProfileApi";
 import { useAuth } from "@/lib/Authentication/AuthContext";
 import { useNotifications } from "@/lib/notification-context";
 import AboutSection from "./AboutSection";
+import { hasViewedProfile, markProfileAsViewed, forceCleanupViewedProfiles } from "@/lib/utils/profileViewUtils";
 
 interface ProfileData {
   _id: string;
@@ -44,6 +45,20 @@ export default function ProfileStatistics({ userId }: ProfileStatisticsProps = {
   const { reportError } = useNotifications();
   const [isCurrentUser, setIsCurrentUser] = useState(true);
 
+  // Effect for periodic cleanup of viewed profiles storage
+  useEffect(() => {
+    // Run cleanup with 20% probability when component mounts
+    // This distributes cleanup across different user sessions
+    if (Math.random() < 0.2) {
+      // Small delay to not interfere with initial rendering
+      const timeoutId = setTimeout(() => {
+        forceCleanupViewedProfiles();
+      }, 5000); // 5 seconds after mount
+      
+      return () => clearTimeout(timeoutId);
+    }
+  }, []);
+
   useEffect(() => {
     const fetchProfile = async () => {
       if (!token) {
@@ -59,6 +74,14 @@ export default function ProfileStatistics({ userId }: ProfileStatisticsProps = {
           // Fetch another user's profile
           response = await profileApi.getUserProfile(userId, token);
           setIsCurrentUser(false);
+          
+          // Only increment if we haven't viewed this profile before
+          if (!hasViewedProfile(userId)) {
+            await profileApi.incrementProfileViews(userId, token);
+            
+            // Mark this profile as viewed in localStorage
+            markProfileAsViewed(userId);
+          }
         } else {
           // Fetch current user's profile
           response = await profileApi.getCurrentUserProfile(token);
