@@ -43,7 +43,7 @@ body{
 }
 
 
-input{
+input, textarea,select{
   outline: none;
 }
 
@@ -51,9 +51,17 @@ input:focus{
  
   @apply dark:border-[#FF7A00] border-[#FF7A00] border;
 }
+textarea:focus{
+ 
+  @apply dark:border-[#FF7A00] border-[#FF7A00] border;
+}
+select:focus{
+ 
+  @apply dark:border-[#FF7A00] border-[#FF7A00] border;
+}
 
-input {
-  @apply dark:bg-[#141414];
+input, textarea,select {
+  @apply dark:bg-[#141414] dark:border-gray-700;
 }
 
 
