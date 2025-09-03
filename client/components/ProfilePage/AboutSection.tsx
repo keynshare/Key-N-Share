@@ -30,9 +30,10 @@ interface ProfileData {
 interface AboutSectionProps {
   profile: ProfileData | null;
   loading: boolean;
+  isCurrentUser: boolean;
 }
 
-export default function AboutSection({ profile, loading }: AboutSectionProps) {
+export default function AboutSection({ profile, loading, isCurrentUser }: AboutSectionProps) {
   // Calculate seller rating percentages
   const getRatingPercentages = () => {
     if (!profile || !profile.sellerRating || profile.sellerRating.numberOfRatings === 0) {
@@ -134,12 +135,12 @@ export default function AboutSection({ profile, loading }: AboutSectionProps) {
               profile?.sellerRating?.averageRating?.toFixed(1) || '0.0'
             )}
           </span>
-          <div className="flex text-orange-400">
+          <div className={`flex ${isCurrentUser ? 'text-orange-400' : 'text-blue-500'}`}>
             {[1, 2, 3, 4, 5].map((star) => (
               <Star 
                 key={star} 
                 size={18} 
-                fill={star <= Math.round(profile?.sellerRating?.averageRating || 0) ? "#fb923c" : "none"} 
+                fill={star <= Math.round(profile?.sellerRating?.averageRating || 0) ? (isCurrentUser ? "#fb923c" : "#3b82f6") : "none"} 
               />
             ))}
           </div>
@@ -154,7 +155,7 @@ export default function AboutSection({ profile, loading }: AboutSectionProps) {
                 <span className="w-4">{star}</span>
                 <div className="flex-1 h-2 bg-gray-200 dark:bg-[#1f1f1f] rounded">
                   <div
-                    className="h-2 bg-orange-400 rounded"
+                    className={`h-2 ${isCurrentUser ? 'bg-orange-400' : 'bg-blue-500'} rounded`}
                     style={{ width: `${percent}%` }}
                   ></div>
                 </div>
@@ -174,12 +175,12 @@ export default function AboutSection({ profile, loading }: AboutSectionProps) {
               profile?.buyerRating?.averageRating?.toFixed(1) || '0.0'
             )}
           </span>
-          <div className="flex text-orange-400">
+          <div className={`flex ${isCurrentUser ? 'text-orange-400' : 'text-blue-500'}`}>
             {[1, 2, 3, 4, 5].map((star) => (
               <Star 
                 key={star} 
                 size={18} 
-                fill={star <= Math.round(profile?.buyerRating?.averageRating || 0) ? "#fb923c" : "none"} 
+                fill={star <= Math.round(profile?.buyerRating?.averageRating || 0) ? (isCurrentUser ? "#fb923c" : "#3b82f6") : "none"} 
               />
             ))}
           </div>
@@ -194,7 +195,7 @@ export default function AboutSection({ profile, loading }: AboutSectionProps) {
                 <span className="w-4">{star}</span>
                 <div className="flex-1 h-2 bg-gray-200 dark:bg-[#1f1f1f] rounded">
                   <div
-                    className="h-2 bg-orange-400 rounded"
+                    className={`h-2 ${isCurrentUser ? 'bg-orange-400' : 'bg-blue-500'} rounded`}
                     style={{ width: `${percent}%` }}
                   ></div>
                 </div>

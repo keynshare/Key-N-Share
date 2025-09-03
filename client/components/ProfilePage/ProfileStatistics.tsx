@@ -32,12 +32,17 @@ interface ProfileData {
   };
 }
 
-export default function ProfileStatistics() {
+interface ProfileStatisticsProps {
+  userId?: string; 
+}
+
+export default function ProfileStatistics({ userId }: ProfileStatisticsProps = {}) {
   const [activeTab, setActiveTab] = useState("about");
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [loading, setLoading] = useState(true);
   const { token, isInitialized } = useAuth();
   const { reportError } = useNotifications();
+  const [isCurrentUser, setIsCurrentUser] = useState(true);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -48,7 +53,18 @@ export default function ProfileStatistics() {
 
       try {
         setLoading(true);
-        const response = await profileApi.getCurrentUserProfile(token);
+        let response;
+        
+        if (userId) {
+          // Fetch another user's profile
+          response = await profileApi.getUserProfile(userId, token);
+          setIsCurrentUser(false);
+        } else {
+          // Fetch current user's profile
+          response = await profileApi.getCurrentUserProfile(token);
+          setIsCurrentUser(true);
+        }
+        
         if (response.success) {
           setProfile(response.data);
         }
@@ -66,7 +82,7 @@ export default function ProfileStatistics() {
     } else if (isInitialized && !token) {
       setLoading(false);
     }
-  }, [token, isInitialized, reportError]);
+  }, [token, isInitialized, reportError, userId]);
 
   // Don't render anything until auth is initialized to prevent hydration issues
   if (!isInitialized) {
@@ -110,7 +126,7 @@ export default function ProfileStatistics() {
 
       {/* About Section */}
       {activeTab === "about" && (
-        <AboutSection profile={profile} loading={loading} />
+        <AboutSection profile={profile} loading={loading} isCurrentUser={isCurrentUser} />
 
         
       )}

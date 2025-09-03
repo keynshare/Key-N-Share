@@ -5,7 +5,7 @@ import User from '@/components/assets/User.svg'
 import CoverProfile from '@/components/assets/CoverProfile.svg'
 import Image from 'next/image'
 import { useAuth } from '@/lib/Authentication/AuthContext'
-import { LogOut } from 'lucide-react'
+import { LogOut,MessageCircleMoreIcon } from 'lucide-react'
 import { profileApi } from '@/lib/api/ProfileApi'
 import { useNotifications } from '@/lib/notification-context'
 import EditProfileDialog from './EditProfileDialog'
@@ -22,7 +22,7 @@ interface ProfileData {
   // Add other fields as needed
 }
 
-function UserInfo() {
+function UserInfo({userId}: {userId?: string}) {
   const { logout, token, isInitialized } = useAuth()
   const { notify, reportError } = useNotifications()
   const [profile, setProfile] = useState<ProfileData | null>(null)
@@ -120,12 +120,22 @@ function UserInfo() {
 
         {/* Edit Profile Button */}
         <div className="w-full md:w-fit flex gap-3">
-          <SecondaryBtn className='w-full md:w-fit' onClick={handleEditBio}>
-            Edit Profile
-          </SecondaryBtn>
-          <SecondaryBtn onClick={logout} Title='Logout' className='p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white rounded-full' >
-            <LogOut size={20}/>
-          </SecondaryBtn>
+          {!userId && (
+            <SecondaryBtn className='w-full md:w-fit' onClick={handleEditBio}>
+              Edit Profile
+            </SecondaryBtn>
+          )}
+
+          {!userId ? (
+            <SecondaryBtn onClick={logout} Title='Logout' className='p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white ' >
+              <LogOut size={20}/>
+            </SecondaryBtn>
+          ) : (
+            <SecondaryBtn  Title='Chat' className='p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white ' >
+              <MessageCircleMoreIcon size={20}/>
+            </SecondaryBtn>
+          )}
+
         </div>
       </div>
     </div>
