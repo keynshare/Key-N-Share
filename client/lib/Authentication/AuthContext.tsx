@@ -61,6 +61,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setToken(token);
   };
 
+
   const logout = () => {
     Cookies.remove("kns_token");
     setIsAuthenticated(false);

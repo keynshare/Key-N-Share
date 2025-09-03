@@ -1,17 +1,97 @@
-import React from 'react'
+"use client"
+import React, { useEffect, useState } from 'react'
 import SecondaryBtn from '../SharedComponents/Btns/SecondaryBtn'
 import User from '@/components/assets/User.svg'
 import CoverProfile from '@/components/assets/CoverProfile.svg'
 import Image from 'next/image'
-function UserInfo() {
+import { useAuth } from '@/lib/Authentication/AuthContext'
+import { LogOut,MessageCircleMoreIcon } from 'lucide-react'
+import { profileApi } from '@/lib/api/ProfileApi'
+import { useNotifications } from '@/lib/notification-context'
+import EditProfileDialog from './EditProfileDialog'
+import UserInfoSkeleton from '@/components/Skeletons/ProfilePage/UserInfoSkeleton'
+import {AxiosError } from 'axios'
+
+interface ProfileData {
+  _id: string;
+  firstName: string;
+  email: string;
+  role: string;
+  bio: string;
+  profileViewsCount: number;
+  createdAt: string;
+  // Add other fields as needed
+}
+
+function UserInfo({userId}: {userId?: string}) {
+  const { logout, token, isInitialized } = useAuth()
+  const { notify, reportError } = useNotifications()
+  const [profile, setProfile] = useState<ProfileData | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [isEditOpen, setIsEditOpen] = useState(false)
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (!token) {
+        setLoading(false)
+        return
+      }
+
+      try {
+        setLoading(true)
+        const response = await profileApi.getCurrentUserProfile(token)
+        if (response.success) {
+          setProfile(response.data)
+        }
+      } catch (error) {
+        console.error('Error fetching profile:', error)
+        reportError('Failed to load profile data')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    // Only fetch if auth is initialized and we have a token
+    if (isInitialized && token) {
+      fetchProfile()
+    } else if (isInitialized && !token) {
+      setLoading(false)
+    }
+  }, [token, isInitialized, reportError])
+
+  // Don't render anything until auth is initialized to prevent hydration issues
+  if (!isInitialized) {
+    return (
+      <UserInfoSkeleton/>
+    )
+  }
+
+  const handleEditBio = () => {
+    setIsEditOpen(true)
+  }
+
+  async function handleSave(updates: { role?: string; bio?: string }) {
+    if (!token) return
+    try {
+      const response = await profileApi.updateUserProfile(updates, token)
+      if (response?.success) {
+        setProfile(response.data)
+        notify({ type: 'success', message: 'Profile updated successfully' })
+      } else if (response?.message) {
+        notify({ type: 'warning', message: response.message })
+      }
+    } catch (err) {
+       const error = err as AxiosError<{ message: string }>
+      reportError(error?.response?.data?.message || 'Failed to update profile')
+    }
+  }
+
   return (
    <>
-   
     <div className="w-full rounded-xl mt-4 shadow-md border dark:border-gray-600 overflow-hidden">
       {/* Banner */}
       <div className="relative h-40 md:h-72 bg-white dark:bg-[#0e0e0e] border-b dark:border-gray-600 ">
         <Image src={CoverProfile} alt='Profile Cover for Key n Share' className=" object-cover object-right-top h-full w-screen md:h-full "/>
-        
       </div>
 
       {/* Profile Section */}
@@ -23,22 +103,52 @@ function UserInfo() {
 
         {/* Profile Info */}
         <div className="md:ml-40">
-          <h1 className="text-xl font-semibold">Mohammad Khomeni</h1>
-          <p className="text-sm text-gray-600">
-            Data Scientist · Joined 2 Years Ago
-          </p>
-          <p className="text-sm text-gray-500 mt-1">24k followers</p>
+          {loading ? (
+            <div className="animate-pulse">
+              <div className="h-6 w-40 bg-gray-200 rounded mb-2"></div>
+              <div className="h-4 w-60 bg-gray-200 rounded mb-1"></div>
+              <div className="h-4 w-32 bg-gray-200 rounded"></div>
+            </div>
+          ) : (
+            <>
+              <h1 className="text-xl font-semibold">{profile?.firstName || 'User'}</h1>
+              <p className="text-sm text-gray-600">
+                {profile?.role || 'No Designation '} · Joined {profile ? new Date(profile.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long' }) : 'Recently'}
+              </p>
+              <p className="text-sm text-gray-500 mt-1">{profile?.profileViewsCount || 0} profile views</p>
+            </>
+          )}
         </div>
 
         {/* Edit Profile Button */}
-        <div className="w-full md:w-fit">
-          <SecondaryBtn className='w-full md:w-fit' >
-            Edit Profile
-          </SecondaryBtn>
+        <div className="w-full md:w-fit flex gap-3">
+          {!userId && (
+            <SecondaryBtn className='w-full md:w-fit' onClick={handleEditBio}>
+              Edit Profile
+            </SecondaryBtn>
+          )}
+
+          {!userId ? (
+            <SecondaryBtn onClick={logout} Title='Logout' className='p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white ' >
+              <LogOut size={20}/>
+            </SecondaryBtn>
+          ) : (
+            <SecondaryBtn  Title='Chat' className='p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white ' >
+              <MessageCircleMoreIcon size={20}/>
+            </SecondaryBtn>
+          )}
+
         </div>
       </div>
     </div>
-   
+
+    <EditProfileDialog
+        isOpen={isEditOpen}
+        currentRole={profile?.role || ""}
+        currentBio={profile?.bio || ""}
+        onClose={() => setIsEditOpen(false)}
+        onSave={handleSave}
+      />
    </>
   )
 }

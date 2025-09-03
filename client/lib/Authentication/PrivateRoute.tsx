@@ -22,7 +22,7 @@ export default function PrivateRoute({ children }: { children: React.ReactNode }
     }
   }, [isAuthenticated, isInitialized, router, pathname]);
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated && pathname !== "/authentication") {
     return (
       <div className='flex flex-col items-center justify-center w-full h-screen'>
         <span className='w-16 h-16 border-4 border-gray-200 border-t-gray-900 rounded-full animate-spin'/>

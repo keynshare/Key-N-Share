@@ -5,7 +5,7 @@ import SecondaryBtn from "../SharedComponents/Btns/SecondaryBtn";
 import Image from 'next/image';
 import Google from "../assets/Google.svg";
 import {useWalletConnection} from "@/lib/Authentication/walletConnection";
-import { Wallet } from "lucide-react";
+import { Wallet,Eye,EyeOff } from "lucide-react";
 import WalletGradient from '@/components/assets/Wallet.svg';
 import {useRouter} from 'next/navigation';
 import axios from "axios";
@@ -18,7 +18,7 @@ type SignupProp={
 }
 function Signupform({isLoginMode,toggleMode}:SignupProp) {
 
-const { isConnected, balance, address, isPending, connectWallet, disconnectWallet } = useWalletConnection();
+const { isConnected, balance, isPending, connectWallet, disconnectWallet } = useWalletConnection();
 const { login } = useAuth();
 
   const [firstName, setFirstName] = useState("");
@@ -28,6 +28,8 @@ const { login } = useAuth();
   const [termsAccepted, setTermsAccepted] = useState(false);
   // const [rememberMe, setRememberMe] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const router = useRouter();
   const { notify, reportError } = useNotifications();
@@ -52,10 +54,7 @@ const { login } = useAuth();
       return;
     }
 
-    if(!address || address === null) {
-      notify({ type: "warning", message: "Please connect your wallet to register" });
-      return;
-    }
+ 
 
     try {
       setSubmitting(true);
@@ -65,7 +64,6 @@ const { login } = useAuth();
         password,
         confirmPassword,
         termsAccepted,
-        walletAddress: address,
         remeberMe: false
       });
       
@@ -75,16 +73,16 @@ const { login } = useAuth();
       
       notify({ type: "success", message: "Registration successful!" });
       router.push('/dashboard');
+       setFirstName("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      setTermsAccepted(false);
     } catch (err) {
       console.error(err);
       reportError((err as Error).message);
     } finally {
       setSubmitting(false);
-      setFirstName("");
-      setEmail("");
-      setPassword("");
-      setConfirmPassword("");
-      setTermsAccepted(false);
     }
    
   }
@@ -124,22 +122,43 @@ const { login } = useAuth();
                 onChange={(e)=>setEmail(e.target.value)}
                 required
               />
-              <input
-                className="w-full bg-gray-200/55 dark:bg-[#141414] p-3 rounded-md"
-                type="password"
-                placeholder="Enter Password"
-                value={password}
-                onChange={(e)=>setPassword(e.target.value)}
-                required
-              />
-              <input
-                className="w-full bg-gray-200/55 dark:bg-[#141414] p-3 rounded-md"
-                type="password"
-                placeholder="Enter Confirm Password"
-                value={confirmPassword}
-                onChange={(e)=>setConfirmPassword(e.target.value)}
-                required
-              />
+
+           <div className="relative w-full">
+            <input
+              className="w-full bg-gray-200/55 dark:bg-[#141414] p-3 rounded-md pr-10"
+              type={showPassword ? "text" : "password"}
+              placeholder="Enter Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <button
+              type="button"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 dark:text-gray-300"
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          </div>
+
+
+              <div className="relative w-full">
+            <input
+              className="w-full bg-gray-200/55 dark:bg-[#141414] p-3 rounded-md pr-10"
+              type={showConfirmPassword ? "text" : "password"}
+              placeholder="Enter Confirm Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+            <button
+              type="button"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 dark:text-gray-300"
+              onClick={() => setShowConfirmPassword((prev) => !prev)}
+            >
+              {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          </div>
 
                <label className="relative flex-1 items-center justify-start w-full py-4 pl-1 gap-2 max-h-3 flex" >
             <input
