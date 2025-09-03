@@ -94,7 +94,7 @@ const Footer = () => {
                 <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/about">About Us</Link></li>
                 <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/orders">Previous Orders</Link></li>
                 <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/datasets">Your Datasets</Link></li>
-                <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/upload">Upload Datasets</Link></li>
+                <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/upload-dataset">Upload Datasets</Link></li>
                 <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/favourite-datasets">Favourites</Link></li>
                 <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/cart">Cart</Link></li>
               </ul>

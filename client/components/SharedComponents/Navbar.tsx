@@ -23,7 +23,7 @@ import { useAuth } from "@/lib/Authentication/AuthContext";
 
 const navLinks = [
   { label: "About Us", href: "/about" },
-  { label: "Upload Dataset", href: "/upload" },
+  { label: "Upload Dataset", href: "/upload-dataset" },
   { label: "Catalogue", href: "/catalogue" },
   { label: "Orders", href: "/orders" },
 ];
