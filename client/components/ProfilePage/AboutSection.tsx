@@ -118,19 +118,6 @@ export default function AboutSection({ profile, loading, isCurrentUser }: AboutS
         )}
       </div>
 
-      {/* Profile Views */}
-      <div>
-        <h2 className="text-xl font-semibold font-bricola">Profile Views</h2>
-        {loading ? (
-          <div className="animate-pulse mt-2">
-            <div className="h-6 bg-gray-200 rounded w-20"></div>
-          </div>
-        ) : (
-          <p className="text-gray-700 dark:text-gray-300 mt-2 text-lg">
-            <span className="font-semibold">{profile?.statistics?.profileViews || 0}</span> views
-          </p>
-        )}
-      </div>
 
       {/* Reputation */}
       <div>

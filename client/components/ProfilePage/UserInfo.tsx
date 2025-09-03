@@ -10,6 +10,7 @@ import { profileApi } from '@/lib/api/ProfileApi'
 import { useNotifications } from '@/lib/notification-context'
 import EditProfileDialog from './EditProfileDialog'
 import UserInfoSkeleton from '@/components/Skeletons/ProfilePage/UserInfoSkeleton'
+import {AxiosError } from 'axios'
 
 interface ProfileData {
   _id: string;
@@ -79,7 +80,8 @@ function UserInfo({userId}: {userId?: string}) {
       } else if (response?.message) {
         notify({ type: 'warning', message: response.message })
       }
-    } catch (error: any) {
+    } catch (err) {
+       const error = err as AxiosError<{ message: string }>
       reportError(error?.response?.data?.message || 'Failed to update profile')
     }
   }

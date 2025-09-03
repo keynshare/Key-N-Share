@@ -99,11 +99,12 @@ export const getViewedProfilesStats = () => {
     let expiredCount = 0;
     let validCount = 0;
     
-    Object.entries(viewedProfiles).forEach(([_, timestamp]) => {
-      if (typeof timestamp === 'boolean') {
+    Object.entries(viewedProfiles).forEach(([, value]) => {
+      if (typeof value === 'boolean') {
         booleanCount++;
         validCount++; // Count boolean values as valid
       } else {
+        const timestamp = Number(value);
         if (timestamp < oldestTimestamp) oldestTimestamp = timestamp;
         if (timestamp > newestTimestamp) newestTimestamp = timestamp;
         
@@ -197,7 +198,7 @@ export const getViewedProfilesCount = (): number => {
     
     // Only count non-expired profiles
     let count = 0;
-    Object.entries(viewedProfiles).forEach(([_, timestamp]) => {
+    Object.entries(viewedProfiles).forEach(([, timestamp]) => {
       if (typeof timestamp === 'boolean' || now - Number(timestamp) < PROFILE_VIEW_EXPIRY) {
         count++;
       }

@@ -4,7 +4,6 @@ import axios from 'axios';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/';
 
-
 export const profileApi = {
   getCurrentUserProfile: async (token: string) => {
     const response = await axios.get(`${API_URL}profile/me/profile`, {
@@ -17,7 +16,7 @@ export const profileApi = {
   },
   
   getUserProfile: async (userId: string, token?: string) => {
-    const headers: any = {
+    const headers: Record<string, string> = {
       'Content-Type': 'application/json'
     };
     
@@ -29,7 +28,7 @@ export const profileApi = {
     return response.data;
   },
   
-  updateUserProfile: async (updates: { role?: string, bio?: string }, token: string) => {
+  updateUserProfile: async (updates: { role?: string; bio?: string }, token: string) => {
     const response = await axios.put(`${API_URL}profile/me/profile`, updates, {
       headers: {
         'Content-Type': 'application/json',
@@ -40,7 +39,7 @@ export const profileApi = {
   },
   
   incrementProfileViews: async (userId: string, token?: string) => {
-    const headers: any = {
+    const headers: Record<string, string> = {
       'Content-Type': 'application/json'
     };
     
@@ -53,7 +52,7 @@ export const profileApi = {
   },
   
   getUserDatasets: async (userId: string, page = 1, limit = 10, token?: string) => {
-    const headers: any = {
+    const headers: Record<string, string> = {
       'Content-Type': 'application/json'
     };
     
@@ -61,7 +60,10 @@ export const profileApi = {
       headers.Authorization = `Bearer ${token}`;
     }
     
-    const response = await axios.get(`${API_URL}profile/${userId}/datasets?page=${page}&limit=${limit}`, { headers });
+    const response = await axios.get(
+      `${API_URL}profile/${userId}/datasets?page=${page}&limit=${limit}`,
+      { headers }
+    );
     return response.data;
   },
   
