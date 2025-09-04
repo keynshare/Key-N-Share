@@ -7,7 +7,7 @@ const { connectToDatabase } = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const datasetRoutes = require('./routes/datasets');
 const profileRoutes = require('./routes/profileRoutes');
-const catalogueRoutes = require('./routes/datasetCatalogue')
+const catalogueRoutes = require('./routes/datasetCatalogue');
 
 const app = express();
 
@@ -17,6 +17,7 @@ connectToDatabase();
 // Middleware
 app.use(helmet());
 app.use(express.json({ limit: '1mb' }));
+const authenticate = require('./middleware/authMiddleware');
 
 const clientOrigin = process.env.CLIENT_ORIGIN || 'http://localhost:3000';
 app.use(
@@ -37,9 +38,9 @@ app.get('/', (_req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
-app.use('/api/datasets', datasetRoutes);
-app.use('/api/profile', profileRoutes);
-app.use('/api/dataset-catalogue', catalogueRoutes);
+app.use('/api/datasets', authenticate, datasetRoutes);
+app.use('/api/profile', authenticate, profileRoutes);
+app.use('/api/dataset-catalogue', authenticate, catalogueRoutes);
 
 
 // 404 handler
