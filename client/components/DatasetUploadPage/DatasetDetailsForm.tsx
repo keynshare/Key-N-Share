@@ -2,69 +2,181 @@
 import PrimaryBtn from "@/components/SharedComponents/Btns/PrimaryBtn";
 import { FolderUp } from "lucide-react";
 import SecondaryBtn from "../SharedComponents/Btns/SecondaryBtn";
+import { DatasetFormData } from "./UploadDataset";
 
-function DatasetDetailsForm() {
+interface DatasetDetailsFormProps {
+  formData: DatasetFormData;
+  onFormDataChange: (updates: Partial<DatasetFormData>) => void;
+  onUpload: () => void;
+  isUploading: boolean;
+}
+
+function DatasetDetailsForm({ formData, onFormDataChange, onUpload, isUploading }: DatasetDetailsFormProps) {
   return (
-    <form className="space-y-4">
+    <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); onUpload(); }}>
       {/* Dataset Name + Source in one row */}
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Dataset Name</label>
-          <input type="text" placeholder="Dataset Name" className="w-full px-4 py-2 border border-gray-300 rounded-lg  focus:outline-none" />
+          <label className="block text-sm font-medium text-gray-700 mb-1">Dataset Name *</label>
+          <input 
+            type="text" 
+            placeholder="Dataset Name" 
+            value={formData.title}
+            onChange={(e) => onFormDataChange({ title: e.target.value })}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" 
+            required
+          />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Source of Data</label>
-          <input type="text" placeholder="eg: this data was taken from spotify" className="w-full px-4 py-2 border border-gray-300 rounded-lg  focus:outline-none" />
+          <input 
+            type="text" 
+            placeholder="eg: this data was taken from spotify" 
+            value={formData.source}
+            onChange={(e) => onFormDataChange({ source: e.target.value })}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" 
+          />
         </div>
       </div>
 
-      
-      
-      {/* Upload Dataset Input */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Upload Dataset</label>
-        <div className="flex">
-          <input type="text" placeholder="Click to upload Dataset" className="w-full px-4 py-2 border border-r-0 border-gray-300 rounded-l-lg  focus:outline-none" />
-          <SecondaryBtn className="bg-black text-white px-3 rounded-l-none"><FolderUp/></SecondaryBtn>
-        </div>
-      </div>
+
 
       {/* Price + Category in one row */}
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Price</label>
-          <input type="text" placeholder="Enter Price in Matic" className="w-full px-4 py-2 border border-gray-300 rounded-lg  focus:outline-none" />
+          <label className="block text-sm font-medium text-gray-700 mb-1">Price (MATIC) *</label>
+          <input 
+            type="number" 
+            step="0.01"
+            min="0"
+            placeholder="Enter Price in Matic" 
+            value={formData.price}
+            onChange={(e) => onFormDataChange({ price: e.target.value })}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" 
+            required
+          />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-          <select className="w-full px-4 py-2 border border-gray-300 rounded-lg  focus:outline-none">
-            <option>Select Category</option>
-            <option>Music</option>
-            <option>Sports</option>
-            <option>Finance</option>
+          <select 
+            value={formData.category}
+            onChange={(e) => onFormDataChange({ category: e.target.value })}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500"
+          >
+            <option value="">Select Category</option>
+            <option value="Music">Music</option>
+            <option value="Sports">Sports</option>
+            <option value="Finance">Finance</option>
+            <option value="Technology">Technology</option>
+            <option value="Healthcare">Healthcare</option>
+            <option value="Education">Education</option>
+            <option value="Other">Other</option>
           </select>
         </div>
+      </div>
+
+      {/* Cover Image Upload */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">Cover Image (Optional)</label>
+        <div className="flex">
+          <input 
+            type="text" 
+            placeholder="Click to upload Cover Image" 
+            value={formData.coverImage ? formData.coverImage.name : ""}
+            readOnly
+            className="w-full px-4 py-2 border border-r-0 border-gray-300 rounded-l-lg focus:outline-none bg-gray-50" 
+          />
+          <SecondaryBtn 
+            className="bg-black text-white px-3 rounded-l-none"
+            onClick={() => document.getElementById('cover-image')?.click()}
+          >
+            <FolderUp/>
+          </SecondaryBtn>
+        </div>
+        <input
+          id="cover-image"
+          type="file"
+          className="hidden"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) {
+              onFormDataChange({ coverImage: file });
+            }
+          }}
+          accept="image/*"
+        />
       </div>
 
       {/* Schema */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">Schema of Dataset in JSON Format</label>
-        <textarea  placeholder="eg: artist-name: Name of the artist, songs-no: number of songs" className="w-full px-4 py-2 border border-gray-300 rounded-lg  focus:outline-none" />
+        <textarea  
+          placeholder="eg: artist-name: Name of the artist, songs-no: number of songs" 
+          value={formData.schema}
+          onChange={(e) => onFormDataChange({ schema: e.target.value })}
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" 
+          rows={6}
+        />
+        <div className="mt-2">
+          <button
+            type="button"
+            onClick={() => {
+              const exampleSchema = `{
+  "spotify_track_uri": "Unique identifier for each Spotify track",
+  "ts": "Timestamp of the streaming event",
+  "platform": "Platform used for streaming (e.g., iOS, Android, Web)",
+  "ms_played": "Milliseconds the track was played",
+  "track_name": "Name of the track",
+  "artist_name": "Name of the artist",
+  "album_name": "Name of the album",
+  "reason_start": "Reason for starting the track (e.g., click, play_button)",
+  "reason_end": "Reason for ending the track (e.g., endplay, trackdone)",
+  "shuffle": "Whether shuffle was enabled",
+  "skipped": "Whether the track was skipped"
+}`;
+              onFormDataChange({ schema: exampleSchema });
+            }}
+            className="text-sm text-blue-600 hover:text-blue-800 underline"
+          >
+            Use Spotify Dataset Schema Example
+          </button>
+        </div>
       </div>
 
       {/* Description */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-        <textarea rows={1} placeholder="Description........" className="w-full px-4 py-2 border border-gray-300 rounded-lg  focus:outline-none"  />
+        <label className="block text-sm font-medium text-gray-700 mb-1">Description *</label>
+        <textarea 
+          rows={3} 
+          placeholder="Describe your dataset..." 
+          value={formData.description}
+          onChange={(e) => onFormDataChange({ description: e.target.value })}
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500"  
+          required
+        />
       </div>
 
       {/* Terms */}
       <div className="flex items-center space-x-2">
-        <input type="checkbox" id="terms" className="h-3 w-3 text-orange-500  border-gray-300 rounded" />
-        <label htmlFor="terms" className="text-gray-600">accept terms and conditions</label>
+        <input 
+          type="checkbox" 
+          id="terms" 
+          checked={formData.termsAccepted}
+          onChange={(e) => onFormDataChange({ termsAccepted: e.target.checked })}
+          className="h-3 w-3 text-orange-500 border-gray-300 rounded focus:ring-orange-500" 
+          required
+        />
+        <label htmlFor="terms" className="text-gray-600 text-sm">I accept the terms and conditions *</label>
       </div>
 
-      <PrimaryBtn sparkelClass="hidden">Upload Dataset</PrimaryBtn>
+      <PrimaryBtn 
+        Type="submit"
+        sparkelClass="hidden"
+        disabled={isUploading}
+        className={isUploading ? "opacity-50 cursor-not-allowed" : ""}
+      >
+        {isUploading ? "Uploading..." : "Upload Dataset"}
+      </PrimaryBtn>
     </form>
   );
 }

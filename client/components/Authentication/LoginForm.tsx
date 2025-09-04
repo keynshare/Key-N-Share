@@ -108,7 +108,7 @@ const { isConnected, balance, isPending, connectWallet, disconnectWallet } = use
               minLength={6}
             />
             <button
-              type="button"
+              
               className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 dark:text-gray-300"
               onClick={() => setShowPassword((prev) => !prev)}
             >
