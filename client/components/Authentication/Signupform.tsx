@@ -133,7 +133,7 @@ const { login } = useAuth();
               required
             />
             <button
-              type="button"
+             
               className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 dark:text-gray-300"
               onClick={() => setShowPassword((prev) => !prev)}
             >
@@ -152,7 +152,7 @@ const { login } = useAuth();
               required
             />
             <button
-              type="button"
+             
               className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 dark:text-gray-300"
               onClick={() => setShowConfirmPassword((prev) => !prev)}
             >
