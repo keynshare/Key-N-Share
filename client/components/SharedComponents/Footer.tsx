@@ -6,7 +6,7 @@ import React from 'react';
 import Logo from '@/public/logo.svg';
 import LogoDark from "@/public/DarkLogo.svg";
 
-import India from '@/components/assets/India.svg'
+// import India from '@/components/assets/India.svg'
 import { useTheme } from "@/lib/theme-context";
 import SecondaryBtn from './Btns/SecondaryBtn';
 
@@ -16,7 +16,7 @@ const Footer = () => {
   const footerRef = useRef<HTMLElement>(null);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  // const [isPlaying, setIsPlaying] = useState(false);
 
   // Intersection Observer for scroll-triggered animations
   useEffect(() => {
@@ -46,17 +46,17 @@ const Footer = () => {
     }
   }, [])
 
-  const togglePlay = () => {
-    if (!audioRef.current) return;
+  // const togglePlay = () => {
+  //   if (!audioRef.current) return;
 
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play();
-    }
+  //   if (isPlaying) {
+  //     audioRef.current.pause();
+  //   } else {
+  //     audioRef.current.play();
+  //   }
 
-    setIsPlaying(!isPlaying);
-  };
+  //   setIsPlaying(!isPlaying);
+  // };
 
 
   return (

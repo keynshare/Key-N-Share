@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from "react";
-
+import { AxiosError } from "axios";
 import CoverUpload from "./CoverUpload";
 import DatasetDetailsForm from "./DatasetDetailsForm";
 import SecurityDetailsForm from "./SecurityDetailsForm";
@@ -78,6 +78,17 @@ function UploadDataset() {
       notify({ type: "error", message: "Please fill in all required fields" });
       return;
     }
+    if (!userId) {
+  notify({ type: "error", message: "Session Expired. Please log in again." });
+  setIsUploading(false);
+  return;
+}
+
+if (!address) {
+  notify({ type: "error", message: "Please connect your wallet." });
+  setIsUploading(false);
+  return;
+}
 
     setIsUploading(true);
     try {
@@ -104,7 +115,7 @@ function UploadDataset() {
       // Add dataset to catalogue
       notify({ type: "info", message: "Adding dataset to catalogue..." });
       const catalogueData = {
-        userId: userId, 
+         userId, 
         sellerAddress: address,
         title: formData.title,
         price: parseFloat(formData.price),
@@ -135,10 +146,14 @@ function UploadDataset() {
         coverImage: null
       });
       
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Upload error:", error);
-      
-      notify({ type: "error", message: error.response.data.message || "Failed to upload dataset" });
+
+      if (error instanceof AxiosError) {
+        notify({ type: "error", message: error.response?.data.message || "Failed to upload dataset" });
+      } else {
+        notify({ type: "error", message: "Failed to upload dataset" });
+      }
     } finally {
       setIsUploading(false);
     }

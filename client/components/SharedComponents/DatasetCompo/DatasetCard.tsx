@@ -1,7 +1,7 @@
 "use client";
 import {useState,useEffect} from 'react'
 import Image from "next/image";
-import Cover from "@/components/assets/Cover.svg";
+// import Cover from "@/components/assets/Cover.svg";
 import User from "@/components/assets/User.svg";
 import { Star,EllipsisVertical } from "lucide-react";
 import CTAs from "./CTAs";

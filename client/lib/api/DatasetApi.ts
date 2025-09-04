@@ -22,7 +22,7 @@ export interface DatasetUploadResponse {
 }
 
 export interface DatasetCatalogueData {
-  userId: string;
+  userId: string ;
   sellerAddress: string;
   title: string;
   price: number;
@@ -31,7 +31,7 @@ export interface DatasetCatalogueData {
   description: string;
   coverImageUrl?: string;
   tags?: string[];
-  fileSize: number;
+  fileSize: string;
 }
 
 export const datasetApi = {
