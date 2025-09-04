@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { addDataset,getDatasets,getDatasetById } = require('../controllers/datasetCatalgoueController');
+const { addDataset,getDatasets,getDatasetById,getDatasetByUser } = require('../controllers/datasetCatalgoueController');
 
 const router = Router();
 
@@ -9,5 +9,7 @@ router.post('/', addDataset);
 router.get('/', getDatasets);
 
 router.get('/:id', getDatasetById);
+
+router.get('/:userId',getDatasetByUser);
 
 module.exports = router;
