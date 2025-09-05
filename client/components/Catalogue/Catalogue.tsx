@@ -22,8 +22,7 @@ function Catalogue() {
     tags?: string[];
     fileSize?: string;
     averageRating?: number;
-    downloads?: number;
-    views?: number;
+  
   }>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

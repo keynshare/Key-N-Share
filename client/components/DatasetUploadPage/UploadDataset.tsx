@@ -157,6 +157,7 @@ if (!address) {
       const catalogueData = {
          userId, 
         sellerAddress: address,
+        source:formData.source,
         title: formData.title,
         extension:FileType ,
         price: parseFloat(formData.price),
@@ -165,7 +166,8 @@ if (!address) {
         description: formData.description,
         coverImageUrl: coverImageUrl, 
         tags: formData.category ? [formData.category] : [],
-        fileSize: formatFileSize(formData.file.size)
+        fileSize: formatFileSize(formData.file.size),
+        schema:formData.schema
       };
 
       const catalogueResponse = await datasetApi.addDatasetToCatalogue(catalogueData, token);

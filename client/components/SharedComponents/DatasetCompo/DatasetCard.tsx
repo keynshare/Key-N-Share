@@ -8,30 +8,9 @@ import CTAs from "./CTAs";
 import Matic from "@/components/assets/Matic"
 import Link from 'next/link';
 
+import timeAgo from './timeAgo';
 
 
-function timeAgo(createdAt: string) {
-  const now = new Date();
-  const createdDate = new Date(createdAt);
-  const seconds = Math.floor((now.getTime() - createdDate.getTime()) / 1000);
-
-  const intervals = {
-    year: 31536000,
-    month: 2592000,
-    day: 86400,
-    hour: 3600,
-    minute: 60,
-  };
-
-  if (seconds < 60) return `${seconds} seconds ago`;
-
-  for (const [unit, value] of Object.entries(intervals)) {
-    const count = Math.floor(seconds / value);
-    if (count >= 1) {
-      return count === 1 ? `1 ${unit} ago` : `${count} ${unit}s ago`;
-    }
-  }
-}
 
 interface Dataset {
   _id?: string;
@@ -89,7 +68,7 @@ export default function DatasetCard({Data}:DatasetCardProps) {
   const getPrice = () => Data.price || Data.Price || 0;
   const getType = () => Data.extension || 'UNKNOWN';
   const getFileSize = () => Data.fileSize || 'Unknown size';
-  const getRating = () => Data.averageRating || 5;
+  const getRating = () => Data.averageRating;
   const getTime = () => Data.createdAt ? timeAgo(Data.createdAt) : 'Unknown time';
 
   return (

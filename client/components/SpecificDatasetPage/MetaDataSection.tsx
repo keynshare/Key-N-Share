@@ -6,13 +6,34 @@ interface Feature {
 }
 
 type ColumnsSectionProp={
+    Schema?:string;
     features?: Feature[];
     About?: string;
     Source?: string;
   }
 
 
-export default function MetaDataSection({ features ,About,Source}:ColumnsSectionProp) {
+export default function MetaDataSection({ Schema="" ,About,Source}:ColumnsSectionProp) {
+ 
+  // Parse the schema string and convert to array format
+  const parseSchema = (schemaString: string) => {
+    if (!schemaString || schemaString === "") return [];
+    
+    try {
+      const schemaObj = JSON.parse(schemaString);
+      return Object.entries(schemaObj).map(([key, description]) => ({
+        key,
+        label: key,
+        description: description as string
+      }));
+    } catch (error) {
+      console.error('Error parsing schema:', error);
+      return [];
+    }
+  };
+
+  const columnData = parseSchema(Schema);
+
   return (
     <section className="space-y-4 pt-6 dark:border-t-gray-600 border-gray-300 border-t">
        <div className="space-y-4  ">
@@ -21,9 +42,9 @@ export default function MetaDataSection({ features ,About,Source}:ColumnsSection
             {About}
       </p>
     </div>
-      <h2 className="text-xl font-semibold font-bricola ">Columns/Features Descriptions:</h2>
+   { columnData.length > 0 && <h2 className="text-xl font-semibold font-bricola ">Columns/Features Descriptions:</h2>}
       <div className="grid md:grid-cols-2 gap-6">
-        {features?.map((f) => (
+        {columnData.length > 0 && columnData.map((f) => (
           <div key={f.key} className="grid grid-cols-2 gap-2 border-b dark:border-gray-800 pb-4">
             <div>
               <div className="text-sm font-medium">{f.label}</div>

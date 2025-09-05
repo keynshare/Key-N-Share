@@ -23,6 +23,8 @@ const datasetCatalogueSchema = new mongoose.Schema(
         downloads: { type: Number, default: 0 },
         views: { type: Number, default: 0 },
         averageRating: { type: Number, default: 0 },
+        schema: { type: String, trim: true },
+        source: {type:String},
     },
     { timestamps: true }
 );
