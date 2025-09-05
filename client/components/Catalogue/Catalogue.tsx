@@ -1,25 +1,45 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FilterSidebar from "@/components/SharedComponents/Filter/FilterSidebar";
 import DatasetCard from "../SharedComponents/DatasetCompo/DatasetCard";
 import { Search, Filter } from "lucide-react";
 import PrimaryBtn from "../SharedComponents/Btns/PrimaryBtn";
 import Pagination from "../SharedComponents/Pagination/Pagination";
 import Breadcrumb from "@/components/SharedComponents/Breadcrumb/Breadcrumb";
-import DatasetData from '@/components/assets/dataset.json'
+import DatasetCardSkeleton from "../Skeletons/Dataset/DatasetCardSkeleton";
+import PaginationSkeleton from "../Skeletons/Dataset/PaginationSkeleton";
+import { datasetApi } from "@/lib/api/DatasetApi";
+import { useAuth } from "@/lib/Authentication/AuthContext";
 function Catalogue() {
   const categories = ["Trending", "Highest Rating", "Newly Added"];
   const [isOpen, setIsOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [datasets, setDatasets] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [totalPages, setTotalPages] = useState(1);
+  const { token } = useAuth();
 
-   const itemsPerPage = 12; 
-  const totalItems = DatasetData.length;
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const itemsPerPage = 12;
 
-  
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentItems = DatasetData.slice(startIndex, endIndex);
+  // Fetch datasets from API
+  useEffect(() => {
+    const fetchDatasets = async () => {
+      try {
+        setLoading(true);
+        const response = await datasetApi.getDatasets(currentPage, itemsPerPage, token || undefined);
+        setDatasets(response.data || []);
+        setTotalPages(response.totalPages || 1);
+      } catch (err) {
+        console.error('Error fetching datasets:', err);
+        setError('Failed to load datasets');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDatasets();
+  }, [currentPage, token]);
   const breadcrumbItems = [
     { label: "Catalogue", isActive: true }
   ]; 
@@ -55,24 +75,34 @@ function Catalogue() {
           </div>
 
           {/* Categories */}
-            <div
-             
-              className="flex flex-wrap w-full h-fit gap-5 justify-center items-start "
-            >
-          {DatasetData.map((category, index) => (
-          
-                <DatasetCard key={index} Data={category} />
-              
-           
-          ))}
-           </div>
+          {loading ? (
+            <div className="flex flex-wrap w-full h-fit gap-5 justify-center items-start">
+              {Array.from({ length: itemsPerPage }).map((_, index) => (
+                <DatasetCardSkeleton key={index} />
+              ))}
+            </div>
+          ) : error ? (
+            <div className="flex justify-center items-center py-10">
+              <div className="text-lg text-red-500">{error}</div>
+            </div>
+          ) : (
+            <div className="flex flex-wrap w-full h-fit gap-5 justify-center items-start">
+              {datasets.map((dataset, index) => (
+                <DatasetCard key={dataset._id || index} Data={dataset} />
+              ))}
+            </div>
+          )}
 
           {/* Pagination */}
-          <Pagination
-             currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-          />
+          {loading ? (
+            <PaginationSkeleton />
+          ) : (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          )}
 
         </div>
       </div>

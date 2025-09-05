@@ -19,7 +19,7 @@ const datasetCatalogueSchema = new mongoose.Schema(
         coverImageUrl: { type: String, trim: true },
         tags: { type: [String], trim: true },
         fileSize: { type: String, trim: true },
-
+        extension: { type: String, trim: true },
         downloads: { type: Number, default: 0 },
         views: { type: Number, default: 0 },
         averageRating: { type: Number, default: 0 },

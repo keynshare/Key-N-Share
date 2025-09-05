@@ -26,6 +26,7 @@ export interface DatasetCatalogueData {
   sellerAddress: string;
   title: string;
   price: number;
+  extension: string;
   dataCID: string;
   originalContentHash: string;
   description: string;

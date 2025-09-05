@@ -14,6 +14,7 @@ export interface DatasetFormData {
   price: string;
   category: string;
   schema: string;
+  extension: string;
   description: string;
   termsAccepted: boolean;
   encryptionKey: string;
@@ -149,12 +150,14 @@ if (!address) {
       const originalContentHash = await datasetApi.generateSHA256(formData.file);
       updateStep(2, { status: "done" });
 
+      const FileType = formData.file.name.split('.').pop()?.toUpperCase() || 'UNKNOWN'
       // Add dataset to catalogue
       setActiveStep(3);
       const catalogueData = {
          userId, 
         sellerAddress: address,
         title: formData.title,
+        extension:FileType ,
         price: parseFloat(formData.price),
         dataCID: uploadResponse.data.cid,
         originalContentHash: originalContentHash,
