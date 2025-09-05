@@ -50,7 +50,7 @@ async function getDatasets(req, res) {
     const page = parseInt(req.query.page) > 0 ? parseInt(req.query.page) : 1;
     const limit = parseInt(req.query.limit) > 0 ? parseInt(req.query.limit) : 10;
 
-    const projection = 'title sellerAddress price coverImageUrl tags downloads views averageRating';
+    const projection = 'title description sellerAddress price coverImageUrl tags downloads views fileSize extension averageRating createdAt';
 
     const datasets = await DatasetCatalogue.find({})
       .select(projection)

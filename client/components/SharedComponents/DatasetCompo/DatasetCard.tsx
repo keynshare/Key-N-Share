@@ -8,13 +8,50 @@ import CTAs from "./CTAs";
 import Matic from "@/components/assets/Matic"
 import Link from 'next/link';
 
+
+
+function timeAgo(createdAt: string) {
+  const now = new Date();
+  const createdDate = new Date(createdAt);
+  const seconds = Math.floor((now.getTime() - createdDate.getTime()) / 1000);
+
+  const intervals = {
+    year: 31536000,
+    month: 2592000,
+    day: 86400,
+    hour: 3600,
+    minute: 60,
+  };
+
+  if (seconds < 60) return `${seconds} seconds ago`;
+
+  for (const [unit, value] of Object.entries(intervals)) {
+    const count = Math.floor(seconds / value);
+    if (count >= 1) {
+      return count === 1 ? `1 ${unit} ago` : `${count} ${unit}s ago`;
+    }
+  }
+}
+
 interface Dataset {
-  id:number;
-  Image: string;
-  Title: string;
-  Description: string;
-  Type: string;
-  Price: number | string;
+  _id?: string;
+  id?: number;
+  Image?: string;
+  coverImageUrl?: string;
+  Title?: string;
+  title?: string;
+  extension?: string;
+  Description?: string;
+  description?: string;
+  Type?: string;
+
+  Price?: number | string;
+  price?: number;
+  fileSize?: string;
+  downloads?: number;
+  views?: number;
+  averageRating?: number;
+  createdAt?: string;
 }
 
 // Define the props for the component
@@ -44,14 +81,24 @@ export default function DatasetCard({Data}:DatasetCardProps) {
     });
   }, []);
 
+  // Helper function to get the correct field values
+  const getDatasetId = () => Data._id ||'unknown';
+  const getTitle = () => Data.title || Data.Title || 'Untitled Dataset';
+  const getDescription = () => Data.description || Data.Description || 'No description available';
+  const getImage = () => Data.coverImageUrl || Data.Image || 'https://via.placeholder.com/280x144?text=No+Image';
+  const getPrice = () => Data.price || Data.Price || 0;
+  const getType = () => Data.extension || 'UNKNOWN';
+  const getFileSize = () => Data.fileSize || 'Unknown size';
+  const getRating = () => Data.averageRating || 5;
+  const getTime = () => Data.createdAt ? timeAgo(Data.createdAt) : 'Unknown time';
+
   return (
-    <Link href={`/specific-dataset/${Data.id}`} className="max-w-[280px] rounded-xl min-w-[280px] shadow-md border border-gray-200 dark:border-gray-800 dark:bg-[#131313]  bg-white hover:shadow-lg transition">
+    <Link href={`/specific-dataset/${getDatasetId()}`} className="max-w-[280px] min-h-[395px] rounded-xl min-w-[280px] flex flex-col justify-between shadow-md border border-gray-200 dark:border-gray-800 dark:bg-[#131313]  bg-white hover:shadow-lg transition">
       {/* Top Image */}
       <div className="relative rounded-t-xl overflow-hidden h-36 w-full">
         <img
-          src={Data.Image}
-          alt="Spotify Dataset Preview"
-          
+          src={getImage()}
+          alt={`${getTitle()} Preview`}
           className="object-cover w-full h-full"
         />
       </div>
@@ -61,21 +108,21 @@ export default function DatasetCard({Data}:DatasetCardProps) {
        
 
         <h2 className="font-semibold text-lg text-gray-900 dark:text-white line-clamp-2">
-         {Data.Title}
+         {getTitle()}
         </h2>
 
        
 
         <p className=" text-gray-700 dark:text-white line-clamp-2">
-         {Data.Description}
+         {getDescription()}
         </p>
 
        
 
         <div className="flex items-center text-sm text-gray-500 space-x-2">
-          <span>Uploaded 2 months ago</span>
+          <span className='max-w-[155px] whitespace-nowrap overflow-hidden text-ellipsis'>Uploaded {getTime()}</span>
            <span>•</span>
-          <span >252 mb</span>
+          <span>{getFileSize()}</span>
         </div>
 
         
@@ -83,11 +130,11 @@ export default function DatasetCard({Data}:DatasetCardProps) {
         <div className="flex  items-center justify-between pb-1">
           <div className="flex items-center space-x-1">
            <Star size={14} stroke="#FFC300" fill="#FFC300"/>
-            <span className="font-medium">5</span>
+            <span className="font-medium">{getRating()}</span>
           </div>
           
-          <span className="">{Data.Type}</span>
-                    <span className='flex items-center gap-1 '><Matic />{Data.Price}</span>
+          <span className="">{getType()}</span>
+                    <span className='flex items-center gap-1 '><Matic />{getPrice()}</span>
 
           <button title='Actions' className='relative p-1 hover:bg-gray-200 dark:hover:bg-[#252525] rounded-full' onClick={(e) => { e.stopPropagation(); e.preventDefault(); setIsHovered(!isHovered);}} onBlur={() => {setIsHovered(false);}}>
           <EllipsisVertical size={18}/>

@@ -1,18 +1,20 @@
 "use client"
 import React, { useState } from "react";
 import { AxiosError } from "axios";
-import CoverUpload from "./CoverUpload";
+import FileUpload from "./FileUpload";
 import DatasetDetailsForm from "./DatasetDetailsForm";
 import SecurityDetailsForm from "./SecurityDetailsForm";
 import { useAuth } from "@/lib/Authentication/AuthContext";
 import { useNotifications } from "@/lib/notification-context";
 import {useWalletConnection} from "@/lib/Authentication/walletConnection";
+import { useProcessDialog } from "@/lib/process-dialog-context";
 export interface DatasetFormData {
   title: string;
   source: string;
   price: string;
   category: string;
   schema: string;
+  extension: string;
   description: string;
   termsAccepted: boolean;
   encryptionKey: string;
@@ -43,6 +45,7 @@ function UploadDataset() {
     price: "",
     category: "",
     schema: "",
+    extension: "",
     description: "",
     termsAccepted: false,
     encryptionKey: "",
@@ -53,6 +56,7 @@ function UploadDataset() {
   const [isUploading, setIsUploading] = useState(false);
   const { token, userId } = useAuth();
   const { notify } = useNotifications();
+  const { open: openProcess, setActiveStep, updateStep, close: closeProcess } = useProcessDialog();
 
   const handleFormDataChange = (updates: Partial<DatasetFormData>) => {
     setFormData(prev => ({ ...prev, ...updates }));
@@ -66,6 +70,18 @@ function UploadDataset() {
 
     if (!formData.file) {
       notify({ type: "error", message: "Please select a dataset file" });
+      return;
+    }
+
+    if (!formData.coverImage) {
+      notify({ type: "error", message: "Please select a cover image" });
+      return;
+    }
+
+    // Validate cover image size (limit to 5MB)
+    const MAX_COVER_MB = 5;
+    if (formData.coverImage.size > MAX_COVER_MB * 1024 * 1024) {
+      notify({ type: "error", message: `Cover image is too large. Max ${MAX_COVER_MB} MB.` });
       return;
     }
 
@@ -92,44 +108,71 @@ if (!address) {
 
     setIsUploading(true);
     try {
+      openProcess({
+        title: "Uploading dataset",
+        steps: [
+          "Encrypting file",
+          "Uploading to IPFS",
+          "Generating hash",
+          "Adding to catalogue",
+        ],
+      });
       // Import the dataset API
       const { datasetApi } = await import("@/lib/api/DatasetApi");
       
       // Encrypt dataset file before uploading
-      notify({ type: "info", message: "Encrypting File..." });
+      setActiveStep(0);
       const encryptedFile = await datasetApi.encryptFileAES256(formData.file, formData.encryptionKey);
+      updateStep(0, { status: "done" });
 
       // Upload file to IPFS
-      notify({ type: "info", message: "Uploading file to IPFS..." });
+      setActiveStep(1);
       const uploadResponse = await datasetApi.uploadFile(encryptedFile, token);
-      notify({ type: "success", message: "File uploaded to IPFS successfully!" });
+      updateStep(1, { status: "done" });
 
       if (!uploadResponse.success) {
         throw new Error(uploadResponse.message);
       }
 
-     //Generate SHA256 Hash
-     notify({ type: "info", message: "Generating Hash of the File..." });
-      const originalContentHash = await datasetApi.generateSHA256(formData.file);
+      // Convert cover image to base64 data URL for MongoDB storage
+      const coverImageUrl = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : '');
+        reader.onerror = () => reject(new Error('Failed to read cover image'));
+        if (formData.coverImage) {
+          reader.readAsDataURL(formData.coverImage);
+        } else {
+          resolve('');
+        }
+      });
 
+     //Generate SHA256 Hash
+     setActiveStep(2);
+      const originalContentHash = await datasetApi.generateSHA256(formData.file);
+      updateStep(2, { status: "done" });
+
+      const FileType = formData.file.name.split('.').pop()?.toUpperCase() || 'UNKNOWN'
       // Add dataset to catalogue
-      notify({ type: "info", message: "Adding dataset to catalogue..." });
+      setActiveStep(3);
       const catalogueData = {
          userId, 
         sellerAddress: address,
         title: formData.title,
+        extension:FileType ,
         price: parseFloat(formData.price),
         dataCID: uploadResponse.data.cid,
         originalContentHash: originalContentHash,
         description: formData.description,
-        coverImageUrl: "", 
+        coverImageUrl: coverImageUrl, 
         tags: formData.category ? [formData.category] : [],
         fileSize: formatFileSize(formData.file.size)
       };
 
       const catalogueResponse = await datasetApi.addDatasetToCatalogue(catalogueData, token);
+      updateStep(3, { status: "done" });
       
       notify({ type: "success", message: "Dataset uploaded successfully!" });
+      closeProcess();
       
       // Reset form
       setFormData({
@@ -138,6 +181,7 @@ if (!address) {
         price: "",
         category: "",
         schema: "",
+        extension: "",
         description: "",
         termsAccepted: false,
         encryptionKey: "",
@@ -148,14 +192,23 @@ if (!address) {
       
     } catch (error: unknown) {
       console.error("Upload error:", error);
+      updateStep(0, { status: "error" });
+      updateStep(1, { status: "error" });
+      updateStep(2, { status: "error" });
+      updateStep(3, { status: "error" });
 
       if (error instanceof AxiosError) {
-        notify({ type: "error", message: error.response?.data.message || "Failed to upload dataset" });
+        if (error.response?.status === 413) {
+          notify({ type: "error", message: "Cover image is too large. Reduce size and try again." });
+        } else {
+          notify({ type: "error", message: error.response?.data.message || "Failed to upload dataset" });
+        }
       } else {
         notify({ type: "error", message: "Failed to upload dataset" });
       }
     } finally {
       setIsUploading(false);
+      closeProcess();
     }
   };
 
@@ -189,7 +242,7 @@ if (!address) {
         <div className="flex p-6 gap-6">
           {/* File Dropzone */}
           <div className="w-1/2">
-            <CoverUpload 
+            <FileUpload 
               formData={formData}
               onFormDataChange={handleFormDataChange}
             />

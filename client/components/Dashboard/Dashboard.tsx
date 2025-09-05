@@ -5,8 +5,10 @@ import { Search, Filter } from "lucide-react";
 import PrimaryBtn from "../SharedComponents/Btns/PrimaryBtn";
 import SecondaryBtn from "../SharedComponents/Btns/SecondaryBtn";
 import Breadcrumb from "@/components/SharedComponents/Breadcrumb/Breadcrumb";
-import DatasetData from '@/components/assets/dataset.json'
 import CardsWithCategory from "./CardsWithCategory";
+import CardsWithCategorySkeleton from "../Skeletons/Dataset/CardsWithCategorySkeleton";
+import { datasetApi } from "@/lib/api/DatasetApi";
+import { useAuth } from "@/lib/Authentication/AuthContext";
 
 
 
@@ -14,9 +16,41 @@ import CardsWithCategory from "./CardsWithCategory";
 function Dashboard() {
  
   const [isOpen, setIsOpen] = useState(false);
-  
+  const [datasets, setDatasets] = useState<Array<{
+    _id: string;
+    title: string;
+    description: string;
+    coverImageUrl?: string;
+    price: number;
+    tags?: string[];
+    fileSize?: string;
+    averageRating?: number;
+    downloads?: number;
+    views?: number;
+  }>>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const { token } = useAuth();
  
 const categories = ["Trending", "Highest Rating", "Newly Added"];
+
+// Fetch datasets from API
+useEffect(() => {
+  const fetchDatasets = async () => {
+    try {
+      setLoading(true);
+      const response = await datasetApi.getDatasets(1, 20, token || undefined);
+      setDatasets(response.data || []);
+    } catch (err) {
+      console.error('Error fetching datasets:', err);
+      setError('Failed to load datasets');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchDatasets();
+}, [token]);
 
 
   return (
@@ -43,7 +77,15 @@ const categories = ["Trending", "Highest Rating", "Newly Added"];
             </PrimaryBtn>
           </div>
 
-         <CardsWithCategory categories={categories} Data={DatasetData} />
+         {loading ? (
+           <CardsWithCategorySkeleton categories={categories} cardsPerCategory={4} />
+         ) : error ? (
+           <div className="flex justify-center items-center py-10">
+             <div className="text-lg text-red-500">{error}</div>
+           </div>
+         ) : (
+           <CardsWithCategory categories={categories} Data={datasets} />
+         )}
 
           <div className="flex flex-col gap-5 items-center justify-center w-full pt-10">
             <h1 className="sm:font-semibold text-lg sm:text-3xl md:text-[31px] lg:text-[42px] xl:text-5xl text-center font-bricola ">

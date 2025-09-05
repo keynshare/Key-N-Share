@@ -2,13 +2,21 @@ import React from 'react'
 import DatasetCard from '../SharedComponents/DatasetCompo/DatasetCard'
 
 type Data = {
-    id:number,
- Image: string;
-  Title: string;
-  Description: string;
-  Type: string;
-  Price: number | string;
-  Tags: string[];
+    _id?: string;
+    Image?: string;
+    coverImageUrl?: string;
+    Title?: string;
+    title?: string;
+    Description?: string;
+    description?: string;
+    Type?: string;
+    tags?: string[];
+    Price?: number | string;
+    price?: number;
+    fileSize?: string;
+    downloads?: number;
+    views?: number;
+    averageRating?: number;
 }
 
 type CardsWithCategoryProp={
@@ -31,8 +39,8 @@ function CardsWithCategory({categories,Data}:CardsWithCategoryProp) {
                     {category}
                   </h2>
                   <div className="flex h-fit w-full overflow-x-auto scrollHidden  justify-start gap-4 items-center pb-4">
-                    {Data.map((item) => (
-                      <DatasetCard key={item.id} Data={item} />
+                    {Data.map((item, index) => (
+                      <DatasetCard key={item._id || index} Data={item} />
                     ))}
                   </div>
                 </div>
