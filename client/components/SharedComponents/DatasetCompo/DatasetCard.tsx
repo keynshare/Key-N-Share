@@ -86,13 +86,13 @@ export default function DatasetCard({Data}:DatasetCardProps) {
       <div className="p-4 py-3 flex flex-col gap-1">
        
 
-        <h2 className="font-semibold text-lg text-gray-900 dark:text-white line-clamp-2">
+        <h2 className="font-semibold text-lg text-gray-900 min-h-[54px] dark:text-white line-clamp-2">
          {getTitle()}
         </h2>
 
        
 
-        <p className=" text-gray-700 dark:text-white line-clamp-2">
+        <p className=" text-gray-700 min-h-[48px] dark:text-white line-clamp-2">
          {getDescription()}
         </p>
 
