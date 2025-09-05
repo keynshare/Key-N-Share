@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from "react";
 import { AxiosError } from "axios";
-import CoverUpload from "./CoverUpload";
+import FileUpload from "./FileUpload";
 import DatasetDetailsForm from "./DatasetDetailsForm";
 import SecurityDetailsForm from "./SecurityDetailsForm";
 import { useAuth } from "@/lib/Authentication/AuthContext";
@@ -69,6 +69,18 @@ function UploadDataset() {
       return;
     }
 
+    if (!formData.coverImage) {
+      notify({ type: "error", message: "Please select a cover image" });
+      return;
+    }
+
+    // Validate cover image size (limit to 5MB)
+    const MAX_COVER_MB = 5;
+    if (formData.coverImage.size > MAX_COVER_MB * 1024 * 1024) {
+      notify({ type: "error", message: `Cover image is too large. Max ${MAX_COVER_MB} MB.` });
+      return;
+    }
+
     if (!formData.termsAccepted || !formData.securityTermsAccepted) {
       notify({ type: "error", message: "Please accept the terms and conditions" });
       return;
@@ -108,6 +120,18 @@ if (!address) {
         throw new Error(uploadResponse.message);
       }
 
+      // Convert cover image to base64 data URL for MongoDB storage
+      const coverImageUrl = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : '');
+        reader.onerror = () => reject(new Error('Failed to read cover image'));
+        if (formData.coverImage) {
+          reader.readAsDataURL(formData.coverImage);
+        } else {
+          resolve('');
+        }
+      });
+
      //Generate SHA256 Hash
      notify({ type: "info", message: "Generating Hash of the File..." });
       const originalContentHash = await datasetApi.generateSHA256(formData.file);
@@ -122,7 +146,7 @@ if (!address) {
         dataCID: uploadResponse.data.cid,
         originalContentHash: originalContentHash,
         description: formData.description,
-        coverImageUrl: "", 
+        coverImageUrl: coverImageUrl, 
         tags: formData.category ? [formData.category] : [],
         fileSize: formatFileSize(formData.file.size)
       };
@@ -150,7 +174,11 @@ if (!address) {
       console.error("Upload error:", error);
 
       if (error instanceof AxiosError) {
-        notify({ type: "error", message: error.response?.data.message || "Failed to upload dataset" });
+        if (error.response?.status === 413) {
+          notify({ type: "error", message: "Cover image is too large. Reduce size and try again." });
+        } else {
+          notify({ type: "error", message: error.response?.data.message || "Failed to upload dataset" });
+        }
       } else {
         notify({ type: "error", message: "Failed to upload dataset" });
       }
@@ -189,7 +217,7 @@ if (!address) {
         <div className="flex p-6 gap-6">
           {/* File Dropzone */}
           <div className="w-1/2">
-            <CoverUpload 
+            <FileUpload 
               formData={formData}
               onFormDataChange={handleFormDataChange}
             />

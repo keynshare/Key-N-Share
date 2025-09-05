@@ -6,7 +6,7 @@ interface CoverUploadProps {
   onFormDataChange: (updates: Partial<DatasetFormData>) => void;
 }
 
-function CoverUpload({ formData, onFormDataChange }: CoverUploadProps) {
+function FileUpload({ formData, onFormDataChange }: CoverUploadProps) {
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -53,4 +53,4 @@ function CoverUpload({ formData, onFormDataChange }: CoverUploadProps) {
   );
 }
 
-export default CoverUpload;
+export default FileUpload;
