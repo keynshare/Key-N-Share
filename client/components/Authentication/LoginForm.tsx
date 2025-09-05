@@ -83,6 +83,7 @@ const { isConnected, balance, isPending, connectWallet, disconnectWallet } = use
               <span className="w-full text-center md:text-left">
                 Don&apos;t have an account?{" "}
                 <button 
+                type="button"
                   onClick={() => toggleMode && toggleMode(false)}
                   className="text-[#FF7A00] underline underline-offset-2 hover:text-[#ff8c1a] transition-colors"
                 >
@@ -108,7 +109,7 @@ const { isConnected, balance, isPending, connectWallet, disconnectWallet } = use
               minLength={6}
             />
             <button
-              
+              type="button"
               className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 dark:text-gray-300"
               onClick={() => setShowPassword((prev) => !prev)}
             >
@@ -127,7 +128,7 @@ const { isConnected, balance, isPending, connectWallet, disconnectWallet } = use
                   />
                   Remember me for 1 month
                 </label>
-                <button className="text-[#FF7A00] underline underline-offset-2 hover:text-[#ff8c1a] transition-colors">
+                <button type="button" className="text-[#FF7A00] underline underline-offset-2 hover:text-[#ff8c1a] transition-colors">
                   Forgot Password?
                 </button>
               </div>

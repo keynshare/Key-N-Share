@@ -1,8 +1,9 @@
 "use client"
 import PrimaryBtn from "@/components/SharedComponents/Btns/PrimaryBtn";
-import { FolderUp } from "lucide-react";
+import { FolderUp, X } from "lucide-react";
 import SecondaryBtn from "../SharedComponents/Btns/SecondaryBtn";
 import { DatasetFormData } from "./UploadDataset";
+import { useState } from "react";
 
 interface DatasetDetailsFormProps {
   formData: DatasetFormData;
@@ -12,6 +13,26 @@ interface DatasetDetailsFormProps {
 }
 
 function DatasetDetailsForm({ formData, onFormDataChange, onUpload, isUploading }: DatasetDetailsFormProps) {
+  const [tagInput, setTagInput] = useState("");
+
+  const handleAddTag = () => {
+    if (tagInput.trim() && !formData.tags.includes(tagInput.trim())) {
+      onFormDataChange({ tags: [...formData.tags, tagInput.trim()] });
+      setTagInput("");
+    }
+  };
+
+  const handleRemoveTag = (tagToRemove: string) => {
+    onFormDataChange({ tags: formData.tags.filter(tag => tag !== tagToRemove) });
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ',') {
+      e.preventDefault();
+      handleAddTag();
+    }
+  };
+
   return (
     <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); onUpload(); }}>
       {/* Dataset Name + Source in one row */}
@@ -41,38 +62,84 @@ function DatasetDetailsForm({ formData, onFormDataChange, onUpload, isUploading 
 
 
 
-      {/* Price + Category in one row */}
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Price (MATIC) *</label>
-          <input 
-            type="number" 
-            step="0.01"
-            min="0"
-            placeholder="Enter Price in Matic" 
-            value={formData.price}
-            onChange={(e) => onFormDataChange({ price: e.target.value })}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" 
-            required
-          />
+      {/* Price */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">Price (MATIC) *</label>
+        <input 
+          type="number" 
+          step="0.01"
+          min="0"
+          placeholder="Enter Price in Matic" 
+          value={formData.price}
+          onChange={(e) => onFormDataChange({ price: e.target.value })}
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" 
+          required
+        />
+      </div>
+
+      {/* Tags/Categories Input */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">Categories/Tags *</label>
+        <div className="space-y-2">
+          {/* Tag Input */}
+          <div className="flex gap-2">
+            <input 
+              type="text" 
+              placeholder="Enter categories/tags (e.g., Music, Data Science, Technology)" 
+              value={tagInput}
+              onChange={(e) => setTagInput(e.target.value)}
+              onKeyPress={handleKeyPress}
+              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" 
+            />
+            <button
+              type="button"
+              onClick={handleAddTag}
+              className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500"
+            >
+              Add
+            </button>
+          </div>
+          
+          {/* Quick Add Buttons */}
+          <div className="flex flex-wrap gap-2">
+            {['Music', 'Technology', 'Finance', 'Healthcare', 'Education', 'Sports', 'Data Science', 'Machine Learning'].map((suggestion) => (
+              <button
+                key={suggestion}
+                type="button"
+                onClick={() => {
+                  if (!formData.tags.includes(suggestion)) {
+                    onFormDataChange({ tags: [...formData.tags, suggestion] });
+                  }
+                }}
+                className="px-3 py-1 text-xs bg-gray-100 dark:bg-[#101010] dark:hover:bg-[#1d1d1d] hover:bg-gray-200 rounded-full border dark:border-gray-700 border-gray-300"
+              >
+                + {suggestion}
+              </button>
+            ))}
+          </div>
+          
+          {/* Display Tags */}
+          {formData.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {formData.tags.map((tag, index) => (
+                <span
+                  key={index}
+                  className="inline-flex items-center gap-1 px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-sm"
+                >
+                  {tag}
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveTag(tag)}
+                    className="hover:text-orange-600 focus:outline-none"
+                  >
+                    <X size={14} />
+                  </button>
+                </span>
+              ))}
+            </div>
+          )}
         </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-          <select 
-            value={formData.category}
-            onChange={(e) => onFormDataChange({ category: e.target.value })}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500"
-          >
-            <option value="">Select Category</option>
-            <option value="Music">Music</option>
-            <option value="Sports">Sports</option>
-            <option value="Finance">Finance</option>
-            <option value="Technology">Technology</option>
-            <option value="Healthcare">Healthcare</option>
-            <option value="Education">Education</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
+        <p className="text-xs text-gray-500 mt-1">Add categories/tags to help users find your dataset. At least one category is required.</p>
       </div>
 
       {/* Cover Image Upload */}

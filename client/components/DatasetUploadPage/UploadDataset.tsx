@@ -21,6 +21,7 @@ export interface DatasetFormData {
   securityTermsAccepted: boolean;
   file: File | null;
   coverImage: File | null;
+  tags: string[];
 }
 
 
@@ -51,7 +52,8 @@ function UploadDataset() {
     encryptionKey: "",
     securityTermsAccepted: false,
     file: null,
-    coverImage: null
+    coverImage: null,
+    tags: []
   });
   const [isUploading, setIsUploading] = useState(false);
   const { token, userId } = useAuth();
@@ -90,8 +92,8 @@ function UploadDataset() {
       return;
     }
 
-    if (!formData.title || !formData.description || !formData.price) {
-      notify({ type: "error", message: "Please fill in all required fields" });
+    if (!formData.title || !formData.description || !formData.price || formData.tags.length === 0) {
+      notify({ type: "error", message: "Please fill in all required fields including at least one category/tag" });
       return;
     }
     if (!userId) {
@@ -165,7 +167,7 @@ if (!address) {
         originalContentHash: originalContentHash,
         description: formData.description,
         coverImageUrl: coverImageUrl, 
-        tags: formData.category ? [formData.category] : [],
+        tags: formData.tags,
         fileSize: formatFileSize(formData.file.size),
         schema:formData.schema
       };
@@ -189,7 +191,8 @@ if (!address) {
         encryptionKey: "",
         securityTermsAccepted: false,
         file: null,
-        coverImage: null
+        coverImage: null,
+        tags: []
       });
       
     } catch (error: unknown) {
