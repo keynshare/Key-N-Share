@@ -68,7 +68,7 @@ const { login } = useAuth();
       });
       
       if (res.data?.token && res.data?.user.email) { 
-        login( res.data.user.email,res.data.token, false);
+        login( res.data.user.id,res.data.token, false);
       }
       
       notify({ type: "success", message: "Registration successful!" });

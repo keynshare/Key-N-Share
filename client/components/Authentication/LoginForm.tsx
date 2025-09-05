@@ -53,7 +53,7 @@ const { isConnected, balance, isPending, connectWallet, disconnectWallet } = use
         
             if (res.data?.token) { 
                 
-                   login( res.data.user.email,res.data.token, rememberMe);
+                   login( res.data.user.id,res.data.token, rememberMe);
                 
                   }
 

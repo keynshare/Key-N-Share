@@ -51,7 +51,7 @@ export const datasetApi = {
 
   // Add dataset to catalogue
   addDatasetToCatalogue: async (datasetData: DatasetCatalogueData, token: string) => {
-    const response = await axios.post(`${API_URL}datasets`, datasetData, {
+    const response = await axios.post(`${API_URL}dataset-catalogue`, datasetData, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
@@ -85,7 +85,7 @@ export const datasetApi = {
     }
     
     const response = await axios.get(
-      `${API_URL}datasets?page=${page}&limit=${limit}`,
+      `${API_URL}dataset-catalogue?page=${page}&limit=${limit}`,
       { headers }
     );
     return response.data;
