@@ -50,7 +50,11 @@ export function ProcessDialogProvider({ children }: { children: React.ReactNode 
     });
   }, []);
 
-  const close = useCallback(() => setState({ isOpen: false, steps: [] }), []);
+  const close = useCallback(() => {
+    setTimeout(() => {
+      setState({ isOpen: false, steps: [] });
+    }, 2000); // 1000 ms = 1 second
+  }, [setState]);
 
   const value = useMemo(() => ({ state, open, updateStep, setActiveStep, close }), [state, open, updateStep, setActiveStep, close]);
 

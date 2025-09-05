@@ -10,8 +10,8 @@ export default function ProcessDialog() {
   return (
     <div className="fixed inset-0 z-[100000] flex items-center justify-center">
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
-      <div className="relative w-full max-w-md rounded-2xl border border-gray-800 bg-[#0b0b0b] p-6 shadow-2xl">
-        {state.title ? <h3 className="mb-4 text-lg font-semibold text-white">{state.title}</h3> : null}
+      <div className="relative w-full max-w-md rounded-2xl border bg-[#f0f0f0] dark:border-gray-800 dark:bg-[#0b0b0b] p-6 shadow-2xl">
+        {state.title ? <h3 className="mb-4 text-lg font-semibold ">{state.title}</h3> : null}
         <ul className="space-y-3">
           {state.steps.map((step, idx) => (
             <li key={idx} className="flex items-center gap-3">
@@ -20,7 +20,7 @@ export default function ProcessDialog() {
               {step.status === "pending" && <div className="size-[18px] rounded-full border border-gray-700" />}
               {step.status === "error" && <XCircle className="text-rose-400" size={18} />}
               <span className={
-                step.status === "done" ? "text-emerald-300" : step.status === "error" ? "text-rose-300" : step.status === "active" ? "text-indigo-200" : "text-gray-300"
+                step.status === "done" ? "text-emerald-500" : step.status === "error" ? "text-rose-500" : step.status === "active" ? "text-indigo-600 dark:text-indigo-200" : "text-gray-700 dark:text-gray-300 "
               }>
                 {step.label}
               </span>
