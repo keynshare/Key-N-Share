@@ -1,46 +1,100 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "@/components/SpecificDatasetPage/Header";
 import RequestSidebar from "./RequestSidebar";
 import { Mails } from "lucide-react";
 import MetaDataSection from "./MetaDataSection";
-import DatasetData from "@/components/assets/dataset.json";
 import { useParams } from "next/navigation";
 import Breadcrumb from "../SharedComponents/Breadcrumb/Breadcrumb";
+import { datasetApi } from "@/lib/api/DatasetApi";
+import { useAuth } from "@/lib/Authentication/AuthContext";
 
-const features = [
-  { key: "spotify_track_uri", label: "spotify_track_uri", description: "Unique identifier for each Spotify track" },
-  { key: "ts", label: "ts", description: "Timestamp of the streaming event" },
-  { key: "platform", label: "platform", description: "Platform used for streaming (e.g., iOS, Android, Web)" },
-  { key: "ms_played", label: "ms_played", description: "Milliseconds the track was played" },
-  { key: "track_name", label: "track_name", description: "Name of the track" },
-  { key: "artist_name", label: "artist_name", description: "Name of the artist" },
-  { key: "album_name", label: "album_name", description: "Name of the album" },
-  { key: "reason_start", label: "reason_start", description: "Reason for starting the track (e.g., click, play_button)" },
-  { key: "reason_end", label: "reason_end", description: "Reason for ending the track (e.g., endplay, trackdone)" },
-  { key: "shuffle", label: "shuffle", description: "Whether shuffle was enabled" },
-  { key: "skipped", label: "skipped", description: "Whether the track was skipped" },
-];
+
 
 export default function SpecificDatasetPage() {
   const { id } = useParams(); 
-  const Paramid = Number(id);
-
-  const Data = DatasetData.find((item) => item.id === Paramid);
-
+  const { token } = useAuth();
   const [ShowRequest, setShowRequest] = useState(false);
+  const [dataset, setDataset] = useState<{
+    _id: string;
+    title: string;
+    description: string;
+    coverImageUrl?: string;
+    price: number;
+    tags?: string[];
+    fileSize?: string;
+    averageRating?: number;
+    downloads?: number;
+    views?: number;
+    createdAt?: string;
+    extension?: string;
+    schema?: string;
+    source?:string;
+  } | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch dataset by ID
+  useEffect(() => {
+    const fetchDataset = async () => {
+      if (!id || typeof id !== 'string') {
+        setError('Invalid dataset ID');
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        const response = await datasetApi.getDatasetById(id, token || undefined);
+        setDataset(response);
+      } catch (err) {
+        console.error('Error fetching dataset:', err);
+        setError('Failed to load dataset');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDataset();
+  }, [id, token]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-lg">Loading dataset...</div>
+      </div>
+    );
+  }
+
+  if (error || !dataset) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-lg text-red-500">{error || 'Dataset not found'}</div>
+      </div>
+    );
+  }
 
   return (
     <>
     <div className="flex flex-col px-3 md:px-10 xl:px-16 2xl:px-20 gap-5">
-    <Breadcrumb items={[{ label: "Catalogue", href: "/catalogue" }, { label: Data?.Title, isActive: true }]} />
+    <Breadcrumb items={[{ label: "Catalogue", href: "/catalogue" }, { label: dataset.title, isActive: true }]} />
     <div className=" grid grid-cols-4  gap-1  pb-8 ">
       <div className="col-span-full lg:col-span-3 lg:pr-5 xl:pr-10">
-        <Header Title={Data?.Title} Extention={Data?.Type} Price={Data?.Price} Tags={Data?.Tags} CoverImage={Data?.Image} />
+        <Header 
+          Rating={dataset.averageRating}
+          Time={dataset.createdAt}
+          Size={dataset.fileSize}
+          Title={dataset.title} 
+          Extention={dataset.extension || 'UNKNOWN'} 
+          Price={dataset.price} 
+          Tags={dataset.tags || []} 
+          CoverImage={dataset.coverImageUrl || 'https://via.placeholder.com/800x400?text=No+Image'} 
+        />
         <MetaDataSection
-          features={features}
-          About={Data?.Description}
-          Source={Data?.Description}
+        
+          About={dataset.description}
+          Source={dataset.source}
+          Schema={dataset.schema}
         />
       </div>
 

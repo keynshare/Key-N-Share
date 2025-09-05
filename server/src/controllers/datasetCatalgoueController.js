@@ -6,18 +6,21 @@ async function addDataset(req, res) {
                 userId,
                 sellerAddress,
                 title,
+                extension,
                 price,
                 dataCID,
                 originalContentHash,
                 description,
                 coverImageUrl,
                 tags,
-                fileSize
+                fileSize,
+                schema,
+                source
             } = req.body;
 
             if (
                 !userId || !sellerAddress || !title ||
-                !price || !dataCID || !originalContentHash || !description
+                !price || !dataCID || !originalContentHash || !description || !extension || !fileSize || !schema
             ) {
                 return res.status(400).json({ message: 'Missing required fields.' });
             }
@@ -32,7 +35,10 @@ async function addDataset(req, res) {
                 description,
                 coverImageUrl,
                 tags,
-                fileSize
+                fileSize,
+                extension,
+                schema,
+                source,
             });
 
             const savedDataset = await newDataset.save();
@@ -50,7 +56,7 @@ async function getDatasets(req, res) {
     const page = parseInt(req.query.page) > 0 ? parseInt(req.query.page) : 1;
     const limit = parseInt(req.query.limit) > 0 ? parseInt(req.query.limit) : 10;
 
-    const projection = 'title description sellerAddress price coverImageUrl tags downloads views fileSize extension averageRating createdAt';
+    const projection = 'title description sellerAddress price coverImageUrl fileSize extension averageRating createdAt';
 
     const datasets = await DatasetCatalogue.find({})
       .select(projection)

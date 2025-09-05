@@ -4,9 +4,12 @@ import User from "@/components/assets/User.svg";
 import PrimaryBtn from "../SharedComponents/Btns/PrimaryBtn";
 import SecondaryBtn from "../SharedComponents/Btns/SecondaryBtn";
 import Matic from "@/components/assets/Matic"
+import timeAgo from "@/components/SharedComponents/DatasetCompo/timeAgo"
 
 
 type Dataset = {
+  Rating?:number
+  userRating?:number
   Image?: string;
   Title?: string;
   Description?: string;
@@ -17,12 +20,11 @@ type Dataset = {
   Tags?: string[];
   CoverImage?: string;
   Name?: string;
-  Rating?: string;
   Time?: string;
   UserImage?: string;
 };
 
-export default function Header({Size='256 mb',Extention='CSV',Price='46' ,Tags=[ "Arts and Entertainment", "Music", "Data Science", "Computer Science", ] ,CoverImage="/Thumbnail.svg" ,Title="Top Spotify Listening History Songs in Countries",Name='Mohammad Sumbul',Rating='4.5',Time='4 months',UserImage=User.src}:Dataset) {
+export default function Header({ userRating=4,Rating=0 ,Size='0 mb',Extention='CSV',Price='46' ,Tags=[ "Arts and Entertainment", "Music", "Data Science", "Computer Science", ] ,CoverImage="/Thumbnail.svg" ,Title="Top Spotify Listening History Songs in Countries",Name='Mohammad Sumbul',Time='',UserImage=User.src}:Dataset) {
   return (
     <>
     <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
@@ -46,16 +48,18 @@ export default function Header({Size='256 mb',Extention='CSV',Price='46' ,Tags=[
                 <Image src={UserImage} alt={Name} width={50} height={50} className="rounded-full" />
                 <div className="flex flex-col">
                   <span className=" font-medium">{Name}</span>
-                  <span className="inline-flex items-center gap-1"><Star size={18} className="text-yellow-500"/>{Rating}</span>
+                  <span className="inline-flex items-center gap-1"><Star size={18} className="text-yellow-500"/>{userRating}</span>
                 </div>
         </div>
 
-      <div className="flex flex-wrap items-center gap-2 text-sm text-gray-500">
-        <span>Uploaded {Time} ago</span>
+      <div className="flex flex-wrap items-center gap-2  text-gray-500">
+        <span>Uploaded {timeAgo(Time)}</span>
         <span>•</span>
         <span>{Size}</span>
         <span>•</span>
         <span>{Extention}</span>
+        <span>•</span>
+        <span className="flex items-center justify-center gap-1"><Star size={18} className="text-yellow-500"/><span>{Rating}</span></span>
       </div>
       <div className="flex flex-wrap gap-2">
         {Tags.map((tag) => (

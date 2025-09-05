@@ -99,6 +99,7 @@ const { login } = useAuth();
               <span className="w-full text-center md:text-left">
                 Already have an account?{" "}
                 <button 
+                type='button'
                   onClick={()=>toggleMode && toggleMode(true)}
                   className="text-[#FF7A00] underline underline-offset-2 hover:text-[#ff8c1a] transition-colors"
                 >
@@ -133,7 +134,7 @@ const { login } = useAuth();
               required
             />
             <button
-             
+             type='button'
               className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 dark:text-gray-300"
               onClick={() => setShowPassword((prev) => !prev)}
             >
@@ -152,7 +153,7 @@ const { login } = useAuth();
               required
             />
             <button
-             
+             type='button'
               className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 dark:text-gray-300"
               onClick={() => setShowConfirmPassword((prev) => !prev)}
             >

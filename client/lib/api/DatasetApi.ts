@@ -92,6 +92,20 @@ export const datasetApi = {
     return response.data;
   },
 
+  // Get dataset by ID
+  getDatasetById: async (id: string, token?: string) => {
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json'
+    };
+    
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+    
+    const response = await axios.get(`${API_URL}dataset-catalogue/${id}`, { headers });
+    return response.data;
+  },
+
   generateSHA256: async (file: File): Promise<string> => {
     const buffer = await file.arrayBuffer();
     const hashBuffer = await crypto.subtle.digest("SHA-256", buffer);
