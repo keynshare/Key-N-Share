@@ -1,7 +1,9 @@
+import React, { useState } from "react";
 import PrimaryBtn from "@/components/SharedComponents/Btns/PrimaryBtn";
-import { Copy, Download } from "lucide-react";
+import { Copy, Download, Check } from "lucide-react";
 import SecondaryBtn from "../SharedComponents/Btns/SecondaryBtn";
 import { DatasetFormData } from "./UploadDataset";
+import { useNotifications } from "@/lib/notification-context";
 
 interface SecurityDetailsFormProps {
   formData: DatasetFormData;
@@ -11,6 +13,8 @@ interface SecurityDetailsFormProps {
 }
 
 function SecurityDetailsForm({ formData, onFormDataChange, onUpload, isUploading }: SecurityDetailsFormProps) {
+  const { notify } = useNotifications();
+  const [copied, setCopied] = useState(false);
   const generateEncryptionKey = () => {
     const key = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     onFormDataChange({ encryptionKey: key });
@@ -20,7 +24,9 @@ function SecurityDetailsForm({ formData, onFormDataChange, onUpload, isUploading
     if (formData.encryptionKey) {
       try {
         await navigator.clipboard.writeText(formData.encryptionKey);
-        // You could add a toast notification here
+        setCopied(true);
+        notify({ type: "success", message: "Encryption key copied to clipboard" });
+        setTimeout(() => setCopied(false), 1200);
       } catch (err) {
         console.error('Failed to copy: ', err);
       }
@@ -77,11 +83,11 @@ function SecurityDetailsForm({ formData, onFormDataChange, onUpload, isUploading
               readOnly
             />
             <button 
-            
+            type="button"
               onClick={copyToClipboard}
-              className="text-gray-500 dark:bg-[#141414] px-3 hover:text-gray-700"
+              className={`dark:bg-[#141414] px-3 transition-all duration-200 ${copied ? "text-green-600 scale-110" : "text-gray-500 hover:text-gray-700"}`}
             >
-              <Copy size={16} />
+              {copied ? <Check size={16} /> : <Copy size={16} />}
             </button>
           </div>
           <SecondaryBtn
