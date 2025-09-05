@@ -7,6 +7,8 @@ import { polygonAmoy } from "wagmi/chains";
 import { injected, metaMask, walletConnect } from "wagmi/connectors";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { NotificationProvider } from "@/lib/notification-context";
+import { ProcessDialogProvider } from "@/lib/process-dialog-context";
+import ProcessDialog from "@/components/SharedComponents/ProcessDialog";
 import NotificationCenter from "@/components/SharedComponents/NotificationCenter";
 import {LoginModeProvider} from "@/lib/LoginModeContext";
 import {AuthProvider} from "@/lib/Authentication/AuthContext";
@@ -34,7 +36,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
           <NotificationProvider>
             <LoginModeProvider>
               <AuthProvider>
-                {children}
+                <ProcessDialogProvider>
+                  {children}
+                  <ProcessDialog />
+                </ProcessDialogProvider>
               </AuthProvider>
             </LoginModeProvider>
             <NotificationCenter />

@@ -7,6 +7,7 @@ import SecurityDetailsForm from "./SecurityDetailsForm";
 import { useAuth } from "@/lib/Authentication/AuthContext";
 import { useNotifications } from "@/lib/notification-context";
 import {useWalletConnection} from "@/lib/Authentication/walletConnection";
+import { useProcessDialog } from "@/lib/process-dialog-context";
 export interface DatasetFormData {
   title: string;
   source: string;
@@ -53,6 +54,7 @@ function UploadDataset() {
   const [isUploading, setIsUploading] = useState(false);
   const { token, userId } = useAuth();
   const { notify } = useNotifications();
+  const { open: openProcess, setActiveStep, updateStep, close: closeProcess } = useProcessDialog();
 
   const handleFormDataChange = (updates: Partial<DatasetFormData>) => {
     setFormData(prev => ({ ...prev, ...updates }));
@@ -104,17 +106,27 @@ if (!address) {
 
     setIsUploading(true);
     try {
+      openProcess({
+        title: "Uploading dataset",
+        steps: [
+          "Encrypting file",
+          "Uploading to IPFS",
+          "Generating hash",
+          "Adding to catalogue",
+        ],
+      });
       // Import the dataset API
       const { datasetApi } = await import("@/lib/api/DatasetApi");
       
       // Encrypt dataset file before uploading
-      notify({ type: "info", message: "Encrypting File..." });
+      setActiveStep(0);
       const encryptedFile = await datasetApi.encryptFileAES256(formData.file, formData.encryptionKey);
+      updateStep(0, { status: "done" });
 
       // Upload file to IPFS
-      notify({ type: "info", message: "Uploading file to IPFS..." });
+      setActiveStep(1);
       const uploadResponse = await datasetApi.uploadFile(encryptedFile, token);
-      notify({ type: "success", message: "File uploaded to IPFS successfully!" });
+      updateStep(1, { status: "done" });
 
       if (!uploadResponse.success) {
         throw new Error(uploadResponse.message);
@@ -133,11 +145,12 @@ if (!address) {
       });
 
      //Generate SHA256 Hash
-     notify({ type: "info", message: "Generating Hash of the File..." });
+     setActiveStep(2);
       const originalContentHash = await datasetApi.generateSHA256(formData.file);
+      updateStep(2, { status: "done" });
 
       // Add dataset to catalogue
-      notify({ type: "info", message: "Adding dataset to catalogue..." });
+      setActiveStep(3);
       const catalogueData = {
          userId, 
         sellerAddress: address,
@@ -152,8 +165,10 @@ if (!address) {
       };
 
       const catalogueResponse = await datasetApi.addDatasetToCatalogue(catalogueData, token);
+      updateStep(3, { status: "done" });
       
       notify({ type: "success", message: "Dataset uploaded successfully!" });
+      closeProcess();
       
       // Reset form
       setFormData({
@@ -172,6 +187,10 @@ if (!address) {
       
     } catch (error: unknown) {
       console.error("Upload error:", error);
+      updateStep(0, { status: "error" });
+      updateStep(1, { status: "error" });
+      updateStep(2, { status: "error" });
+      updateStep(3, { status: "error" });
 
       if (error instanceof AxiosError) {
         if (error.response?.status === 413) {
@@ -184,6 +203,7 @@ if (!address) {
       }
     } finally {
       setIsUploading(false);
+      closeProcess();
     }
   };
 
