@@ -16,7 +16,18 @@ import { useAuth } from "@/lib/Authentication/AuthContext";
 function Dashboard() {
  
   const [isOpen, setIsOpen] = useState(false);
-  const [datasets, setDatasets] = useState<any[]>([]);
+  const [datasets, setDatasets] = useState<Array<{
+    _id: string;
+    title: string;
+    description: string;
+    coverImageUrl?: string;
+    price: number;
+    tags?: string[];
+    fileSize?: string;
+    averageRating?: number;
+    downloads?: number;
+    views?: number;
+  }>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { token } = useAuth();

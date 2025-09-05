@@ -13,7 +13,7 @@ import Link from 'next/link';
 function timeAgo(createdAt: string) {
   const now = new Date();
   const createdDate = new Date(createdAt);
-  const seconds = Math.floor((now - createdDate) / 1000);
+  const seconds = Math.floor((now.getTime() - createdDate.getTime()) / 1000);
 
   const intervals = {
     year: 31536000,
@@ -51,6 +51,7 @@ interface Dataset {
   downloads?: number;
   views?: number;
   averageRating?: number;
+  createdAt?: string;
 }
 
 // Define the props for the component
@@ -89,7 +90,7 @@ export default function DatasetCard({Data}:DatasetCardProps) {
   const getType = () => Data.extension || 'UNKNOWN';
   const getFileSize = () => Data.fileSize || 'Unknown size';
   const getRating = () => Data.averageRating || 5;
-  const getTime = () => timeAgo(Data.createdAt) || 'Unknown time';
+  const getTime = () => Data.createdAt ? timeAgo(Data.createdAt) : 'Unknown time';
 
   return (
     <Link href={`/specific-dataset/${getDatasetId()}`} className="max-w-[280px] min-h-[395px] rounded-xl min-w-[280px] flex flex-col justify-between shadow-md border border-gray-200 dark:border-gray-800 dark:bg-[#131313]  bg-white hover:shadow-lg transition">

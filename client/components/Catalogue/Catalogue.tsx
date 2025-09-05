@@ -11,10 +11,20 @@ import PaginationSkeleton from "../Skeletons/Dataset/PaginationSkeleton";
 import { datasetApi } from "@/lib/api/DatasetApi";
 import { useAuth } from "@/lib/Authentication/AuthContext";
 function Catalogue() {
-  const categories = ["Trending", "Highest Rating", "Newly Added"];
   const [isOpen, setIsOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [datasets, setDatasets] = useState<any[]>([]);
+  const [datasets, setDatasets] = useState<Array<{
+    _id: string;
+    title: string;
+    description: string;
+    coverImageUrl?: string;
+    price: number;
+    tags?: string[];
+    fileSize?: string;
+    averageRating?: number;
+    downloads?: number;
+    views?: number;
+  }>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [totalPages, setTotalPages] = useState(1);
