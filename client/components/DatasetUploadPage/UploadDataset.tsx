@@ -8,6 +8,7 @@ import { useAuth } from "@/lib/Authentication/AuthContext";
 import { useNotifications } from "@/lib/notification-context";
 import {useWalletConnection} from "@/lib/Authentication/walletConnection";
 import { useProcessDialog } from "@/lib/process-dialog-context";
+import Breadcrumb from "../SharedComponents/Breadcrumb/Breadcrumb";
 export interface DatasetFormData {
   title: string;
   source: string;
@@ -222,9 +223,18 @@ if (!formData.encryptionKey) {
     }
   };
 
+  const breadcrumbItems = [
+    { label: "Catalogue" },
+    { label: "Upload Datasets", isActive: true }
+  ]; 
   return (
-    <div className="flex flex-col items-center   md:p-6">
-      <div className="w-full max-w-5xl rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+    <>
+    <div className=" w-full pl-10 xl:pl-16 mb-5">
+    <Breadcrumb items={breadcrumbItems}/>
+    </div>
+    <div className="flex flex-col items-center px-3 md:px-10 xl:px-16  pb-16  ">
+      
+      <div className="w-full  rounded-xl dark:bg-[#080808] shadow-sm border border-gray-200 dark:border-gray-700">
         {/* Header */}
         <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
           <h1 className="text-2xl font-semibold ">Upload Dataset</h1>
@@ -249,9 +259,9 @@ if (!formData.encryptionKey) {
         </div>
 
         {/* Content */}
-        <div className="flex p-6 gap-6">
+        <div className="flex flex-col  lg:flex-row p-6 gap-6">
           {/* File Dropzone */}
-          <div className="w-1/2">
+          <div className=" lg:w-1/2">
             <FileUpload 
               formData={formData}
               onFormDataChange={handleFormDataChange}
@@ -259,7 +269,7 @@ if (!formData.encryptionKey) {
           </div>
 
           {/* Forms */}
-          <div className="w-1/2">
+          <div className="lg:w-1/2">
             {activeTab === "dataset" ? (
               <DatasetDetailsForm 
                 formData={formData}
@@ -279,6 +289,7 @@ if (!formData.encryptionKey) {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

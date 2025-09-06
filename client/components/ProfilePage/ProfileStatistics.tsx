@@ -2,11 +2,9 @@
 import { useState, useEffect } from "react";
 // import NumberCard from "./NumberCard";
 // import PerformanceMatrices from "./PerformanceMatrices";
-import { profileApi } from "@/lib/api/ProfileApi";
-import { useAuth } from "@/lib/Authentication/AuthContext";
-import { useNotifications } from "@/lib/notification-context";
 import AboutSection from "./AboutSection";
-import { hasViewedProfile, markProfileAsViewed, forceCleanupViewedProfiles } from "@/lib/utils/profileViewUtils";
+import { forceCleanupViewedProfiles } from "@/lib/utils/profileViewUtils";
+import UserDatasets from './UserDatasets'
 
 interface ProfileData {
   _id: string;
@@ -34,16 +32,14 @@ interface ProfileData {
 }
 
 interface ProfileStatisticsProps {
-  userId?: string; 
+  userId?: string;
+  profile: ProfileData | null;
+  loading: boolean;
+  isCurrentUser: boolean;
 }
 
-export default function ProfileStatistics({ userId }: ProfileStatisticsProps = {}) {
+export default function ProfileStatistics({ userId, profile, loading, isCurrentUser }: ProfileStatisticsProps) {
   const [activeTab, setActiveTab] = useState("about");
-  const [profile, setProfile] = useState<ProfileData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const { token, isInitialized } = useAuth();
-  const { reportError } = useNotifications();
-  const [isCurrentUser, setIsCurrentUser] = useState(true);
 
   // Effect for periodic cleanup of viewed profiles storage
   useEffect(() => {
@@ -59,67 +55,7 @@ export default function ProfileStatistics({ userId }: ProfileStatisticsProps = {
     }
   }, []);
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      if (!token) {
-        setLoading(false);
-        return;
-      }
 
-      try {
-        setLoading(true);
-        let response;
-        
-        if (userId) {
-          // Fetch another user's profile
-          response = await profileApi.getUserProfile(userId, token);
-          setIsCurrentUser(false);
-          
-          // Only increment if we haven't viewed this profile before
-          if (!hasViewedProfile(userId)) {
-            await profileApi.incrementProfileViews(userId, token);
-            
-            // Mark this profile as viewed in localStorage
-            markProfileAsViewed(userId);
-          }
-        } else {
-          // Fetch current user's profile
-          response = await profileApi.getCurrentUserProfile(token);
-          setIsCurrentUser(true);
-        }
-        
-        if (response.success) {
-          setProfile(response.data);
-        }
-      } catch (error) {
-        console.error('Error fetching profile:', error);
-        reportError('Failed to load profile data');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    // Only fetch if auth is initialized
-    if (isInitialized && token) {
-      fetchProfile();
-    } else if (isInitialized && !token) {
-      setLoading(false);
-    }
-  }, [token, isInitialized, reportError, userId]);
-
-  // Don't render anything until auth is initialized to prevent hydration issues
-  if (!isInitialized) {
-    return (
-      <div className="w-full mx-auto mt-8 p-4 rounded-lg shadow-sm">
-        <div className="animate-pulse">
-          <div className="h-6 bg-gray-200 rounded w-1/4 mb-4"></div>
-          <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
-          <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
-          <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-        </div>
-      </div>
-    );
-  }
 
 
 
@@ -139,40 +75,28 @@ export default function ProfileStatistics({ userId }: ProfileStatisticsProps = {
         >
           Datasets
         </button>
-        <button
+        {/* <button
           onClick={() => setActiveTab("followers")}
           className={`pb-2 font-bricola translate-y-[1px] ${activeTab === "followers" ? "border-b-2 border-orange-500 font-bold " : "text-gray-500"}`}
         >
           Followers
-        </button>
+        </button> */}
       </div>
 
       {/* About Section */}
-      {activeTab === "about" && (
+      <div className={activeTab === "about" ? "block" : "hidden"}>
         <AboutSection profile={profile} loading={loading} isCurrentUser={isCurrentUser} />
-
-        
-      )}
+      </div>
 
       {/* Datasets Tab */}
-      {activeTab === "datasets" && (
-        <div className="mt-6">
-          {loading ? (
-            <div className="text-sm text-gray-600">Loading datasets...</div>
-          ) : (
-            <div className="text-sm text-gray-600">
-              {profile?.statistics?.totalDatasets ? 
-                `You have ${profile.statistics.totalDatasets} datasets.` : 
-                'No datasets found.'}
-            </div>
-          )}
-        </div>
-      )}
+      <div className={activeTab === "datasets" ? "block" : "hidden"}>
+        <UserDatasets userId={userId}/>
+      </div>
 
       {/* Followers Tab */}
-      {activeTab === "followers" && (
+      {/* {activeTab === "followers" && (
         <div className="mt-6 text-sm text-gray-600">Followers list will be displayed here.</div>
-      )}
+      )} */}
     </div>
   );
 }

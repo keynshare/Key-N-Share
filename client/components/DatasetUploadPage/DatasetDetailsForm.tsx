@@ -82,7 +82,7 @@ function DatasetDetailsForm({ formData, onFormDataChange, onUpload, isUploading 
         <label className="block text-sm font-medium text-gray-700 mb-1">Categories/Tags *</label>
         <div className="space-y-2">
           {/* Tag Input */}
-          <div className="flex gap-2">
+          <div className="flex flex-wrap  gap-2">
             <input 
               type="text" 
               placeholder="Enter categories/tags (e.g., Music, Data Science, Technology)" 
@@ -94,7 +94,7 @@ function DatasetDetailsForm({ formData, onFormDataChange, onUpload, isUploading 
             <button
               type="button"
               onClick={handleAddTag}
-              className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="px-4 py-2 w-full sm:w-fit bg-orange-500 text-white rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500"
             >
               Add
             </button>
