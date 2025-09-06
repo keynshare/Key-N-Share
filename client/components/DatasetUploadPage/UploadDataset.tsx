@@ -107,6 +107,11 @@ if (!address) {
   setIsUploading(false);
   return;
 }
+if (!formData.encryptionKey) {
+  notify({ type: "error", message: "Please Choose an Encryption Key" });
+  setIsUploading(false);
+  return;
+}
 
     setIsUploading(true);
     try {

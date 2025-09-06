@@ -51,7 +51,7 @@ function SecurityDetailsForm({ formData, onFormDataChange, onUpload, isUploading
     <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); onUpload(); }}>
       {/* Encryption Key */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Choose Encryption Key</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">Choose Encryption Key*</label>
         <div className="flex">
           <input
             type="text"
@@ -72,7 +72,7 @@ function SecurityDetailsForm({ formData, onFormDataChange, onUpload, isUploading
 
       {/* Save Key */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Save Key</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">Save Key*</label>
         <div className="flex w-full rounded-lg overflow-hidden">
           <div className="flex border w-full dark:border-gray-700 border-r-0 rounded-lg rounded-r-none overflow-hidden">
             <input

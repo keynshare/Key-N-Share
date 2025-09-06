@@ -49,7 +49,7 @@ function DatasetDetailsForm({ formData, onFormDataChange, onUpload, isUploading 
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Source of Data</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Source of Data*</label>
           <input 
             type="text" 
             placeholder="eg: this data was taken from spotify" 
@@ -144,7 +144,7 @@ function DatasetDetailsForm({ formData, onFormDataChange, onUpload, isUploading 
 
       {/* Cover Image Upload */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Cover Image (Optional)</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">Cover Image*</label>
         <div className="flex">
           <input 
             type="text" 
