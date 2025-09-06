@@ -10,6 +10,6 @@ router.get('/', getDatasets);
 
 router.get('/:id', getDatasetById);
 
-router.get('/:userId',getDatasetByUser);
+router.get('/user/:userId', getDatasetByUser);
 
 module.exports = router;

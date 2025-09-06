@@ -1,6 +1,7 @@
 import React from 'react'
 import UserInfo from './UserInfo'
 import ProfileStatistics from './ProfileStatistics'
+import UserDatasets from './UserDatasets'
 import Breadcrumb from '../SharedComponents/Breadcrumb/Breadcrumb'
 
 interface ProfilePageProps {
@@ -20,6 +21,7 @@ function ProfilePage({ userId }: ProfilePageProps) {
     <Breadcrumb items={breadcrumbItems} />
      <UserInfo userId={userId} />
      <ProfileStatistics userId={userId} />
+     
    </div>
    
    </>

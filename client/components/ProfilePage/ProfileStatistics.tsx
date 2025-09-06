@@ -7,6 +7,7 @@ import { useAuth } from "@/lib/Authentication/AuthContext";
 import { useNotifications } from "@/lib/notification-context";
 import AboutSection from "./AboutSection";
 import { hasViewedProfile, markProfileAsViewed, forceCleanupViewedProfiles } from "@/lib/utils/profileViewUtils";
+import UserDatasets from './UserDatasets'
 
 interface ProfileData {
   _id: string;
@@ -156,17 +157,7 @@ export default function ProfileStatistics({ userId }: ProfileStatisticsProps = {
 
       {/* Datasets Tab */}
       {activeTab === "datasets" && (
-        <div className="mt-6">
-          {loading ? (
-            <div className="text-sm text-gray-600">Loading datasets...</div>
-          ) : (
-            <div className="text-sm text-gray-600">
-              {profile?.statistics?.totalDatasets ? 
-                `You have ${profile.statistics.totalDatasets} datasets.` : 
-                'No datasets found.'}
-            </div>
-          )}
-        </div>
+        <UserDatasets userId={userId}/>
       )}
 
       {/* Followers Tab */}

@@ -106,6 +106,23 @@ export const datasetApi = {
     return response.data;
   },
 
+  // Get datasets by user ID with pagination
+  getDatasetByUser: async (userId: string, page = 1, limit = 10, token?: string) => {
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json'
+    };
+    
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+    
+    const response = await axios.get(
+      `${API_URL}dataset-catalogue/user/${userId}?page=${page}&limit=${limit}`,
+      { headers }
+    );
+    return response.data;
+  },
+
   generateSHA256: async (file: File): Promise<string> => {
     const buffer = await file.arrayBuffer();
     const hashBuffer = await crypto.subtle.digest("SHA-256", buffer);

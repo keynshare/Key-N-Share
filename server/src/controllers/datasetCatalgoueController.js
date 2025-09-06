@@ -95,13 +95,37 @@ async function getDatasetById(req, res){
 
 async function getDatasetByUser(req,res){
   try {
-    const datasets = await DatasetCatalogue.find({ userId: req.params.userId }).lean();
+    const page = parseInt(req.query.page) > 0 ? parseInt(req.query.page) : 1;
+    const limit = parseInt(req.query.limit) > 0 ? parseInt(req.query.limit) : 10;
+
+    const projection = 'title description sellerAddress price coverImageUrl fileSize extension averageRating createdAt';
+
+    const datasets = await DatasetCatalogue.find({ userId: req.params.userId })
+      .select(projection)
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .sort({ createdAt: -1 })
+      .lean();
+
+    const total = await DatasetCatalogue.countDocuments({ userId: req.params.userId });
 
     if (!datasets || datasets.length === 0) {
-      return res.status(404).json({ message: 'No datasets found for this user.' });
+      return res.status(200).json({
+        data: [],
+        page,
+        limit,
+        total: 0,
+        totalPages: 0
+      });
     }
 
-    res.status(200).json(datasets);
+    res.status(200).json({
+      data: datasets,
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit)
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
