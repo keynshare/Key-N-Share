@@ -20,7 +20,7 @@ async function addDataset(req, res) {
 
             if (
                 !userId || !sellerAddress || !title ||
-                !price || !dataCID || !originalContentHash || !description || !extension || !fileSize || !schema
+                !price || !dataCID || !originalContentHash || !description || !extension || !fileSize
             ) {
                 return res.status(400).json({ message: 'Missing required fields.' });
             }
