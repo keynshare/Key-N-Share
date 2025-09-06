@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import DatasetCard from "../SharedComponents/DatasetCompo/DatasetCard";
 import { Search } from "lucide-react";
 import PrimaryBtn from "../SharedComponents/Btns/PrimaryBtn";
@@ -29,6 +29,7 @@ function UserDatasets({ userId }: UserDatasetsProps) {
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [totalPages, setTotalPages] = useState(1);
+  const [isInitialized, setIsInitialized] = useState(false);
   const { token, userId: authUserId } = useAuth();
   
   // Use prop userId if provided, otherwise use auth userId
@@ -36,11 +37,38 @@ function UserDatasets({ userId }: UserDatasetsProps) {
   
   const itemsPerPage = 12;
 
-  // Fetch datasets from API
+  // Initial fetch - only when component mounts or userId changes
   useEffect(() => {
     const fetchDatasets = async () => {
       if (!currentUserId) {
         console.log('No userId available for UserDatasets component');
+        return;
+      }
+      
+      try {
+        setLoading(true);
+        const response = await datasetApi.getDatasetByUser(currentUserId, 1, itemsPerPage, token || undefined);
+        setDatasets(response.data || []);
+        setTotalPages(response.totalPages || 1);
+        setCurrentPage(1);
+        setIsInitialized(true);
+      } catch (err) {
+        console.error('Error fetching user datasets:', err);
+        setError('Failed to load datasets');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (!isInitialized) {
+      fetchDatasets();
+    }
+  }, [currentUserId, token, isInitialized]);
+
+  // Fetch when page changes (but only if already initialized)
+  useEffect(() => {
+    const fetchPageData = async () => {
+      if (!currentUserId || !isInitialized || currentPage === 1) {
         return;
       }
       
@@ -57,8 +85,10 @@ function UserDatasets({ userId }: UserDatasetsProps) {
       }
     };
 
-    fetchDatasets();
-  }, [currentUserId, currentPage, token]);
+    if (isInitialized && currentPage > 1) {
+      fetchPageData();
+    }
+  }, [currentPage, currentUserId, token, isInitialized]);
 
   // Filter datasets based on search query
   const filteredDatasets = datasets.filter(dataset =>
@@ -139,4 +169,4 @@ function UserDatasets({ userId }: UserDatasetsProps) {
   );
 }
 
-export default UserDatasets;
+export default React.memo(UserDatasets);

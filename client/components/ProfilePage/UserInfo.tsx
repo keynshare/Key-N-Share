@@ -19,45 +19,38 @@ interface ProfileData {
   role: string;
   bio: string;
   profileViewsCount: number;
+  sellerRating: {
+    totalRating: number;
+    numberOfRatings: number;
+    averageRating: number;
+  };
+  buyerRating: {
+    totalRating: number;
+    numberOfRatings: number;
+    averageRating: number;
+  };
+  statistics: {
+    totalDatasets: number;
+    totalSold: number;
+    totalEarnings: number;
+    profileViews: number;
+  };
   createdAt: string;
-  // Add other fields as needed
 }
 
-function UserInfo({userId}: {userId?: string}) {
+interface UserInfoProps {
+  userId?: string;
+  profile: ProfileData | null;
+  loading: boolean;
+  isCurrentUser: boolean;
+  onProfileUpdate: (profile: ProfileData) => void;
+}
+
+function UserInfo({ userId, profile, loading, isCurrentUser, onProfileUpdate }: UserInfoProps) {
   const { logout, token, isInitialized } = useAuth()
   const { notify, reportError } = useNotifications()
-  const [profile, setProfile] = useState<ProfileData | null>(null)
-  const [loading, setLoading] = useState(true)
   const [isEditOpen, setIsEditOpen] = useState(false)
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      if (!token) {
-        setLoading(false)
-        return
-      }
-
-      try {
-        setLoading(true)
-        const response = await profileApi.getCurrentUserProfile(token)
-        if (response.success) {
-          setProfile(response.data)
-        }
-      } catch (error) {
-        console.error('Error fetching profile:', error)
-        reportError('Failed to load profile data')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    // Only fetch if auth is initialized and we have a token
-    if (isInitialized && token) {
-      fetchProfile()
-    } else if (isInitialized && !token) {
-      setLoading(false)
-    }
-  }, [token, isInitialized, reportError])
 
   // Don't render anything until auth is initialized to prevent hydration issues
   if (!isInitialized) {
@@ -75,7 +68,7 @@ function UserInfo({userId}: {userId?: string}) {
     try {
       const response = await profileApi.updateUserProfile(updates, token)
       if (response?.success) {
-        setProfile(response.data)
+        onProfileUpdate(response.data)
         notify({ type: 'success', message: 'Profile updated successfully' })
       } else if (response?.message) {
         notify({ type: 'warning', message: response.message })
