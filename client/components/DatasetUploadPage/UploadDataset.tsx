@@ -234,7 +234,7 @@ if (!formData.encryptionKey) {
     </div>
     <div className="flex flex-col items-center px-3 md:px-10 xl:px-16  pb-16  ">
       
-      <div className="w-full  rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+      <div className="w-full  rounded-xl dark:bg-[#080808] shadow-sm border border-gray-200 dark:border-gray-700">
         {/* Header */}
         <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
           <h1 className="text-2xl font-semibold ">Upload Dataset</h1>
@@ -259,7 +259,7 @@ if (!formData.encryptionKey) {
         </div>
 
         {/* Content */}
-        <div className="flex flex-col lg:flex-row p-6 gap-6">
+        <div className="flex flex-col  lg:flex-row p-6 gap-6">
           {/* File Dropzone */}
           <div className=" lg:w-1/2">
             <FileUpload 
