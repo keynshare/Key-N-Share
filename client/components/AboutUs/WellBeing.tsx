@@ -61,7 +61,7 @@ const WellBeing = () => {
     <section className="py-16  px-3 md:px-5 mb-5 lg:px-10 xl:px-16 2xl:px-20  overflow-hidden relative ">
       {/* Heading */}
 
-        <div className="flex items-center justify-center mb-6 w-[180%] aspect-square z-[-1] absolute top-20 left-1/2 -translate-x-1/2 rounded-full [background:linear-gradient(1deg,rgba(255,255,255,0.00)_72.45%,#FF870F_110.19%)] shadow-[0_-39px_49px_-23px_rgba(255,128,0,0.3)] 10000px border-t-[5px] border-t-[#EF9300] " />
+        <div className="flex items-center justify-center mb-6 w-[180%] aspect-square z-[-1] absolute top-20 left-1/2 -translate-x-1/2 rounded-full [background:linear-gradient(1deg,rgba(255,255,255,0.00)_72.45%,#FF870F_110.19%)] shadow-[0_-39px_49px_-23px_rgba(255,128,0,0.6)] 10000px border-t-[5px] border-t-[#EF9300] " />
 
       <h2 className="text-xl md:text-3xl lg:text-[42px]  font-bold pt-52 text-center mb-12 font-bricola">
         Your Well Being Matters
@@ -72,14 +72,14 @@ const WellBeing = () => {
         {features.map((item, idx) => (
           <div
             key={idx}
-            className="bg-white shadow-md rounded-lg p-5 flex flex-col gap-2 text-left border"
+            className="bg-white dark:bg-[#131313] shadow-md rounded-lg p-5 flex flex-col gap-2 text-left border dark:border-gray-600 "
           >
             {/* Icon */}
             <Image src={item.icon} alt="icon" className="w-10 h-10" />
             {/* Title */}
-            <h3 className="font-semibold text-lg text-gray-800">{item.title}</h3>
+            <h3 className="font-semibold text-lg ">{item.title}</h3>
             {/* Description */}
-            <p className="text-gray-600 text-sm md:text-base">{item.desc}</p>
+            <p className="text-gray-600 dark:text-gray-200 text-sm md:text-base">{item.desc}</p>
           </div>
         ))}
       </div>
