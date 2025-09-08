@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import Matic from '@/components/assets/Matic'
 import SecondaryBtn from '../Btns/SecondaryBtn'
-import { CircleMinus,Star } from 'lucide-react'
+import { CircleMinus, Star } from 'lucide-react'
+import StarRating from '../StarRating'
 
 
 
@@ -15,12 +16,21 @@ type Data={
     Type?: string;
     Price?: number | string;
     Tags?: string[];
+    Rating?: number;
 }
 
 type CheckOutDatasetCard = {
-   Data:Data
+   Data:Data,
+   variant?: 'cart' | 'order'
 }
-function CheckOutDatasetCard({Data}:CheckOutDatasetCard) {
+function CheckOutDatasetCard({Data,variant='cart'}:CheckOutDatasetCard) {
+  const [userRating, setUserRating] = useState<number>(Data?.Rating || 0);
+  
+  const handleRatingChange = (newRating: number) => {
+    setUserRating(newRating);
+    // API  function in future
+    console.log(`Rating updated to ${newRating} for dataset ${Data?.id}`);
+  };
   return (
    <>
    
@@ -42,7 +52,20 @@ function CheckOutDatasetCard({Data}:CheckOutDatasetCard) {
        
         <span>{Data?.Type}</span>
        
-        <span className="inline-flex items-center gap-1"><Star size={18} className="text-yellow-500"/>4.5</span>
+        {variant === 'order' ? (
+          <StarRating 
+            rating={userRating} 
+            editable={true} 
+            onRatingChange={handleRatingChange} 
+            size={18} 
+            className="text-sm"
+          />
+        ) : (
+          <span className="inline-flex items-center gap-1">
+            <Star size={18} className="text-yellow-500 fill-yellow-500"/>
+            {Data?.Rating?.toFixed(1) || '0.0'}
+          </span>
+        )}
       </div>
      
 
@@ -53,8 +76,14 @@ function CheckOutDatasetCard({Data}:CheckOutDatasetCard) {
             <h6 className="text-[42px]  ">{Data?.Price} </h6>
             </span>
         <div className='flex flex-col lg:flex-row lg:w-fit w-full gap-2 justify-center'>
-            <SecondaryBtn className='bg-red-600 dark:bg-red-600 hover:bg-[#fd5959] dark:hover:bg-[#fd5959] hover:text-white'> <CircleMinus size={20} /> Remove</SecondaryBtn>
-            <SecondaryBtn>Send Request</SecondaryBtn>
+            {variant === 'cart' ? (
+              <>
+                <SecondaryBtn className='bg-red-600 dark:bg-red-600 hover:bg-[#fd5959] dark:hover:bg-[#fd5959] hover:text-white'> <CircleMinus size={20} /> Remove</SecondaryBtn>
+                <SecondaryBtn>Send Request</SecondaryBtn>
+              </>
+            ) : (
+              <SecondaryBtn className='bg-red-600 dark:bg-red-600 hover:bg-[#fd5959] dark:hover:bg-[#fd5959] hover:text-white'>Raise Dispute</SecondaryBtn>
+            )}
             </div>
         </div>
 
