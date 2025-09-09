@@ -8,6 +8,7 @@ const authRoutes = require('./routes/authRoutes');
 const datasetRoutes = require('./routes/datasets');
 const profileRoutes = require('./routes/profileRoutes');
 const catalogueRoutes = require('./routes/datasetCatalogue');
+const cartRoutes = require('./routes/cartRoutes');
 
 const app = express();
 
@@ -41,6 +42,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/datasets', authenticate, datasetRoutes);
 app.use('/api/profile', authenticate, profileRoutes);
 app.use('/api/dataset-catalogue', authenticate, catalogueRoutes);
+app.use('/api/cart', authenticate, cartRoutes);
 
 
 // 404 handler
