@@ -115,11 +115,11 @@ export default function DatasetCard({Data}:DatasetCardProps) {
           <span className="">{getType()}</span>
                     <span className='flex items-center gap-1 '><Matic />{getPrice()}</span>
 
-          <button title='Actions' className='relative p-1 hover:bg-gray-200 dark:hover:bg-[#252525] rounded-full' onClick={(e) => { e.stopPropagation(); e.preventDefault(); setIsHovered(!isHovered);}} onBlur={() => {setIsHovered(false);}}>
+          <button title='Actions' className='relative p-1 hover:bg-gray-200 dark:hover:bg-[#252525] rounded-full' onClick={(e) => { e.stopPropagation(); e.preventDefault(); setIsHovered(!isHovered);}} >
           <EllipsisVertical size={18}/>
            {isHovered && 
-           <div className='absolute -top-6  right-4  z-10'>
-            <CTAs/>
+           <div className='absolute -top-6  right-6  z-10' >
+            <CTAs datasetId={getDatasetId()}/>
             </div>
             }
           </button>

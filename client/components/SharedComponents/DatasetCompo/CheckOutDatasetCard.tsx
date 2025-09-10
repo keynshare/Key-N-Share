@@ -9,7 +9,7 @@ import StarRating from '../StarRating'
 
 
 type Data={
-    id?:number,
+    id?:number | string;
     Image?: string;
     Title?: string;
     Description?: string;
@@ -21,9 +21,10 @@ type Data={
 
 type CheckOutDatasetCard = {
    Data:Data,
-   variant?: 'cart' | 'order'
+   variant?: 'cart' | 'order',
+   onRemove?: (id?: string | number) => void
 }
-function CheckOutDatasetCard({Data,variant='cart'}:CheckOutDatasetCard) {
+function CheckOutDatasetCard({Data, variant='cart', onRemove}:CheckOutDatasetCard) {
   const [userRating, setUserRating] = useState<number>(Data?.Rating || 0);
   
   const handleRatingChange = (newRating: number) => {
@@ -78,7 +79,12 @@ function CheckOutDatasetCard({Data,variant='cart'}:CheckOutDatasetCard) {
         <div className='flex flex-col lg:flex-row lg:w-fit w-full gap-2 justify-center'>
             {variant === 'cart' ? (
               <>
-                <SecondaryBtn className='bg-red-600 dark:bg-red-600 hover:bg-[#fd5959] dark:hover:bg-[#fd5959] hover:text-white'> <CircleMinus size={20} /> Remove</SecondaryBtn>
+                <SecondaryBtn 
+                  className='bg-red-600 dark:bg-red-600 hover:bg-[#fd5959] dark:hover:bg-[#fd5959] hover:text-white'
+                  onClick={() => onRemove && onRemove(Data?.id)}
+                > 
+                  <CircleMinus size={20} /> Remove
+                </SecondaryBtn>
                 <SecondaryBtn>Send Request</SecondaryBtn>
               </>
             ) : (

@@ -8,7 +8,7 @@ import { useAuth } from '@/lib/Authentication/AuthContext'
 import { profileApi } from '@/lib/api/ProfileApi'
 import { useNotifications } from '@/lib/notification-context'
 import { hasViewedProfile, markProfileAsViewed, forceCleanupViewedProfiles } from '@/lib/utils/profileViewUtils'
-
+import { AxiosError } from 'axios';
 interface ProfileData {
   _id: string;
   firstName: string;
@@ -92,9 +92,13 @@ function ProfilePage({ userId }: ProfilePageProps) {
         if (response.success) {
           setProfile(response.data);
         }
-      } catch (error) {
+      } catch (error: unknown) {
         console.error('Error fetching profile:', error);
-        reportError('Failed to load profile data');
+        if (error instanceof AxiosError) {
+          reportError(error.response?.data?.message || error.message || 'Failed to load profile data');
+        } else {
+          reportError('Failed to load profile data');
+        }
       } finally {
         setLoading(false);
       }

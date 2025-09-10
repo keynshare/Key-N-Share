@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 
 async function addItemToCart(req, res) {
     try {
-        const rawUserId = req.user.id || req.body.userId;
+        const rawUserId = req.user.id ;
         const { datasetId } = req.body;
 
         if(!rawUserId || !datasetId){

@@ -76,7 +76,7 @@ export const datasetApi = {
   },
 
   // Get all datasets with pagination
-  getDatasets: async (page = 1, limit = 10, token?: string) => {
+  getDatasets: async (page = 1, limit = 12, token?: string) => {
     const headers: Record<string, string> = {
       'Content-Type': 'application/json'
     };
