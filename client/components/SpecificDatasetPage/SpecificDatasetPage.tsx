@@ -81,6 +81,7 @@ export default function SpecificDatasetPage() {
     <div className=" grid grid-cols-4  gap-1  pb-8 ">
       <div className="col-span-full lg:col-span-3 lg:pr-5 xl:pr-10">
         <Header 
+          id={dataset._id}
           Rating={dataset.averageRating}
           Time={dataset.createdAt}
           Size={dataset.fileSize}

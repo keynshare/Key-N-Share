@@ -1,13 +1,15 @@
+"use client"
 import PrivateRoute from '@/lib/Authentication/PrivateRoute'
 import React from 'react'
 import CartPage from '@/components/CartPage/CartPage'
-
-function page() {
+import {useAuth} from '@/lib/Authentication/AuthContext'
+function Page() {
+  const { userId } = useAuth();
   return (
     <PrivateRoute>
-      <CartPage />
+      <CartPage userId={userId || undefined} />
     </PrivateRoute>
   )
 }
 
-export default page
+export default Page

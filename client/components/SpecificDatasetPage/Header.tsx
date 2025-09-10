@@ -1,13 +1,18 @@
 import Image from "next/image";
-import { Star,ShoppingCart } from "lucide-react";
+import { Star, ShoppingCart } from "lucide-react";
 import User from "@/components/assets/User.svg";
 import PrimaryBtn from "../SharedComponents/Btns/PrimaryBtn";
 import SecondaryBtn from "../SharedComponents/Btns/SecondaryBtn";
 import Matic from "@/components/assets/Matic"
 import timeAgo from "@/components/SharedComponents/DatasetCompo/timeAgo"
-
+import { useAuth } from "@/lib/Authentication/AuthContext"
+import { cartApi } from "@/lib/api/CartApi"
+import { useState } from "react"
+import {useNotifications} from "@/lib/notification-context"
+import {AxiosError} from "axios"
 
 type Dataset = {
+  id?: string;
   Rating?:number
   userRating?:number
   Image?: string;
@@ -24,7 +29,34 @@ type Dataset = {
   UserImage?: string;
 };
 
-export default function Header({ userRating=4,Rating=0 ,Size='0 mb',Extention='CSV',Price='46' ,Tags=[ "Arts and Entertainment", "Music", "Data Science", "Computer Science", ] ,CoverImage="/Thumbnail.svg" ,Title="Top Spotify Listening History Songs in Countries",Name='Mohammad Sumbul',Time='',UserImage=User.src}:Dataset) {
+export default function Header({ id, userRating=4, Rating=0, Size='0 mb', Extention='CSV', Price='46', Tags=[ "Arts and Entertainment", "Music", "Data Science", "Computer Science" ], CoverImage="/Thumbnail.svg", Title="Top Spotify Listening History Songs in Countries", Name='Mohammad Sumbul', Time='', UserImage=User.src}:Dataset) {
+  const { token } = useAuth()
+  const {notify} = useNotifications()
+  const [isAddingToCart, setIsAddingToCart] = useState(false)
+  
+  const handleAddToCart = async () => {
+   
+    
+    if (!id) {
+      console.error('Dataset ID is missing')
+      return
+    }
+    
+    try {
+      setIsAddingToCart(true)
+      await cartApi.addToCart(id, token || '')
+      notify({message: 'Dataset added to cart', type: 'success'})
+    } catch (error: unknown) {
+      console.error('Error adding to cart:', error)
+      if (error instanceof AxiosError) {
+        notify({message: error.response?.data?.message || error.message || 'Failed to add dataset to cart', type: 'error'})
+      } else {
+        notify({message: 'Failed to add dataset to cart', type: 'error'})
+      }
+    } finally {
+      setIsAddingToCart(false)
+    }
+  }
   return (
     <>
     <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
@@ -76,8 +108,13 @@ export default function Header({ userRating=4,Rating=0 ,Size='0 mb',Extention='C
             <h6 className="text-[42px]  ">{Price} </h6>
             </span>
 
-            <SecondaryBtn> <ShoppingCart size={20} /> Add to Cart</SecondaryBtn>
-            <PrimaryBtn>Buy Now</PrimaryBtn>
+            <SecondaryBtn 
+              onClick={handleAddToCart}
+              disabled={isAddingToCart}
+            > 
+              <ShoppingCart size={20} /> {isAddingToCart ? 'Adding...' : 'Add to Cart'}
+            </SecondaryBtn>
+            <PrimaryBtn >Buy Now</PrimaryBtn>
         </div>
 
     </div>

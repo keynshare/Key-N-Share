@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 
 async function addItemToCart(req, res) {
     try {
-        const rawUserId = req.user.id || req.body.userId;
+        const rawUserId = req.user.id ;
         const { datasetId } = req.body;
 
         if(!rawUserId || !datasetId){
@@ -67,7 +67,7 @@ async function getCartByUserId(req, res){
     }
     
   try {
-    const cart = await Cart.findOne({ userId: userId });
+    const cart = await Cart.findOne({ userId: userId }).populate("items");
 
     if (!cart) {
       return res.status(404).json({ message: 'Cart is empty.' });
