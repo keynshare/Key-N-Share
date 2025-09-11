@@ -33,6 +33,8 @@ export interface DatasetCatalogueData {
   coverImageUrl?: string;
   tags?: string[];
   fileSize: string;
+  averageRating: number;
+  createdAt: string;
 }
 
 export const datasetApi = {
