@@ -1,9 +1,10 @@
 const stream = require('stream');
 const pinataSDK = require('@pinata/sdk');
+const {PINATA_API_KEY, PINATA_SECRET_KEY, PINATA_GATEWAY} = require('../../constants');
 
 const pinata = new pinataSDK(
-    process.env.PINATA_API_KEY,
-    process.env.PINATA_SECRET_KEY
+    PINATA_API_KEY,
+    PINATA_SECRET_KEY
 );
 
 const uploadDataset = async (req, res) => {
@@ -33,7 +34,7 @@ const uploadDataset = async (req, res) => {
                 mimetype: req.file.mimetype,
                 timestamp: result.Timestamp,
                 urls: {
-                    gateway: `https://${process.env.PINATA_GATEWAY}/ipfs/${result.IpfsHash}`,
+                    gateway: `https://${PINATA_GATEWAY}/ipfs/${result.IpfsHash}`,
                     ipfs: `https://ipfs.io/ipfs/${result.IpfsHash}`,
                     cloudflare: `https://cloudflare-ipfs.com/ipfs/${result.IpfsHash}`
                 }
@@ -100,7 +101,7 @@ const getDatasetByCID = async (req, res) => {
 
         // Optional: Verify file exists (quick HEAD request)
         try {
-            const gatewayUrl = `https://${process.env.PINATA_GATEWAY}/ipfs/${cid}`;
+            const gatewayUrl = `https://${PINATA_GATEWAY}/ipfs/${cid}`;
             await axios.head(gatewayUrl, { timeout: 5000 });
         } catch (error) {
             if (error.response?.status === 404) {
@@ -118,12 +119,12 @@ const getDatasetByCID = async (req, res) => {
             data: {
                 cid: cid,
                 downloadUrls: {
-                    primary: `https://${process.env.PINATA_GATEWAY}/ipfs/${cid}`,
+                    primary: `https://${PINATA_GATEWAY}/ipfs/${cid}`,
                     backup: `https://ipfs.io/ipfs/${cid}`,
                     cloudflare: `https://cloudflare-ipfs.com/ipfs/${cid}`
                 },
                 // For frontend convenience
-                directDownload: `https://${process.env.PINATA_GATEWAY}/ipfs/${cid}?download=true`
+                directDownload: `https://${PINATA_GATEWAY}/ipfs/${cid}?download=true`
             }
         });
 
