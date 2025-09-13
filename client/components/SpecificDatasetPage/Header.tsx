@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Star, ShoppingCart } from "lucide-react";
+import { Star, ShoppingCart, Heart } from "lucide-react";
 import User from "@/components/assets/User.svg";
 import PrimaryBtn from "../SharedComponents/Btns/PrimaryBtn";
 import SecondaryBtn from "../SharedComponents/Btns/SecondaryBtn";
@@ -7,6 +7,7 @@ import Matic from "@/components/assets/Matic"
 import timeAgo from "@/components/SharedComponents/DatasetCompo/timeAgo"
 import { useAuth } from "@/lib/Authentication/AuthContext"
 import { cartApi } from "@/lib/api/CartApi"
+import { favoriteApi } from "@/lib/api/FavoriteApi"
 import { useState } from "react"
 import {useNotifications} from "@/lib/notification-context"
 import {AxiosError} from "axios"
@@ -33,6 +34,7 @@ export default function Header({ id, userRating=4, Rating=0, Size='0 mb', Extent
   const { token } = useAuth()
   const {notify} = useNotifications()
   const [isAddingToCart, setIsAddingToCart] = useState(false)
+  const [isAddingToFavorites, setIsAddingToFavorites] = useState(false)
   
   const handleAddToCart = async () => {
    
@@ -57,6 +59,29 @@ export default function Header({ id, userRating=4, Rating=0, Size='0 mb', Extent
       setIsAddingToCart(false)
     }
   }
+
+  const handleAddToFavorites = async () => {
+    if (!id) {
+      console.error('Dataset ID is missing')
+      return
+    }
+
+    try {
+      setIsAddingToFavorites(true)
+      await favoriteApi.addToFavorites(id, token || '')
+      notify({message: 'Dataset added to favorites', type: 'success'})
+    } catch (error: unknown) {
+      console.error('Error adding to favorites:', error)
+      if (error instanceof AxiosError) {
+        notify({message: error.response?.data?.message || error.message || 'Failed to add dataset to favorites', type: 'error'})
+      } else {
+        notify({message: 'Failed to add dataset to favorites', type: 'error'})
+      }
+    } finally {
+      setIsAddingToFavorites(false)
+    }
+  }
+
   return (
     <>
     <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
@@ -108,12 +133,21 @@ export default function Header({ id, userRating=4, Rating=0, Size='0 mb', Extent
             <h6 className="text-[42px]  ">{Price} </h6>
             </span>
 
+             <button 
+            className="shadow-md flex items-center justify-center w-12 h-12 border dark:border-gray-600 rounded-full transition-all duration-500"
+              onClick={handleAddToFavorites}
+              disabled={isAddingToFavorites}
+            >
+               {isAddingToFavorites ? <div className="p-2 rounded-full border-2 border-r-gray-200 border-orange-400 animate-spin "></div> : <Heart size={20} />}
+            </button>
+
             <SecondaryBtn 
               onClick={handleAddToCart}
               disabled={isAddingToCart}
             > 
               <ShoppingCart size={20} /> {isAddingToCart ? 'Adding...' : 'Add to Cart'}
             </SecondaryBtn>
+           
             <PrimaryBtn >Buy Now</PrimaryBtn>
         </div>
 

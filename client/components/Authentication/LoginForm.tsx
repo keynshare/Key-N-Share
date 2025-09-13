@@ -5,14 +5,12 @@ import Image from "next/image";
 import PrimaryBtn from "../SharedComponents/Btns/PrimaryBtn";
 import SecondaryBtn from "../SharedComponents/Btns/SecondaryBtn";
 import Google from "../assets/Google.svg";
-import { Wallet, Eye, EyeOff } from "lucide-react";
-import WalletGradient from '@/components/assets/Wallet.svg'
+import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { useAuth } from "@/lib/Authentication/AuthContext";
 import { useNotifications } from "@/lib/notification-context";
-import {useWalletConnection} from "@/lib/Authentication/walletConnection";
-
+import WalletConnectButton from "../SharedComponents/WalletConnectButton";
 type LoginProp={
    isLoginMode?:boolean,
    toggleMode?:(value?:boolean)=>void,
@@ -20,7 +18,7 @@ type LoginProp={
 
 function LoginForm({isLoginMode,toggleMode}:LoginProp) {
 
-const { isConnected, balance, isPending, connectWallet, disconnectWallet } = useWalletConnection();
+// Wallet connection is now handled by WalletConnectButton component
  const { login } = useAuth();
  
   const [email, setEmail] = useState("");
@@ -149,7 +147,7 @@ const { isConnected, balance, isPending, connectWallet, disconnectWallet } = use
 
               <div className="flex flex-col lg:flex-row gap-3 w-full items-center justify-center">
              
-            <PrimaryBtn
+            {/* <PrimaryBtn
               onClick={connectWallet}
               disabled={isPending}
               sparkelClass="hidden " className="w-full"
@@ -157,14 +155,16 @@ const { isConnected, balance, isPending, connectWallet, disconnectWallet } = use
               Hovered={isConnected}
             >
              {!isConnected ? <Wallet size={22}/> : <Image src={WalletGradient} width={24} alt="wallet svg" />} {isConnected ? balance : "Connect Wallet"}  
-            </PrimaryBtn>
-        
-           <SecondaryBtn
+            </PrimaryBtn> */}
+        <WalletConnectButton   className="w-full"
+                  showBalance={true}
+                  showDisconnect={true}/>
+           {/* <SecondaryBtn
                 onClick={disconnectWallet}
                 className="w-full bg-gray-200 !text-black dark:!text-white dark:hover:!text-black dark:hover:bg-gray-400 hover:!text-white hover:bg-[#c2c2c2] dark:bg-[#3f3f3f]"
               >
                 Disconnect Wallet
-              </SecondaryBtn>
+              </SecondaryBtn> */}
               </div>
             </form>
           </div>

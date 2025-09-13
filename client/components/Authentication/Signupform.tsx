@@ -4,9 +4,8 @@ import PrimaryBtn from "../SharedComponents/Btns/PrimaryBtn";
 import SecondaryBtn from "../SharedComponents/Btns/SecondaryBtn";
 import Image from 'next/image';
 import Google from "../assets/Google.svg";
-import {useWalletConnection} from "@/lib/Authentication/walletConnection";
-import { Wallet,Eye,EyeOff } from "lucide-react";
-import WalletGradient from '@/components/assets/Wallet.svg';
+import WalletConnectButton from "../SharedComponents/WalletConnectButton";
+import { Eye,EyeOff } from "lucide-react";
 import {useRouter} from 'next/navigation';
 import axios from "axios";
 import { useAuth } from '@/lib/Authentication/AuthContext';
@@ -18,7 +17,7 @@ type SignupProp={
 }
 function Signupform({isLoginMode,toggleMode}:SignupProp) {
 
-const { isConnected, balance, isPending, connectWallet, disconnectWallet } = useWalletConnection();
+// Wallet connection is now handled by WalletConnectButton component
 const { login } = useAuth();
 
   const [firstName, setFirstName] = useState("");
@@ -211,22 +210,11 @@ const { login } = useAuth();
               </span>
 
               <div className="flex flex-col lg:flex-row gap-3 w-full items-center justify-center">
-                 <PrimaryBtn
-              onClick={connectWallet}
-              disabled={isPending}
-              sparkelClass="hidden " className="w-full"
-
-              Hovered={isConnected}
-            >
-             {!isConnected ? <Wallet size={22}/> : <Image src={WalletGradient} width={24} alt="wallet svg" />} {isConnected ? balance : "Connect Wallet"}  
-            </PrimaryBtn>
-        
-           <SecondaryBtn
-                onClick={disconnectWallet}
-                className="w-full bg-gray-200 !text-black dark:!text-white dark:hover:!text-black dark:hover:bg-gray-400 hover:!text-white hover:bg-[#c2c2c2] dark:bg-[#3f3f3f]"
-              >
-                Disconnect Wallet
-              </SecondaryBtn>
+                <WalletConnectButton 
+                  className="w-full"
+                  showBalance={true}
+                  showDisconnect={true}
+                />
               </div>
             </form>
           </div>

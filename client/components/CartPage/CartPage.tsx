@@ -111,7 +111,9 @@ function CartPage({userId}: {userId?: string}) {
                           Price: item.price,
                           Tags: item.tags,
                           Image: item.coverImageUrl || '/Thumbnail.svg',
-                          Rating: 4.5 // Default rating if not available
+                          size: item.fileSize,
+                          uploadDate: item.createdAt,
+                          Rating: item.averageRating 
                         }} 
                         variant="cart"
                         onRemove={() => handleRemoveFromCart(item._id)}

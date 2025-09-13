@@ -2,6 +2,7 @@
 import { LucideShoppingCart, Heart } from "lucide-react"
 import { useAuth } from "@/lib/Authentication/AuthContext"
 import { cartApi } from "@/lib/api/CartApi"
+import {favoriteApi} from "@/lib/api/FavoriteApi"
 import { useState } from "react"
 import { useNotifications } from "@/lib/notification-context"
 import { AxiosError } from "axios"
@@ -16,6 +17,7 @@ function CTAs({ datasetId }: CTAsProps) {
   const {notify,reportError} = useNotifications()
   
   const [isAddingToCart, setIsAddingToCart] = useState(false)
+  const [isAddingToFavorites, setIsAddingToFavorites] = useState(false)
   return (
    <>
    
@@ -42,8 +44,25 @@ function CTAs({ datasetId }: CTAsProps) {
                 >
                     <LucideShoppingCart size={20}/> {isAddingToCart ? 'Adding...' : 'Add to Cart'}
                 </button>
-                <button className="flex gap-2 p-3 hover:bg-gray-200 dark:hover:bg-[#272727] whitespace-nowrap ">
-                    <Heart size={20}/> Mark as Favourite
+                <button
+                 onClick={async () => {    
+                    try {
+                      setIsAddingToFavorites(true)
+                      await favoriteApi.addToFavorites(datasetId, token || '')
+                      notify({message: 'Dataset added to favorites', type: 'success'})
+                    } catch (error: unknown) {
+                      console.error('Error adding to favorites:', error)
+                      if (error instanceof AxiosError) {
+                        reportError(error.response?.data?.message || error.message || 'Failed to add dataset to favorites')
+                      } else {
+                        reportError('Failed to add dataset to favorites')
+                      }
+                    } finally {
+                      setIsAddingToFavorites(false)
+                    }
+                  }} 
+                className="flex gap-2 p-3 hover:bg-gray-200 dark:hover:bg-[#272727] whitespace-nowrap ">
+                    <Heart size={20}/> {isAddingToFavorites ? 'Adding...' :'Mark as Favourite'}
                 </button>
                
                

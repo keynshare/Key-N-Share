@@ -13,10 +13,9 @@ import clsx from "clsx";
 import WhiteLogo from "@/public/WhiteLogo.svg";
 import { SunMediumIcon, MoonStar, Menu, X } from "lucide-react";
 import { useTheme } from "@/lib/theme-context";
-import { Wallet, ShoppingCart, LucideFileHeart, Bell } from "lucide-react";
+import { ShoppingCart, LucideFileHeart, Bell } from "lucide-react";
 import User from "@/components/assets/User.svg";
-import {useWalletConnection} from "@/lib/Authentication/walletConnection";
-import WalletGradient from '@/components/assets/Wallet.svg'
+import WalletConnectButton from "./WalletConnectButton";
 import { useLoginMode } from "@/lib/LoginModeContext";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/Authentication/AuthContext";
@@ -30,7 +29,7 @@ const navLinks = [
 
 function Navbar() {
 
-const { isConnected, balance, isPending, connectWallet, disconnectWallet } = useWalletConnection();
+// Wallet connection is now handled by WalletConnectButton component
 const { isAuthenticated } = useAuth();
 
   const { theme, toggleTheme } = useTheme();
@@ -237,16 +236,13 @@ const { isAuthenticated } = useAuth();
               }`}
             >
               <div className="animate-bounce-slow flex gap-4 items-center justify-center delay-200">
-                <PrimaryBtn
-                  onClick={() => !isConnected ? connectWallet() : disconnectWallet()}
-                  disabled={isPending}
-                  Hovered={isConnected}
-                  sparkelClass="hidden"
-                  classsecondInner="px-1"
-                >
-                {!isConnected ? <Wallet size={22}/> : <Image src={WalletGradient} width={24} alt="wallet svg" />} {isConnected ? balance : "Connect"}  
-                  
-                </PrimaryBtn>
+                <WalletConnectButton 
+                  className="max-w-[200px]"
+                  showBalance={true}
+                  showDisconnect={false}
+                  compact={false}
+                  connect={true}
+                />
 
                 <Link title="Cart" href='/cart' className="p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white rounded-full">
                   <ShoppingCart size={22} />
@@ -369,16 +365,12 @@ const { isAuthenticated } = useAuth();
                 </Link>
                 
               </div>
-               <PrimaryBtn
-                  onClick={() => !isConnected ? connectWallet() : disconnectWallet()}
-                  disabled={isPending}
-                  Hovered={isConnected}
-                  sparkelClass="hidden"
-                  classsecondInner="px-1"
-                >
-                {!isConnected ? <Wallet size={22}/> : <Image src={WalletGradient} width={24} alt="wallet svg" />} {isConnected ? balance : "Connect"}  
-                  
-                </PrimaryBtn>
+               <WalletConnectButton 
+                  className="w-full max-w-[200px]"
+                  showBalance={true}
+                  showDisconnect={false}
+                  compact={true}
+                />
 
             </>
             }

@@ -4,7 +4,7 @@ import Matic from '@/components/assets/Matic'
 import SecondaryBtn from '../Btns/SecondaryBtn'
 import { CircleMinus, Star } from 'lucide-react'
 import StarRating from '../StarRating'
-
+import timeAgo from './timeAgo'
 
 
 
@@ -15,16 +15,19 @@ type Data={
     Description?: string;
     Type?: string;
     Price?: number | string;
+    size?: string;
     Tags?: string[];
-    Rating?: number;
+    uploadDate?: string;
+    Rating?: number 
 }
 
 type CheckOutDatasetCard = {
    Data:Data,
    variant?: 'cart' | 'order',
-   onRemove?: (id?: string | number) => void
+   onRemove?: (id?: string | number) => void,
+   onFavRemove?: (id?: string | number) => void
 }
-function CheckOutDatasetCard({Data, variant='cart', onRemove}:CheckOutDatasetCard) {
+function CheckOutDatasetCard({Data, variant='cart', onRemove,onFavRemove}:CheckOutDatasetCard) {
   const [userRating, setUserRating] = useState<number>(Data?.Rating || 0);
   
   const handleRatingChange = (newRating: number) => {
@@ -35,11 +38,11 @@ function CheckOutDatasetCard({Data, variant='cart', onRemove}:CheckOutDatasetCar
   return (
    <>
    
-    <div className='flex flex-col max-w-[300px]  lg:max-w-max 2xl:max-w-[1400px] lg:flex-row gap-2 items-center justify-center p-3 shadow-[1px_1px_17px_0_rgba(0,0,0,0.10)] bg-white dark:bg-[#131313] rounded-lg '>
+    <div className=' flex flex-col max-w-[300px]  lg:max-w-full 2xl:max-w-[1400px] lg:flex-row gap-2 items-center justify-center p-3 shadow-[1px_1px_17px_0_rgba(0,0,0,0.10)] bg-white dark:bg-[#131313] rounded-lg '>
 
         <img src={Data?.Image} alt="checkout" className='object-cover border border-gray-100 dark:border-gray-600 rounded-md w-full lg:min-w-[300px] lg:max-w-[300px] aspect-video' width={200} height={200} />
 
-        <div className="">
+        <div className="w-full">
       <h1 className=" md:text-lg font-bold font-bricola line-clamp-1">
         {Data?.Title}
       </h1>
@@ -47,9 +50,9 @@ function CheckOutDatasetCard({Data, variant='cart', onRemove}:CheckOutDatasetCar
         <p className='text-gray-600 line-clamp-2 dark:text-gray-200'>{Data?.Description}</p>
 
       <div className="flex flex-wrap items-center my-1 gap-4 text-sm text-gray-500">
-        <span>Uploaded 2 days ago</span>
-        
-        <span>256 MB</span>
+        <span>Uploaded {timeAgo(Data?.uploadDate || "")} </span>
+
+        <span>{Data?.size}</span>
        
         <span>{Data?.Type}</span>
        
@@ -81,7 +84,7 @@ function CheckOutDatasetCard({Data, variant='cart', onRemove}:CheckOutDatasetCar
               <>
                 <SecondaryBtn 
                   className='bg-red-600 dark:bg-red-600 hover:bg-[#fd5959] dark:hover:bg-[#fd5959] hover:text-white'
-                  onClick={() => onRemove && onRemove(Data?.id)}
+                  onClick={() => onRemove ? onRemove(Data?.id) : onFavRemove ? onFavRemove(Data?.id) : null}
                 > 
                   <CircleMinus size={20} /> Remove
                 </SecondaryBtn>
