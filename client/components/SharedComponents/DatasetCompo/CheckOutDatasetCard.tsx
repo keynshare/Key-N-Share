@@ -50,7 +50,7 @@ function CheckOutDatasetCard({Data, variant='cart', onRemove,onFavRemove}:CheckO
         <p className='text-gray-600 line-clamp-2 dark:text-gray-200'>{Data?.Description}</p>
 
       <div className="flex flex-wrap items-center my-1 gap-4 text-sm text-gray-500">
-        <span>Uploaded {timeAgo(Data?.uploadDate)} </span>
+        <span>Uploaded {timeAgo(Data?.uploadDate || "")} </span>
 
         <span>{Data?.size}</span>
        

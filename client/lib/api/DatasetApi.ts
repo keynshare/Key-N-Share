@@ -26,6 +26,7 @@ export interface DatasetCatalogueData {
   sellerAddress: string;
   title: string;
   price: number;
+  source: string;
   extension: string;
   dataCID: string;
   originalContentHash: string;
@@ -33,8 +34,9 @@ export interface DatasetCatalogueData {
   coverImageUrl?: string;
   tags?: string[];
   fileSize: string;
-  averageRating: number;
-  createdAt: string;
+  averageRating?: number;
+  createdAt?: string;
+  schema: string;
 }
 
 export const datasetApi = {

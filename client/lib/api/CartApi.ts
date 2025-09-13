@@ -14,7 +14,8 @@ export interface CartItem {
   tags?: string[];
   fileSize: string;
   sellerAddress: string;
-  averageRating: number
+  averageRating: number;
+  createdAt: string;
 }
 
 export interface CartResponse {
