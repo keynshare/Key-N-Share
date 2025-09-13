@@ -7,7 +7,7 @@ const IV_LEN = 12;
 const TAG_LEN = 16;
 
 
-export function getMasterKeyFromEnv() {
+function getMasterKeyFromEnv() {
   const mk = process.env.MASTER_KEY;
   if (!mk) throw new Error("MASTER_KEY not set");
   const buf = Buffer.from(mk, "base64");
@@ -15,7 +15,7 @@ export function getMasterKeyFromEnv() {
   return buf;
 }
 
-export function encryptText(plainText) {
+function encryptText(plainText) {
   const key = getMasterKeyFromEnv();
   const iv = crypto.randomBytes(IV_LEN);
   const cipher = crypto.createCipheriv(ALGO, key, iv, { authTagLength: TAG_LEN });
@@ -30,7 +30,7 @@ export function encryptText(plainText) {
   };
 }
 
-export function decryptObject({ ciphertext, iv, tag }) {
+function decryptObject({ ciphertext, iv, tag }) {
   const key = getMasterKeyFromEnv();
   const ivBuf = Buffer.from(iv, "base64");
   const tagBuf = Buffer.from(tag, "base64");
@@ -42,3 +42,5 @@ export function decryptObject({ ciphertext, iv, tag }) {
   const plain = Buffer.concat([decipher.update(ctBuf), decipher.final()]);
   return plain.toString("utf8");
 }
+
+module.exports = { encryptText, decryptObject };

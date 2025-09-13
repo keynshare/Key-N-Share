@@ -1,5 +1,4 @@
-// models/Secret.js
-import mongoose from "mongoose";
+const mongoose = require('mongoose');
 
 const secretSchema = new mongoose.Schema({
   identifier: { type: String, required: true, unique: true, index: true },
@@ -9,4 +8,6 @@ const secretSchema = new mongoose.Schema({
   meta: { type: String },
 }, { timestamps: true });
 
-export default mongoose.models.Secret || mongoose.model("Secret", secretSchema);
+const Secret = mongoose.model("Secret", secretSchema);
+
+module.exports = Secret;
