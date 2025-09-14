@@ -7,7 +7,7 @@ export default function NotificationCenter() {
   const { notifications, remove } = useNotifications();
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-[999999999999999999999999999999999999999999999999999] flex flex-col items-end gap-2 p-4 sm:p-6">
+    <div className="pointer-events-none fixed inset-0 z-[999999999999999999999999999999999999999999] flex flex-col items-end gap-2 p-4 sm:p-6">
       <div className="ml-auto w-full max-w-sm space-y-2">
         {notifications.map((n) => (
           <SlideIn key={n.id} n={n} remove={remove} />
@@ -44,7 +44,7 @@ function SlideIn({ n, remove }: SlideInProps) {
   return (
     <div
       className={
-        "pointer-events-auto relative z-[9999999999999999999999999999999999999999999999999999] overflow-hidden rounded-xl border p-4 shadow-lg backdrop-blur transition-transform duration-300 ease-out " +
+        "pointer-events-auto relative z-[999999999999999999999999999999999999999999] overflow-hidden rounded-xl border p-4 shadow-lg backdrop-blur transition-transform duration-300 ease-out " +
         (n.type === "success"
           ? "border-emerald-200/40 dark:border-emerald-500/20 bg-emerald-900/60 text-emerald-50"
           : n.type === "error"

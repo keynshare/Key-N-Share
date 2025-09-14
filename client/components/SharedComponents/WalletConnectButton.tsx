@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Wallet, RefreshCw, AlertCircle, CheckCircle, X } from "lucide-react";
 import Image from "next/image";
-import WalletGradient from '@/components/assets/Wallet.svg';
+import Logo from "@/public/logo.svg";
 import PrimaryBtn from "./Btns/PrimaryBtn";
 import SecondaryBtn from "./Btns/SecondaryBtn";
 import { createPortal } from "react-dom";
@@ -178,7 +178,7 @@ export default function WalletConnectButton({
 
       {/* Wallet Selection Modal */}
       {showWalletModal && createPortal(
-        <div className="fixed inset-0 bg-black overflow-y-auto bg-opacity-50 flex items-center justify-center z-[9999999999999999999999999999999999999999] p-2 sm:p-4">
+        <div className="fixed inset-0 bg-black overflow-y-auto bg-opacity-50 flex items-center justify-center z-[999999999999] p-2 sm:p-4">
           <div className="bg-[#f4f3f5] dark:bg-[#131313] mt-10 sm:mt-0 p-4 sm:p-6 rounded-lg max-w-md w-full mx-auto relative shadow-lg">
             <button
               onClick={() => setShowWalletModal(false)}
@@ -187,7 +187,7 @@ export default function WalletConnectButton({
               <X className="w-5 h-5" />
             </button>
             <div className="flex flex-col items-center justify-center mb-4">
-              <Image src={WalletGradient} alt="Wallet Icon" className="w-16 h-16 mb-4" />
+              <Image src={Logo} alt="Wallet Icon" className="w-16 h-16 mb-4" />
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white text-center mb-2">
                 Connect your wallet
               </h2>
