@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { Play, XIcon } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import {createPortal} from "react-dom";
 
 type AnimationStyle =
   | "from-bottom"
@@ -107,7 +108,9 @@ export default function HeroVideoDialog({
           </div>
         </div>
       </button>
+       {createPortal(
       <AnimatePresence>
+       
         {isVideoOpen && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -143,7 +146,9 @@ export default function HeroVideoDialog({
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>,
+      document.body
+    )}
     </div>
   );
 }
