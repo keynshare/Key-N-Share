@@ -124,7 +124,7 @@ export default function HeroVideoDialog({
             }}
             onClick={() => setIsVideoOpen(false)}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[9999999] flex items-center justify-center bg-black/50 backdrop-blur-md"
+            className="fixed inset-0 z-[99999999999] flex items-center justify-center bg-black/50 backdrop-blur-md"
           >
             <motion.div
               {...selectedAnimation}
