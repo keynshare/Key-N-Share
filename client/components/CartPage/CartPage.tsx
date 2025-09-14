@@ -19,6 +19,7 @@ function CartPage({userId}: {userId?: string}) {
   const [cartItems, setCartItems] = useState<CartItem[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [totalPrice, setTotalPrice] = useState(0)
+  const [GassFees, setGasfees] = useState(0)
   const { isAuthenticated, token } = useAuth()
  const [errorCart, setErrorCart] = useState<string | null>(null);
   const [DatasetData, setDatasetData] = useState<DatasetCatalogueData[]>([])
@@ -54,6 +55,8 @@ function CartPage({userId}: {userId?: string}) {
       
       // Calculate total price
       const total = (response.items || []).reduce((sum, item) => sum + (item.price || 0), 0)
+      const totalGas = (response.items || []).reduce((sum) => sum + 0.5, 0)
+      setGasfees(totalGas)
       setTotalPrice(total)
     } catch (error: unknown) {
       console.error('Error fetching cart items:', error)
@@ -126,8 +129,8 @@ function CartPage({userId}: {userId?: string}) {
                     <div className='  flex flex-col gap-4  bg-white dark:bg-[#131313] border dark:border-gray-700  p-4 rounded-lg'>
                             <h5>Order Summary</h5>
                             <span className='flex justify-between w-full items-center'><p>Dataset Price:</p> <p className='flex items-center justify-center flex-nowrap gap-1'><Matic size={16}/> {totalPrice}</p></span>
-                            <span className='flex justify-between items-center'><p>Gas Fees:</p> <p className='flex items-center justify-center flex-nowrap gap-1'><Matic size={16} /> 0.5</p> </span>
-                            <span className='flex justify-between items-center pt-3 border-t dark:border-t-gray-600'><p>Total:</p><p className='flex items-center justify-center flex-nowrap gap-1'><Matic size={16} />{(totalPrice + 0.5).toFixed(2)}</p></span>
+                            <span className='flex justify-between items-center'><p>Gas Fees:</p> <p className='flex items-center justify-center flex-nowrap gap-1'><Matic size={16} /> {GassFees}</p> </span>
+                            <span className='flex justify-between items-center pt-3 border-t dark:border-t-gray-600'><p>Total:</p><p className='flex items-center justify-center flex-nowrap gap-1'><Matic size={16} />{(totalPrice + GassFees).toFixed(2)}</p></span>
                             <PrimaryBtn 
                               sparkelClass='hidden' 
                               className='w-full' 

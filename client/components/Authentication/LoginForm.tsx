@@ -115,8 +115,8 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
             </button>
           </div>
 
-              <div className="flex w-full items-center justify-between">
-                <label className="flex items-center gap-2 ">
+              <div className="flex flex-col sm:flex-row w-full sm:items-center gap-2 sm:justify-between">
+                <label className="flex  items-center gap-2 ">
                   <input
                     className="accent-orange-600 rounded-sm"
                     type="checkbox"
@@ -126,7 +126,7 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
                   />
                   Remember me for 1 month
                 </label>
-                <button type="button" className="text-[#FF7A00] underline underline-offset-2 hover:text-[#ff8c1a] transition-colors">
+                <button type="button" className="text-[#FF7A00] w-fit underline underline-offset-2 hover:text-[#ff8c1a] transition-colors">
                   Forgot Password?
                 </button>
               </div>
