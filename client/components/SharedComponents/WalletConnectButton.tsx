@@ -178,7 +178,7 @@ export default function WalletConnectButton({
 
       {/* Wallet Selection Modal */}
       {showWalletModal && createPortal(
-        <div className="fixed inset-0 bg-black overflow-y-auto bg-opacity-50 flex items-center justify-center z-[9999999999999999999999999999999999999999] p-2 sm:p-4">
+        <div className="fixed inset-0 bg-black overflow-y-auto bg-opacity-50 flex items-center justify-center z-[999999999999] p-2 sm:p-4">
           <div className="bg-[#f4f3f5] dark:bg-[#131313] mt-10 sm:mt-0 p-4 sm:p-6 rounded-lg max-w-md w-full mx-auto relative shadow-lg">
             <button
               onClick={() => setShowWalletModal(false)}
