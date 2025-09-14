@@ -8,7 +8,7 @@ export default function ProcessDialog() {
   if (!state.isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100000] flex items-center justify-center">
+    <div className="fixed inset-0 z-[99999999999999999] flex items-center justify-center">
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
       <div className="relative w-full max-w-md rounded-2xl border bg-[#f0f0f0] dark:border-gray-800 dark:bg-[#0b0b0b] p-6 shadow-2xl">
         {state.title ? <h3 className="mb-4 text-lg font-semibold ">{state.title}</h3> : null}
