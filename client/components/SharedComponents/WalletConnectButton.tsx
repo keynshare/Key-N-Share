@@ -178,26 +178,30 @@ export default function WalletConnectButton({
 
       {/* Wallet Selection Modal */}
       {showWalletModal && createPortal(
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg max-w-md w-full mx-4">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                Select a Wallet
-              </h3>
-              <button
-                onClick={() => setShowWalletModal(false)}
-                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-              >
-                <X className="w-5 h-5" />
-              </button>
+        <div className="fixed inset-0 bg-black overflow-y-auto bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
+          <div className="bg-[#f4f3f5] dark:bg-[#131313] mt-10 sm:mt-0 p-4 sm:p-6 rounded-lg max-w-md w-full mx-auto relative shadow-lg">
+            <button
+              onClick={() => setShowWalletModal(false)}
+              className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            <div className="flex flex-col items-center justify-center mb-4">
+              <Image src={WalletGradient} alt="Wallet Icon" className="w-16 h-16 mb-4" />
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white text-center mb-2">
+                Connect your wallet
+              </h2>
+              <p className="text-gray-600 dark:text-gray-400 text-center mb-6">
+                Connect with one of our available wallet providers or create a new one.
+              </p>
             </div>
             
-            <div className="space-y-2">
+            <div className="space-y-3">
               {installedWallets.length > 0 && (
-                <div className="mb-4">
-                  <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <div className="flex flex-col gap-2">
+                  {/* <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Installed Wallets
-                  </h4>
+                  </h4> */}
                   {installedWallets.map((wallet) => (
                     <button
                       key={wallet.adapter.name}
@@ -208,7 +212,7 @@ export default function WalletConnectButton({
                         <img
                           src={wallet.adapter.icon}
                           alt={`${wallet.adapter.name} icon`}
-                          className="w-6 h-6"
+                          className="w-6 h-6 backdrop:shadow-lg"
                         />
                       )}
                       <span className="font-medium text-gray-900 dark:text-white">
@@ -223,10 +227,11 @@ export default function WalletConnectButton({
               )}
               
               {wallets.filter(w => w.readyState !== 'Installed').length > 0 && (
-                <div>
-                  <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <div className="flex flex-col gap-2">
+                  {/* <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Other Wallets
-                  </h4>
+                  </h4> */}
+                  <p>Others</p>
                   {wallets
                     .filter(w => w.readyState !== 'Installed')
                     .map((wallet) => (
@@ -239,7 +244,7 @@ export default function WalletConnectButton({
                         <img
                           src={wallet.adapter.icon}
                           alt={`${wallet.adapter.name} icon`}
-                          className="w-6 h-6"
+                          className="w-6 h-6 "
                         />
                       )}
                       <span className="font-medium text-gray-900 dark:text-white">
@@ -249,6 +254,19 @@ export default function WalletConnectButton({
                   ))}
                 </div>
               )}
+            </div>
+            <div className="mt-6 text-center">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                New to crypto?{" "}
+                <a
+                  href="https://www.coinbase.com/learn/crypto-basics"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline dark:text-blue-400"
+                >
+                  Learn more
+                </a>
+              </p>
             </div>
           </div>
         </div>
