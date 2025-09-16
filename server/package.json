@@ -16,6 +16,7 @@
     "@pinata/sdk": "^2.1.0",
     "axios": "^1.11.0",
     "bcryptjs": "^2.4.3",
+    "bs58": "^6.0.0",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^17.2.1",
@@ -27,7 +28,8 @@
     "mongoose": "^8.17.2",
     "morgan": "^1.10.0",
     "multer": "^2.0.2",
-    "pinata": "^2.5.0"
+    "pinata": "^2.5.0",
+    "stream": "^0.0.3"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
