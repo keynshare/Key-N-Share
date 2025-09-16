@@ -7,7 +7,7 @@ export default function NotificationCenter() {
   const { notifications, remove } = useNotifications();
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-[999999999999999999999999999999999999999999] flex flex-col items-end gap-2 p-4 sm:p-6">
+    <div className="pointer-events-none fixed inset-0 z-[9999999999] flex flex-col items-end gap-2 p-4 sm:p-6">
       <div className="ml-auto w-full max-w-sm space-y-2">
         {notifications.map((n) => (
           <SlideIn key={n.id} n={n} remove={remove} />
