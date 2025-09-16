@@ -184,7 +184,8 @@ if (!formData.encryptionKey) {
       const catalogueResponse = await datasetApi.addDatasetToCatalogue(catalogueData, token);
        // Store encryption key as secret using dataset CID as identifier
        try {
-        await SecretApi.storeSecret(catalogueResponse.data._id, formData.encryptionKey, token);
+        console.log(catalogueResponse)
+        await SecretApi.storeSecret(catalogueResponse._id, formData.encryptionKey, token);
       } catch (e) {
         console.error("Failed to store encryption key secret", e);
       }
