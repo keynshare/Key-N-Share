@@ -125,8 +125,9 @@ if (!formData.encryptionKey) {
           "Adding to catalogue",
         ],
       });
-      // Import the dataset API
+      // Import APIs
       const { datasetApi } = await import("@/lib/api/DatasetApi");
+      const { SecretApi } = await import("@/lib/api/SecretApi");
       
       // Encrypt dataset file before uploading
       setActiveStep(0);
@@ -160,6 +161,8 @@ if (!formData.encryptionKey) {
       updateStep(2, { status: "done" });
 
       const FileType = formData.file.name.split('.').pop()?.toUpperCase() || 'UNKNOWN'
+      
+     
       // Add dataset to catalogue
       setActiveStep(3);
       const catalogueData = {
@@ -179,6 +182,12 @@ if (!formData.encryptionKey) {
       };
 
       const catalogueResponse = await datasetApi.addDatasetToCatalogue(catalogueData, token);
+       // Store encryption key as secret using dataset CID as identifier
+       try {
+        await SecretApi.storeSecret(catalogueResponse.data._id, formData.encryptionKey, token);
+      } catch (e) {
+        console.error("Failed to store encryption key secret", e);
+      }
       updateStep(3, { status: "done" });
       
       notify({ type: "success", message: "Dataset uploaded successfully!" });
