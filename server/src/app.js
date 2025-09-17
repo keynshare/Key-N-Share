@@ -8,6 +8,7 @@ const authRoutes = require('./routes/authRoutes');
 const datasetRoutes = require('./routes/datasets');
 const profileRoutes = require('./routes/profileRoutes');
 const catalogueRoutes = require('./routes/datasetCatalogue');
+const { getDatasets } = require('./controllers/datasetCatalgoueController');
 const cartRoutes = require('./routes/cartRoutes');
 const favoritesRoutes = require('./routes/favoritesRoutes');
 const secretsRoutes = require('./routes/secrets');
@@ -44,6 +45,10 @@ app.get('/', (_req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/datasets', authenticate, datasetRoutes);
 app.use('/api/profile', authenticate, profileRoutes);
+// Public access for main catalogue GET endpoint
+app.get('/api/dataset-catalogue', getDatasets);
+
+// Authenticated routes for other catalogue operations
 app.use('/api/dataset-catalogue', authenticate, catalogueRoutes);
 app.use('/api/cart', authenticate, cartRoutes);
 app.use('/api/favorites', authenticate, favoritesRoutes);

@@ -58,14 +58,22 @@ async function getDatasets(req, res) {
 
     const projection = 'title description sellerAddress price coverImageUrl fileSize extension averageRating createdAt';
 
-    const datasets = await DatasetCatalogue.find({})
+    // Build query object for filtering
+    let query = {};
+    
+    // Check for search parameter in query string
+    if (req.query.search) {
+      query.title = { $regex: req.query.search, $options: 'i' };
+    }
+
+    const datasets = await DatasetCatalogue.find(query)
       .select(projection)
       .skip((page - 1) * limit)
       .limit(limit)
       .sort({ createdAt: -1 })
       .lean();
 
-    const total = await DatasetCatalogue.countDocuments();
+    const total = await DatasetCatalogue.countDocuments(query);
 
     res.status(200).json({
       data: datasets,
