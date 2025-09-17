@@ -27,4 +27,6 @@ const buyerDatasetDeliverySchema = new mongoose.Schema({
 
 buyerDatasetDeliverySchema.index({ datasetId: 1, buyerAddress: 1 }, { unique: true });
 
+buyerDatasetDeliverySchema.index({ datasetId: 1, buyerId: 1 }, { unique: true }); 
+
 module.exports = mongoose.model('BuyerDatasetDelivery', buyerDatasetDeliverySchema);
