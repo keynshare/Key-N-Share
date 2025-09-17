@@ -78,5 +78,35 @@ async function deliverDatasetToBuyer(req, res) {
 //     }
 // };
 
+const checkReencryptedExists = async (req, res) => {
+  try {
+    const { datasetId, buyerId } = req.body;
 
-module.exports = { deliverDatasetToBuyer };
+    if (!datasetId || !buyerId) {
+      return res.status(400).json({
+        message: 'datasetId and buyerId are required',
+        exists: false
+      });
+    }
+
+    const delivery = await BuyerDatasetDelivery.findOne({ datasetId, buyerId })
+      .select('watermarkedEncryptedDataCID encryptedSymmetricKey createdAt updatedAt')
+      .lean();
+
+    if (!delivery) {
+      return res.status(200).json({ exists: false });
+    }
+
+    return res.status(200).json({
+      exists: true,
+      cid: delivery.watermarkedEncryptedDataCID,
+      encryptedSymmetricKey: delivery.encryptedSymmetricKey,
+      createdAt: delivery.createdAt,
+      updatedAt: delivery.updatedAt
+    });
+  } catch (err) {
+    return res.status(500).json({ message: 'Server error', exists: false });
+  }
+};
+
+module.exports = { deliverDatasetToBuyer, checkReencryptedExists };
