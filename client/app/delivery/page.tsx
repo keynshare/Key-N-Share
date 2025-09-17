@@ -52,9 +52,10 @@ export default function DeliveryPage() {
                 preserveOriginalFormat: true,
             });
             setMessage("Download started.");
-        } catch (e: any) {
-            console.error(e);
-            setMessage(e?.message || "Delivery or decryption failed.");
+		} catch (e: unknown) {
+			console.error(e);
+			const msg = e instanceof Error ? e.message : "Delivery or decryption failed.";
+			setMessage(msg);
         } finally {
             setBusy(false);
         }

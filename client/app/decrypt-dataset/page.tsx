@@ -29,9 +29,10 @@ export default function DeliveryPage() {
 				privateKeyPem: values.privateKeyPem,
 			});
 			setMessage("Download started.");
-		} catch (e: any) {
+		} catch (e: unknown) {
 			console.error(e);
-			setMessage(e?.message || "Delivery or decryption failed.");
+			const message = e instanceof Error ? e.message : "Delivery or decryption failed.";
+			setMessage(message);
 		} finally {
 			setBusy(false);
 		}

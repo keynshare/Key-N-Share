@@ -60,8 +60,10 @@ export interface DeliverAndDownloadParams extends DeliverDatasetRequest {
 export async function deliverDecryptAndDownload(params: DeliverAndDownloadParams): Promise<void> {
 	const { privateKeyPem, filename, token, preserveOriginalFormat, ...body } = params;
 	const res = await requestDelivery(body, token);
-	const cid = res?.data?.cid || (res as any)?.cid;
-	const encryptedKey = res?.data?.encryptedSymmetricKey || (res as any)?.encryptedSymmetricKey;
+	// Some backends return fields at the root; normalize safely without using 'any'
+	const maybeRoot = res as unknown as Partial<{ cid: string; encryptedSymmetricKey: string }>;
+	const cid = res?.data?.cid || maybeRoot?.cid;
+	const encryptedKey = res?.data?.encryptedSymmetricKey || maybeRoot?.encryptedSymmetricKey;
 	if (!cid || !encryptedKey) throw new Error("Delivery response missing cid or encryptedSymmetricKey");
 
 	await decryptDatasetByCidAndDownload({
