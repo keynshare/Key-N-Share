@@ -30,7 +30,7 @@ const navLinks = [
 function Navbar() {
 
 // Wallet connection is now handled by WalletConnectButton component
-const { isAuthenticated } = useAuth();
+const { isAuthenticated, logout } = useAuth();
 
   const { theme, toggleTheme } = useTheme();
   const { toggleLoginMode } = useLoginMode();
@@ -45,6 +45,7 @@ const { isAuthenticated } = useAuth();
   const [IsScrolled, setIsScrolled] = useState<boolean>(false);
   const [IsLogout, setIsLogout] = useState<boolean>(true);
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const [ProfileMenu, setProfileMenu] = useState<boolean>(false);
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
   
@@ -121,7 +122,7 @@ const { isAuthenticated } = useAuth();
   };
 
   return (
-    <div className="sticky w-screen top-0 p-4 z-[99999999999999999999] px-5 overflow-hidden xl:px-10 bg-transparent ">
+    <div className="sticky w-screen top-0 p-4 z-[9999999999999999999] px-5  overflow-y-visible xl:px-10 bg-transparent ">
       <div className="flex justify-center">
         <div
           className={clsx(
@@ -253,13 +254,57 @@ const { isAuthenticated } = useAuth();
                 <button title="Notifications" className="p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white rounded-full">
                   <Bell size={22} />
                 </button>
-                <Link href="/profile" className="  text-white rounded-full">
-                  <Image
-                    className="object-cover w-10"
-                    src={User}
-                    alt="user svg"
-                  />
-                </Link>
+               
+                {/* Profile Dropdown */}
+            <div className="relative">
+            <button
+              onClick={() => setProfileMenu((prev) => !prev)}
+              className="text-white rounded-full focus:outline-none"
+            >
+          <Image
+          className="object-cover w-10"
+          src={User}
+          alt="user svg"
+          />
+          </button>
+
+     {ProfileMenu && (
+    <div className="absolute overflow-hidden right-0 bg-[#ecf7ff] mt-2 w-48 h-fit top-10 dark:bg-[#131313] border dark:border-gray-700 rounded-lg shadow-lg z-[9999999999999999999]">
+      <Link
+        href="/profile"
+        className="block px-4 py-2 text-sm hover:text-white hover:bg-[#242424] transition-colors"
+        onClick={() => setProfileMenu(false)}
+      >
+        Profile
+      </Link>
+      <Link
+        href="/generate-key"
+        className="block px-4 py-2 text-sm hover:text-white hover:bg-[#242424] transition-colors"
+        onClick={() => setProfileMenu(false)}
+      >
+        Generate Key
+      </Link>
+      <Link
+        href="/decrypt-dataset"
+        className="block px-4 py-2 text-sm hover:text-white hover:bg-[#242424] transition-colors"
+        onClick={() => setProfileMenu(false)}
+      >
+        Decrypt Dataset
+      </Link>
+      <button
+        onClick={() => {
+          logout();
+          setProfileMenu(false);
+        }}
+        className="block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-[#242424] transition-colors"
+      >
+        Logout
+      </button>
+    </div>
+  )}
+</div>
+
+
               </div>
             </div>
           )}
@@ -356,13 +401,55 @@ const { isAuthenticated } = useAuth();
                 <button className="p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white rounded-full">
                   <Bell size={22} />
                 </button>
-                <Link href="/profile" className="  text-white  rounded-full">
-                  <Image
-                    className="object-cover w-10"
-                    src={User}
-                    alt="user svg"
-                  />
-                </Link>
+                  
+                    {/* Profile Dropdown */}
+            <div className="relative">
+            <button
+              onClick={() => setProfileMenu((prev) => !prev)}
+              className="text-white rounded-full focus:outline-none"
+            >
+          <Image
+          className="object-cover w-10"
+          src={User}
+          alt="user svg"
+          />
+          </button>
+
+     {ProfileMenu && (
+    <div className="absolute left-0 overflow-hidden bg-[#ecf7ff] mt-2 w-48 h-fit top-10 dark:bg-[#131313] border dark:border-gray-700 rounded-lg shadow-lg z-[9999999999999999999]">
+      <Link
+        href="/profile"
+        className="block px-4 py-2 text-sm hover:text-white hover:bg-[#242424] transition-colors"
+        onClick={() => setProfileMenu(false)}
+      >
+        Profile
+      </Link>
+      <Link
+        href="/generate-key"
+        className="block px-4 py-2 text-sm hover:text-white hover:bg-[#242424] transition-colors"
+        onClick={() => setProfileMenu(false)}
+      >
+        Generate Key
+      </Link>
+      <Link
+        href="/decrypt-dataset"
+        className="block px-4 py-2 text-sm hover:text-white hover:bg-[#242424] transition-colors"
+        onClick={() => setProfileMenu(false)}
+      >
+        Decrypt Dataset
+      </Link>
+      <button
+        onClick={() => {
+          logout();
+          setProfileMenu(false);
+        }}
+        className="block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-[#242424] transition-colors"
+      >
+        Logout
+      </button>
+    </div>
+  )}
+</div>
                 
               </div>
                <WalletConnectButton 
@@ -370,6 +457,7 @@ const { isAuthenticated } = useAuth();
                   showBalance={true}
                   showDisconnect={false}
                   compact={true}
+                  connect={true}
                 />
 
             </>
