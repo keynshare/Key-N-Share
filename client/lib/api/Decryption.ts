@@ -5,7 +5,7 @@ import { datasetApi } from "./DatasetApi";
 export type AesKey = CryptoKey;
 
 function base64ToBytes(b64: string): Uint8Array {
-	if (typeof window !== "undefined" && (window as any).atob) {
+	if (typeof window !== "undefined" && typeof (window as unknown as { atob?: (s: string) => string }).atob === "function") {
 		const binary = atob(b64);
 		const bytes = new Uint8Array(binary.length);
 		for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
@@ -44,10 +44,15 @@ export async function decryptWrappedAesKey(
 ): Promise<AesKey> {
 	const rsaPrivate = await importRsaPrivateKeyFromPem(privateKeyPem);
 	const encryptedKeyBytes = base64ToBytes(encryptedKeyBase64);
+	// Ensure we provide an ArrayBuffer (not ArrayBufferLike) to WebCrypto
+	const encryptedKeyArrayBuffer = encryptedKeyBytes.buffer.slice(
+		encryptedKeyBytes.byteOffset,
+		encryptedKeyBytes.byteOffset + encryptedKeyBytes.byteLength
+	) as ArrayBuffer;
 	const rawAesKey = await crypto.subtle.decrypt(
 		{ name: "RSA-OAEP" },
 		rsaPrivate,
-		encryptedKeyBytes
+		encryptedKeyArrayBuffer
 	);
 	return crypto.subtle.importKey(
 		"raw",

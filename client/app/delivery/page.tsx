@@ -4,6 +4,7 @@ import React from "react";
 import DeliveryForm, { DeliveryFormValues } from "@/components/Delivery/DeliveryForm";
 import { deliverDecryptAndDownload } from "@/lib/api/DeliveryApi";
 import { useAuth } from "@/lib/Authentication/AuthContext";
+import { datasetApi } from "@/lib/api/DatasetApi";
 
 export default function DeliveryPage() {
     const { token } = useAuth();
@@ -13,10 +14,28 @@ export default function DeliveryPage() {
         buyerId: "",
         buyerPublicKey: "",
         privateKeyPem: "",
-        filename: "dataset.bin",
+        filename: "dataset.csv",
     });
     const [busy, setBusy] = React.useState(false);
     const [message, setMessage] = React.useState<string | null>(null);
+
+    // Auto-fetch original filename when datasetId changes
+    React.useEffect(() => {
+        const fetchName = async () => {
+            if (!values.datasetId) return;
+            try {
+                const info = await datasetApi.getDatasetByCID(values.datasetId, token || undefined);
+                const original = info?.data?.filename;
+                if (original && values.filename !== (original.endsWith('.enc') ? original.slice(0, -4) : original)) {
+                    setValues(v => ({ ...v, filename: original.endsWith('.enc') ? original.slice(0, -4) : original }));
+                }
+            } catch (e) {
+                // ignore
+            }
+        };
+        fetchName();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [values.datasetId, token]);
 
     const onSubmit = async () => {
         setBusy(true);
@@ -33,9 +52,10 @@ export default function DeliveryPage() {
                 preserveOriginalFormat: true,
             });
             setMessage("Download started.");
-        } catch (e: any) {
-            console.error(e);
-            setMessage(e?.message || "Delivery or decryption failed.");
+		} catch (e: unknown) {
+			console.error(e);
+			const msg = e instanceof Error ? e.message : "Delivery or decryption failed.";
+			setMessage(msg);
         } finally {
             setBusy(false);
         }

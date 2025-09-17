@@ -3,6 +3,7 @@
 import React from "react";
 import { useWalletConnection } from "@/lib/Authentication/walletConnection";
 import { useAuth } from "@/lib/Authentication/AuthContext";
+import { datasetApi } from "@/lib/api/DatasetApi";
 
 export interface DeliveryFormValues {
 	datasetId: string;
@@ -22,7 +23,7 @@ interface Props {
 
 export default function DeliveryForm({ values, onChange, onSubmit, busy }: Props) {
     const { address } = useWalletConnection();
-    const { userId } = useAuth();
+    const { userId, token } = useAuth();
 	
 	const set = (key: keyof DeliveryFormValues) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
 		onChange({ ...values, [key]: e.target.value });
@@ -43,7 +44,7 @@ export default function DeliveryForm({ values, onChange, onSubmit, busy }: Props
 
 	return (
 		<div className="space-y-5">
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 				<div>
 					<label className="block text-sm font-medium mb-1">Dataset ID</label>
 					<input className="w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2" value={values.datasetId} onChange={set("datasetId")} placeholder="68c9a8..." />
@@ -74,10 +75,23 @@ export default function DeliveryForm({ values, onChange, onSubmit, busy }: Props
                         <p className="text-xs text-green-600 dark:text-green-400 mt-1">✓ Auto-filled from your account</p>
                     )}
                 </div>
-				<div>
+				{/* <div>
 					<label className="block text-sm font-medium mb-1">Download filename</label>
 					<input className="w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2" value={values.filename} onChange={set("filename")} placeholder="dataset.csv" />
-				</div>
+                </div> */}
+                <div>
+                    <label className="block text-sm font-medium mb-1">Download filename</label>
+                    <input 
+                        className="w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2" 
+                        value={values.filename}
+                        onChange={() => {}}
+                        placeholder={values.datasetId ? "Auto-fetched from dataset" : "Enter dataset ID to fetch"}
+                        disabled
+                    />
+                    {values.filename && (
+                        <p className="text-xs text-green-600 dark:text-green-400 mt-1">✓ Using original filename</p>
+                    )}
+                </div>
 			</div>
 
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
