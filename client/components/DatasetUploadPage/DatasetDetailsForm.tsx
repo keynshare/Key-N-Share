@@ -1,9 +1,9 @@
 "use client"
 import PrimaryBtn from "@/components/SharedComponents/Btns/PrimaryBtn";
-import { FolderUp, X } from "lucide-react";
+import { FolderUp, X, DollarSign, TrendingUp } from "lucide-react";
 import SecondaryBtn from "../SharedComponents/Btns/SecondaryBtn";
 import { DatasetFormData } from "./UploadDataset";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface DatasetDetailsFormProps {
   formData: DatasetFormData;
@@ -14,6 +14,37 @@ interface DatasetDetailsFormProps {
 
 function DatasetDetailsForm({ formData, onFormDataChange, onUpload, isUploading }: DatasetDetailsFormProps) {
   const [tagInput, setTagInput] = useState("");
+  const [solanaPrice, setSolanaPrice] = useState<number | null>(null);
+  const [priceLoading, setPriceLoading] = useState(true);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+
+  // Fetch Solana price
+  const fetchSolanaPrice = async () => {
+    try {
+      setPriceLoading(true);
+      const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd');
+      const data = await response.json();
+      setSolanaPrice(data.solana.usd);
+      setLastUpdated(new Date());
+    } catch (err) {
+      console.error('Error fetching Solana price:', err);
+    } finally {
+      setPriceLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchSolanaPrice();
+    const interval = setInterval(fetchSolanaPrice, 30000); // Update every 30 seconds
+    return () => clearInterval(interval);
+  }, []);
+
+  const calculateUSDValue = () => {
+    if (!formData.price || !solanaPrice || isNaN(parseFloat(formData.price))) {
+      return 0;
+    }
+    return (parseFloat(formData.price) * solanaPrice).toFixed(2);
+  };
 
   const handleAddTag = () => {
     if (tagInput.trim() && !formData.tags.includes(tagInput.trim())) {
@@ -60,21 +91,72 @@ function DatasetDetailsForm({ formData, onFormDataChange, onUpload, isUploading 
         </div>
       </div>
 
-
-
-      {/* Price */}
+      {/* Enhanced Price Section with Real-time USD Conversion */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Price (MATIC) *</label>
-        <input 
-          type="number" 
-          step="0.01"
-          min="0"
-          placeholder="Enter Price in Matic" 
-          value={formData.price}
-          onChange={(e) => onFormDataChange({ price: e.target.value })}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" 
-          required
-        />
+        <div className="flex items-center justify-between mb-2">
+          <label className="block text-sm font-medium text-gray-700">Price (SOL) *</label>
+          <div className="flex items-center gap-2 text-xs text-gray-500">
+            <TrendingUp size={12} />
+            {priceLoading ? (
+              <span>Loading...</span>
+            ) : (
+              <span>1 SOL = {solanaPrice ? solanaPrice.toFixed(2) : "Loading..."} USD</span>
+            )}
+          </div>
+        </div>
+        
+        <div className="space-y-3">
+          {/* SOL Input */}
+          <div className="relative">
+            <input 
+              type="number" 
+              step="0.001"
+              min="0"
+              placeholder="Enter Price in Solana" 
+              value={formData.price}
+              onChange={(e) => onFormDataChange({ price: e.target.value })}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 pr-12" 
+              required
+            />
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+              <span className="text-gray-500 font-medium text-sm">SOL</span>
+            </div>
+          </div>
+          
+          {/* USD Value Display */}
+          {formData.price && !priceLoading && solanaPrice && (
+            <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <DollarSign size={16} className="text-green-600" />
+                  <span className="text-sm font-medium text-gray-700">USD Value:</span>
+                </div>
+                <span className="text-lg font-bold text-green-600">
+                  ${calculateUSDValue()}
+                </span>
+              </div>
+              <div className="mt-1 text-xs text-gray-500">
+                {formData.price} SOL × ${solanaPrice.toFixed(2)} = ${calculateUSDValue()} USD
+              </div>
+            </div>
+          )}
+          
+          {/* Live Update Indicator */}
+          <div className="flex items-center justify-between text-xs text-gray-400">
+            <button
+              type="button"
+              onClick={fetchSolanaPrice}
+              disabled={priceLoading}
+              className="flex items-center gap-1 hover:text-orange-500 transition-colors"
+            >
+              <TrendingUp size={12} className={priceLoading ? 'animate-spin' : ''} />
+              {priceLoading ? 'Updating...' : 'Refresh Price'}
+            </button>
+            {lastUpdated && (
+              <span>Updated: {lastUpdated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* Tags/Categories Input */}
@@ -82,7 +164,7 @@ function DatasetDetailsForm({ formData, onFormDataChange, onUpload, isUploading 
         <label className="block text-sm font-medium text-gray-700 mb-1">Categories/Tags *</label>
         <div className="space-y-2">
           {/* Tag Input */}
-          <div className="flex flex-wrap  gap-2">
+          <div className="flex flex-wrap gap-2">
             <input 
               type="text" 
               placeholder="Enter categories/tags (e.g., Music, Data Science, Technology)" 
