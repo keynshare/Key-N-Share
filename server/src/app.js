@@ -9,11 +9,9 @@ const datasetRoutes = require('./routes/datasets');
 const profileRoutes = require('./routes/profileRoutes');
 const catalogueRoutes = require('./routes/datasetCatalogue');
 const cartRoutes = require('./routes/cartRoutes');
-
 const favoritesRoutes = require('./routes/favoritesRoutes');
-
 const secretsRoutes = require('./routes/secrets');
-
+const deliverDatasetRoutes = require('./routes/deliverDataset');
 
 const app = express();
 
@@ -48,10 +46,10 @@ app.use('/api/datasets', authenticate, datasetRoutes);
 app.use('/api/profile', authenticate, profileRoutes);
 app.use('/api/dataset-catalogue', authenticate, catalogueRoutes);
 app.use('/api/cart', authenticate, cartRoutes);
-
 app.use('/api/favorites', authenticate, favoritesRoutes);
-
 app.use('/api/secrets', authenticate, secretsRoutes);
+
+app.use('/api/delivery', deliverDatasetRoutes);//Testing
 
 
 
