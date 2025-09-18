@@ -1,6 +1,9 @@
 "use client";
 
-import React,{useState} from "react";
+import React,{useState, useEffect} from "react";
+import { useAuth } from "@/lib/Authentication/AuthContext";
+import { useNotifications } from "@/lib/notification-context";
+import { publicKeyApi } from "@/lib/api/PublicKeyApi";
 
 type KeySize = 1024 | 2048 | 4096;
 
@@ -68,8 +71,88 @@ export default function RSAKeyGenPage() {
 	const [publicPem, setPublicPem] = useState("");
 	const [isGenerating, setIsGenerating] = useState(false);
 	const [message, setMessage] = useState<string | null>(null);
+	const [isStoring, setIsStoring] = useState(false);
+	const [hasExistingKey, setHasExistingKey] = useState(false);
+	const [forceNewKey, setForceNewKey] = useState(false);
+
+	const { userId, token } = useAuth();
+	const { notify } = useNotifications();
+
+	// Check for existing public key on component mount
+	useEffect(() => {
+		const checkExistingKey = async () => {
+			if (!userId || !token) return;
+			
+			try {
+				const response = await publicKeyApi.getPublicKey(token);
+				if (response.publicKeyPEM) {
+					setHasExistingKey(true);
+					setPublicPem(response.publicKeyPEM);
+					notify({
+						message: "You already have a public key stored. Using your existing key pair.",
+						type: "info",
+						title: "Existing Key Found"
+					});
+				}
+			} catch {
+				// No existing key found, which is fine
+				console.log("No existing public key found");
+			}
+		};
+
+		checkExistingKey();
+	}, [userId, token, notify]);
+
+	const storePublicKey = async (publicKey: string) => {
+		if (!userId || !token) {
+			notify({
+				message: "Authentication required to store public key",
+				type: "error",
+				title: "Authentication Error"
+			});
+			return false;
+		}
+
+		setIsStoring(true);
+		try {
+			await publicKeyApi.addPublicKey({
+				userId,
+				publicKey
+			}, token);
+			
+			notify({
+				message: hasExistingKey ? "Public key updated successfully! Your new key pair is ready to use." : "Public key stored successfully! You can now use this key pair for encryption.",
+				type: "success",
+				title: hasExistingKey ? "Key Updated" : "Key Stored"
+			});
+			return true;
+		} catch (error: unknown) {
+			console.error("Error storing public key:", error);
+			const errorMessage = error && typeof error === 'object' && 'response' in error 
+				? (error as { response?: { data?: { message?: string } } }).response?.data?.message 
+				: "Failed to store public key. Please try again.";
+			notify({
+				message: errorMessage || "Failed to store public key. Please try again.",
+				type: "error",
+				title: "Storage Error"
+			});
+			return false;
+		} finally {
+			setIsStoring(false);
+		}
+	};
 
 	const onGenerate = async () => {
+		// If user already has a key and hasn't forced a new key, don't generate a new one
+		if (hasExistingKey && !forceNewKey) {
+			notify({
+				message: "You already have a public key stored. Please use your existing key pair.",
+				type: "warning",
+				title: "Key Already Exists"
+			});
+			return;
+		}
+
 		setIsGenerating(true);
 		setMessage("Generating key pair... This may take a moment.");
 		try {
@@ -81,6 +164,13 @@ export default function RSAKeyGenPage() {
 			setPrivatePem(priv);
 			setPublicPem(pub);
 			setMessage("Key pair generated successfully.");
+			
+			// Automatically store the public key
+			const stored = await storePublicKey(pub);
+			if (stored) {
+				setHasExistingKey(true);
+				setForceNewKey(false);
+			}
 		} catch (err) {
 			console.error(err);
 			setMessage("Failed to generate keys. Your browser must support WebCrypto.");
@@ -126,11 +216,19 @@ export default function RSAKeyGenPage() {
 						<div className="flex flex-col md:flex-row gap-3">
 							<button
 								onClick={onGenerate}
-								disabled={isGenerating}
+								disabled={isGenerating || isStoring || (hasExistingKey && !forceNewKey)}
 								className="inline-flex items-center justify-center rounded-lg bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 text-white px-4 py-2 font-medium shadow"
 							>
-								{isGenerating ? "Generating..." : "Generate key pair"}
+								{isGenerating ? "Generating..." : isStoring ? "Storing..." : hasExistingKey && !forceNewKey ? "Key Already Exists" : "Generate key pair"}
 							</button>
+							{hasExistingKey && !forceNewKey && (
+								<button
+									onClick={() => setForceNewKey(true)}
+									className="inline-flex items-center justify-center rounded-lg border border-orange-300 dark:border-orange-700 text-orange-700 dark:text-orange-300 hover:bg-orange-50 dark:hover:bg-orange-900/20 px-4 py-2 font-medium"
+								>
+									Generate New Key
+								</button>
+							)}
 							<button
 								onClick={() => {
 									if (privatePem) download(`private_${keySize}.pem`, privatePem);
@@ -146,6 +244,20 @@ export default function RSAKeyGenPage() {
 
 					{message && (
 						<p className="mt-4 text-sm text-gray-600 dark:text-gray-300">{message}</p>
+					)}
+					{hasExistingKey && !forceNewKey && (
+						<div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+							<p className="text-sm text-blue-800 dark:text-blue-200">
+								✓ You already have a public key stored. Your existing key pair is displayed below. &#40;private key should be stored securely by you&#41;
+							</p>
+						</div>
+					)}
+					{forceNewKey && (
+						<div className="mt-4 p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
+							<p className="text-sm text-orange-800 dark:text-orange-200">
+								⚠️ You are generating a new key pair. This will replace your existing public key.
+							</p>
+						</div>
 					)}
 				</div>
 
@@ -210,7 +322,7 @@ export default function RSAKeyGenPage() {
 			
 
 			<div className="col-span-full justify-items-center mt-8 text-xs text-gray-500 dark:text-gray-400">
-				<p>
+				<p className="text-center">
 					This page uses the WebCrypto API (RSA-OAEP, SHA-256) for in-browser key generation. For a CLI alternative, see
 					 <a className="text-indigo-600 hover:underline" href="https://cryptotools.net/rsagen" target="_blank" rel="noreferrer"> CryptoTools RSA generator</a>.
 				</p>

@@ -51,7 +51,7 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
         
             if (res.data?.token) { 
                 
-                   login( res.data.user.id,res.data.token, rememberMe);
+                   login( res.data.user.id,res.data.token, rememberMe, res.data.user.publicKeyPEM);
                 
                   }
 
