@@ -14,6 +14,7 @@ const favoritesRoutes = require('./routes/favoritesRoutes');
 const secretsRoutes = require('./routes/secrets');
 const deliverDatasetRoutes = require('./routes/deliverDataset');
 const userRoutes = require('./routes/userRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 
 const app = express();
 
@@ -47,6 +48,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/datasets', authenticate, datasetRoutes);
 app.use('/api/profile', authenticate, profileRoutes);
 app.use('/api/user', authenticate, userRoutes);
+app.use('/api/userOrders', orderRoutes);
 
 
 // Public access for main catalogue GET endpoint
