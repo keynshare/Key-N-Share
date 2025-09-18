@@ -13,6 +13,7 @@ const cartRoutes = require('./routes/cartRoutes');
 const favoritesRoutes = require('./routes/favoritesRoutes');
 const secretsRoutes = require('./routes/secrets');
 const deliverDatasetRoutes = require('./routes/deliverDataset');
+const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 
@@ -45,6 +46,9 @@ app.get('/', (_req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/datasets', authenticate, datasetRoutes);
 app.use('/api/profile', authenticate, profileRoutes);
+app.use('/api/user', authenticate, userRoutes);
+
+
 // Public access for main catalogue GET endpoint
 app.get('/api/dataset-catalogue', getDatasets);
 
@@ -54,7 +58,7 @@ app.use('/api/cart', authenticate, cartRoutes);
 app.use('/api/favorites', authenticate, favoritesRoutes);
 app.use('/api/secrets', authenticate, secretsRoutes);
 
-app.use('/api/delivery', deliverDatasetRoutes);//Testing
+app.use('/api/delivery', authenticate, deliverDatasetRoutes);//Testing
 
 
 
