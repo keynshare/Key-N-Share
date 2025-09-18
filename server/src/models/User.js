@@ -64,6 +64,11 @@ const userSchema = new mongoose.Schema(
       totalRating: { type: Number, default: 0 },
       numberOfRatings: { type: Number, default: 0 },
       averageRating: { type: Number, default: 0 }
+    },
+    publicKeyPEM:{
+      type: String,
+      required: false,
+      trim: true
     }
   },
   { timestamps: true }
