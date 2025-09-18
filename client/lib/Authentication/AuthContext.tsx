@@ -46,10 +46,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  const login = (userId: string, token: string, rememberMe?: boolean) => {
+  const login = (userId: string, token: string, rememberMe?: boolean, publicKeyPEM?: string) => {
     Cookies.set(
       "kns_token",
-      JSON.stringify({ token, userId }),
+      JSON.stringify({ token, userId,publicKeyPEM }),
       { 
         expires: rememberMe ? 30 : 7,
         secure: true,
