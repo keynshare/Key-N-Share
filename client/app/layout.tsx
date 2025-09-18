@@ -28,6 +28,9 @@ const bricolage = Bricolage_Grotesque({
 export const metadata: Metadata = {
   title: "Key N Share",
   description: "Own, protect, and monetize your data in the Web3 era.",
+  other: {
+    "apple-mobile-web-app-title": "Key N Share", 
+  },
 };
 
 export default function RootLayout({
