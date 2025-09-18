@@ -88,7 +88,7 @@ function CheckOutDatasetCard({Data, variant='cart', onRemove,onFavRemove}:CheckO
                 > 
                   <CircleMinus size={20} /> Remove
                 </SecondaryBtn>
-                <SecondaryBtn>Send Request</SecondaryBtn>
+                <SecondaryBtn>Buy Dataset</SecondaryBtn>
               </>
             ) : (
               <SecondaryBtn className='bg-red-600 dark:bg-red-600 hover:bg-[#fd5959] dark:hover:bg-[#fd5959] hover:text-white'>Raise Dispute</SecondaryBtn>

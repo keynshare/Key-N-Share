@@ -99,7 +99,7 @@ export async function checkDeliveryExists(
 	
 	const { data } = await axios.get(`${API_URL}delivery/delivery-exists`, { 
 		headers,
-		data: body
+		params: body
 	});
 	return data;
 }

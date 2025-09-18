@@ -5,6 +5,7 @@ import DeliveryForm, { DeliveryFormValues } from "@/components/Delivery/Delivery
 import { deliverDecryptAndDownload, checkDeliveryExists, checkAndDownloadExistingDelivery } from "@/lib/api/DeliveryApi";
 import type { CheckDeliveryExistsResponse } from "@/lib/api/DeliveryApi";
 import { useAuth } from "@/lib/Authentication/AuthContext";
+import { datasetApi } from "@/lib/api/DatasetApi";
 
 export default function DeliveryPage({ Id }: { Id?: string | number | undefined | null}) {
     const { token } = useAuth();
@@ -21,6 +22,45 @@ export default function DeliveryPage({ Id }: { Id?: string | number | undefined 
     const [deliveryExists, setDeliveryExists] = useState<boolean | null>(null);
     const [existingDeliveryData, setExistingDeliveryData] = useState<CheckDeliveryExistsResponse | null>(null);
     const [checkingDelivery, setCheckingDelivery] = useState(false);
+    const [datasetInfo, setDatasetInfo] = useState<{
+        title?: string;
+        extension?: string;
+    } | null>(null);
+
+    // Fetch dataset information when datasetId changes
+    useEffect(() => {
+        const fetchDatasetInfo = async () => {
+            if (!values.datasetId || !token) {
+                setDatasetInfo(null);
+                return;
+            }
+
+            try {
+                const dataset = await datasetApi.getDatasetById(values.datasetId, token);
+                setDatasetInfo({
+                    title: dataset.title,
+                    extension: dataset.extension
+                });
+
+                // Construct filename with proper extension
+                const extension = dataset.extension || 'bin';
+                const baseName = dataset.title ? 
+                    dataset.title.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase() : 
+                    'dataset';
+                const filename = `${baseName}.${extension}`;
+                
+                setValues(prev => ({
+                    ...prev,
+                    filename: filename
+                }));
+            } catch (error) {
+                console.error('Error fetching dataset info:', error);
+                setDatasetInfo(null);
+            }
+        };
+
+        fetchDatasetInfo();
+    }, [values.datasetId, token]);
 
     // Check if delivery already exists when datasetId and buyerId are available
     useEffect(() => {
@@ -105,7 +145,7 @@ export default function DeliveryPage({ Id }: { Id?: string | number | undefined 
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
             <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-6">Decrypt and Download Dataset</h1>
             <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/70 dark:bg-black/40 backdrop-blur p-4 sm:p-6 shadow-[0_8px_30px_rgb(0,0,0,0.06)]">
-                <DeliveryForm values={values} onChange={setValues} onSubmit={onSubmit} busy={busy} />
+                <DeliveryForm values={values} onChange={setValues} onSubmit={onSubmit} busy={busy} datasetInfo={datasetInfo} />
                 
                 {/* Delivery Status Indicator */}
                 {values.datasetId && values.buyerId && (

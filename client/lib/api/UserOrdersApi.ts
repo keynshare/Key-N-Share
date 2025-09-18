@@ -17,7 +17,10 @@ export interface DatasetSummary {
   price: number;
   downloads?: number;
   views?: number;
-  imageUrl?: string;
+  coverImageUrl?: string;
+  tags?: string[];
+  description?: string;
+  extension?: string;
 }
 
 export interface UserOrder {
@@ -50,7 +53,7 @@ export const userOrdersApi = {
     };
     if (token) headers.Authorization = `Bearer ${token}`;
 
-    const response = await axios.post(`${API_URL}userOrders/`, payload, { headers });
+    const response = await axios.post(`${API_URL}userOrders/orders`, payload, { headers });
     return response.data;
   },
 
@@ -60,10 +63,10 @@ export const userOrdersApi = {
       "Content-Type": "application/json",
     };
     if (token) headers.Authorization = `Bearer ${token}`;
-
+      console.log('User:',userId)
     const response = await axios.get(
       `${API_URL}userOrders/orders/`,
-      { headers, data: { userId, page, limit } }
+      { headers,  params: { userId, page, limit }, }
     );
     return response.data;
   },
@@ -74,7 +77,7 @@ export const userOrdersApi = {
     };
     if (token) headers.Authorization = `Bearer ${token}`;
 
-    const response = await axios.get(`${API_URL}userOrders/${id}`, { headers });
+    const response = await axios.get(`${API_URL}userOrders/orders/${id}`, { headers });
     return response.data;
   },
 };
