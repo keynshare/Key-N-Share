@@ -131,14 +131,14 @@ function CartPage({userId}: {userId?: string}) {
                             <span className='flex justify-between w-full items-center'><p>Dataset Price:</p> <p className='flex items-center justify-center flex-nowrap gap-1'><Solana size={16}/> {totalPrice}</p></span>
                             <span className='flex justify-between items-center'><p>Gas Fees:</p> <p className='flex items-center justify-center flex-nowrap gap-1'><Solana size={16} /> {GassFees}</p> </span>
                             <span className='flex justify-between items-center pt-3 border-t dark:border-t-gray-600'><p>Total:</p><p className='flex items-center justify-center flex-nowrap gap-1'><Solana size={16} />{(totalPrice + GassFees).toFixed(2)}</p></span>
-                            <PrimaryBtn 
+                            {/* <PrimaryBtn 
                               sparkelClass='hidden' 
                               className='w-full' 
                               disabled={cartItems.length === 0}
                               onClick={() => cartItems.length > 0 }
                             >
                               {cartItems.length > 0 ? 'Send Request to All' : 'Cart is Empty'}
-                            </PrimaryBtn>
+                            </PrimaryBtn> */}
                     </div>
             </div>
 

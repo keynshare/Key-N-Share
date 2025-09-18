@@ -4,6 +4,7 @@ import React,{useEffect} from "react";
 import { useWalletConnection } from "@/lib/Authentication/walletConnection";
 import { useAuth } from "@/lib/Authentication/AuthContext";
 import { datasetApi } from "@/lib/api/DatasetApi";
+import { publicKeyApi } from "@/lib/api/PublicKeyApi";
 
 export interface DeliveryFormValues {
 	datasetId: string;
@@ -19,11 +20,15 @@ interface Props {
 	onChange: (values: DeliveryFormValues) => void;
 	onSubmit: () => void;
 	busy?: boolean;
+	datasetInfo?: {
+		title?: string;
+		extension?: string;
+	} | null;
 }
 
-export default function DeliveryForm({ values, onChange, onSubmit, busy }: Props) {
+export default function DeliveryForm({ values, onChange, onSubmit, busy, datasetInfo }: Props) {
     const { address } = useWalletConnection();
-    const { userId, token } = useAuth();
+    const { userId, token, PublicKeyRSA } = useAuth();
 	
 	const set = (key: keyof DeliveryFormValues) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
 		onChange({ ...values, [key]: e.target.value });
@@ -41,6 +46,31 @@ export default function DeliveryForm({ values, onChange, onSubmit, busy }: Props
             onChange({ ...values, buyerId: userId });
         }
     }, [userId, values.buyerId, onChange, values]);
+
+    // Auto-populate buyer public key from backend or auth context
+    useEffect(() => {
+        const fetchPublicKey = async () => {
+            if (!token || values.buyerPublicKey) return;
+
+            try {
+                // First try to fetch from backend
+                const response = await publicKeyApi.getPublicKey(token);
+                if (response.publicKeyPEM) {
+                    onChange({ ...values, buyerPublicKey: response.publicKeyPEM });
+                    return;
+                }
+            } catch (error) {
+                console.log("Could not fetch public key from backend, trying auth context");
+            }
+
+            // Fallback to PublicKeyRSA from auth context
+            if (PublicKeyRSA && !values.buyerPublicKey) {
+                onChange({ ...values, buyerPublicKey: PublicKeyRSA });
+            }
+        };
+
+        fetchPublicKey();
+    }, [token, PublicKeyRSA, values.buyerPublicKey, onChange, values]);
 
 	return (
 		<div className="space-y-5">
@@ -91,16 +121,28 @@ export default function DeliveryForm({ values, onChange, onSubmit, busy }: Props
                         placeholder={values.datasetId ? "Auto-fetched from dataset" : "Enter dataset ID to fetch"}
                         disabled
                     />
-                    {values.filename && (
-                        <p className="text-xs text-green-600 dark:text-green-400 mt-1">✓ Using original filename</p>
-                    )}
+                    {values.filename && datasetInfo ? (
+                        <p className="text-xs text-green-600 dark:text-green-400 mt-1">
+                            ✓ Using original filename: {datasetInfo.title} ({datasetInfo.extension || 'bin'})
+                        </p>
+                    ) : values.filename ? (
+                        <p className="text-xs text-green-600 dark:text-green-400 mt-1">✓ Using generated filename</p>
+                    ) : null}
                 </div>
 			</div>
 
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 				<div>
 					<label className="block text-sm font-medium mb-1">Buyer Public Key (PEM)</label>
-					<textarea className="w-full h-40 font-mono text-xs rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2" value={values.buyerPublicKey} onChange={set("buyerPublicKey")} placeholder={"-----BEGIN PUBLIC KEY-----\n...\n-----END PUBLIC KEY-----"} />
+					<textarea 
+						className="w-full h-40 font-mono text-xs rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2" 
+						value={values.buyerPublicKey} 
+						onChange={set("buyerPublicKey")} 
+						placeholder={"-----BEGIN PUBLIC KEY-----\n...\n-----END PUBLIC KEY-----"} 
+					/>
+					{values.buyerPublicKey && (
+						<p className="text-xs text-green-600 dark:text-green-400 mt-1">✓ Public key auto-filled from your account</p>
+					)}
 				</div>
 				<div>
 					<label className="block text-sm font-medium mb-1">Your Private Key (PEM)</label>
