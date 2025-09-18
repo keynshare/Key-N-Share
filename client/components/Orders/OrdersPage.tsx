@@ -106,7 +106,7 @@ function OrdersPage() {
                       </div>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600 dark:text-gray-400">{order.Price} MATIC</span>
+                      <span className="text-gray-600 dark:text-gray-400">{order.Price} Solana</span>
                       <span className="text-gray-500 dark:text-gray-400">{formatDate(order.orderedAt)}</span>
                     </div>
                   </button>

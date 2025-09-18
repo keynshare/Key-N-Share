@@ -5,7 +5,7 @@ import Image from "next/image";
 import User from "@/components/assets/User.svg";
 import { Star,EllipsisVertical } from "lucide-react";
 import CTAs from "./CTAs";
-import Matic from "@/components/assets/Matic"
+import Solana from "@/components/assets/Solana"
 import Link from 'next/link';
 
 import timeAgo from './timeAgo';
@@ -113,7 +113,7 @@ export default function DatasetCard({Data}:DatasetCardProps) {
           </div>
           
           <span className="">{getType()}</span>
-                    <span className='flex items-center gap-1 '><Matic />{getPrice()}</span>
+                    <span className='flex items-center gap-1 '><Solana />{getPrice()}</span>
 
           <button title='Actions' className='relative p-1 hover:bg-gray-200 dark:hover:bg-[#252525] rounded-full' onClick={(e) => { e.stopPropagation(); e.preventDefault(); setIsHovered(!isHovered);}} >
           <EllipsisVertical size={18}/>
