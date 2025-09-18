@@ -15,6 +15,7 @@ const secretsRoutes = require('./routes/secrets');
 const deliverDatasetRoutes = require('./routes/deliverDataset');
 const userRoutes = require('./routes/userRoutes');
 const orderRoutes = require('./routes/orderRoutes');
+const ledgerRoutes = require('./routes/ledgerRoutes');
 
 const app = express();
 
@@ -43,6 +44,8 @@ app.use(morgan('dev'));
 app.get('/', (_req, res) => {
   res.send('Server is running: Key-N-Share');
 });
+
+app.use('/api', ledgerRoutes);
 
 app.use('/api/auth', authRoutes);
 app.use('/api/datasets', authenticate, datasetRoutes);
