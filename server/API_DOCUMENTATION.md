@@ -59,7 +59,7 @@ Get any user's public profile information.
       {
         "_id": "transaction_id",
         "price": 25.99,
-        "currency": "MATIC",
+        "currency": "Solana",
         "status": "completed",
         "completedAt": "2024-01-15T10:30:00.000Z"
       }
@@ -228,7 +228,7 @@ Authorization: Bearer <jwt-token>
       {
         "_id": "transaction_id",
         "price": 25.99,
-        "currency": "MATIC",
+        "currency": "Solana",
         "status": "completed",
         "completedAt": "2024-01-15T10:30:00.000Z",
         "datasetId": {

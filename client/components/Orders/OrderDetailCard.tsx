@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import Matic from '@/components/assets/Matic'
+import Solana from '@/components/assets/Solana'
 import SecondaryBtn from '@/components/SharedComponents/Btns/SecondaryBtn'
 import { Calendar, Hash, Download, AlertTriangle } from 'lucide-react'
 import clsx from 'clsx'
@@ -101,7 +101,7 @@ function OrderDetailCard({
             <div className="col-span-1 flex flex-col justify-center gap-2">
                    <div className="text-xs text-gray-500 dark:text-gray-400">Price</div>
               <div title='Price in Solana' className='flex gap-2 items-center'>
-                <Matic size={24} />
+                <Solana size={24} />
                 <div className="text-2xl font-semibold">{Price}</div>
               </div>
             </div>

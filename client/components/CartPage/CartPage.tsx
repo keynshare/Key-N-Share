@@ -4,7 +4,7 @@ import CheckOutDatasetCard from '../SharedComponents/DatasetCompo/CheckOutDatase
 import Breadcrumb from '../SharedComponents/Breadcrumb/Breadcrumb'
 import CardsWithCategory from '../Dashboard/CardsWithCategory'
 import PrimaryBtn from '../SharedComponents/Btns/PrimaryBtn'
-import Matic from '../assets/Matic'
+import Solana from '../assets/Solana'
 import { ShoppingCart } from 'lucide-react'
 import clsx from 'clsx'
 import { cartApi, CartItem } from '@/lib/api/CartApi'
@@ -128,9 +128,9 @@ function CartPage({userId}: {userId?: string}) {
             <div  className={clsx( showCheckOut ? 'translate-x-0' : 'translate-x-[100vw] xl:translate-x-0 ',' z-50 fixed min-w-[300px] max-w-[300px] transition-all duration-500 right-4  xl:right-auto top-20 xl:col-span-1 xl:sticky ')}>
                     <div className='  flex flex-col gap-4  bg-white dark:bg-[#131313] border dark:border-gray-700  p-4 rounded-lg'>
                             <h5>Order Summary</h5>
-                            <span className='flex justify-between w-full items-center'><p>Dataset Price:</p> <p className='flex items-center justify-center flex-nowrap gap-1'><Matic size={16}/> {totalPrice}</p></span>
-                            <span className='flex justify-between items-center'><p>Gas Fees:</p> <p className='flex items-center justify-center flex-nowrap gap-1'><Matic size={16} /> {GassFees}</p> </span>
-                            <span className='flex justify-between items-center pt-3 border-t dark:border-t-gray-600'><p>Total:</p><p className='flex items-center justify-center flex-nowrap gap-1'><Matic size={16} />{(totalPrice + GassFees).toFixed(2)}</p></span>
+                            <span className='flex justify-between w-full items-center'><p>Dataset Price:</p> <p className='flex items-center justify-center flex-nowrap gap-1'><Solana size={16}/> {totalPrice}</p></span>
+                            <span className='flex justify-between items-center'><p>Gas Fees:</p> <p className='flex items-center justify-center flex-nowrap gap-1'><Solana size={16} /> {GassFees}</p> </span>
+                            <span className='flex justify-between items-center pt-3 border-t dark:border-t-gray-600'><p>Total:</p><p className='flex items-center justify-center flex-nowrap gap-1'><Solana size={16} />{(totalPrice + GassFees).toFixed(2)}</p></span>
                             <PrimaryBtn 
                               sparkelClass='hidden' 
                               className='w-full' 

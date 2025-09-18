@@ -3,7 +3,7 @@ import { Star, ShoppingCart, Heart } from "lucide-react";
 import User from "@/components/assets/User.svg";
 import PrimaryBtn from "../SharedComponents/Btns/PrimaryBtn";
 import SecondaryBtn from "../SharedComponents/Btns/SecondaryBtn";
-import Matic from "@/components/assets/Matic"
+import Solana from "@/components/assets/Solana"
 import timeAgo from "@/components/SharedComponents/DatasetCompo/timeAgo"
 import { useAuth } from "@/lib/Authentication/AuthContext"
 import { cartApi } from "@/lib/api/CartApi"
@@ -129,7 +129,7 @@ export default function Header({ id, userRating=4, Rating=0, Size='0 mb', Extent
         <div className="flex flex-wrap justify-start items-center gap-4">
 
             <span className="flex items-center gap-2">
-            <Matic size={32} /> 
+            <Solana size={32} /> 
             <h6 className="text-[42px]  ">{Price} </h6>
             </span>
 
