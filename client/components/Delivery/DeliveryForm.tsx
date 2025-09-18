@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React,{useEffect} from "react";
 import { useWalletConnection } from "@/lib/Authentication/walletConnection";
 import { useAuth } from "@/lib/Authentication/AuthContext";
 import { datasetApi } from "@/lib/api/DatasetApi";
@@ -29,14 +29,14 @@ export default function DeliveryForm({ values, onChange, onSubmit, busy }: Props
 		onChange({ ...values, [key]: e.target.value });
 
     // Auto-populate buyer address from wallet connection
-	React.useEffect(() => {
+	useEffect(() => {
 		if (address && !values.buyerAddress) {
 			onChange({ ...values, buyerAddress: address });
 		}
 	}, [address, values.buyerAddress, onChange, values]);
 
     // Auto-populate buyer ID from auth context
-    React.useEffect(() => {
+    useEffect(() => {
         if (userId && !values.buyerId) {
             onChange({ ...values, buyerId: userId });
         }
@@ -48,6 +48,9 @@ export default function DeliveryForm({ values, onChange, onSubmit, busy }: Props
 				<div>
 					<label className="block text-sm font-medium mb-1">Dataset ID</label>
 					<input className="w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2" value={values.datasetId} onChange={set("datasetId")} placeholder="68c9a8..." />
+					{values.buyerAddress === address && (
+						<p className="text-xs text-green-600 dark:text-green-400 mt-1">✓ Auto-filled from orders</p>
+					)}
 				</div>
 				<div>
 					<label className="block text-sm font-medium mb-1">Buyer Address</label>
