@@ -97,6 +97,7 @@ const Footer = () => {
                 <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/upload-dataset">Upload Datasets</Link></li>
                 <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/favourite-datasets">Favourites</Link></li>
                 <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/cart">Cart</Link></li>
+                <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/kns-ledger">Transactions</Link></li>
               </ul>
             </div>
 
