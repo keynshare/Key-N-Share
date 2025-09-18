@@ -51,11 +51,11 @@ app.use('/api/user', authenticate, userRoutes);
 app.use('/api/userOrders', orderRoutes);
 
 
-// Public access for main catalogue GET endpoint
-app.get('/api/dataset-catalogue', getDatasets);
 
 // Authenticated routes for other catalogue operations
 app.use('/api/dataset-catalogue', authenticate, catalogueRoutes);
+// Public access for main catalogue GET endpoint
+app.get('/api/dataset-catalogue', getDatasets);
 app.use('/api/cart', authenticate, cartRoutes);
 app.use('/api/favorites', authenticate, favoritesRoutes);
 app.use('/api/secrets', authenticate, secretsRoutes);
