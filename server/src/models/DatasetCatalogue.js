@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const datasetCatalogueSchema = new mongoose.Schema(
     {
-        userId: { 
+        userId: {
             type: mongoose.Schema.Types.ObjectId,
             required: true, ref: 'User'
         },
@@ -11,17 +11,17 @@ const datasetCatalogueSchema = new mongoose.Schema(
         // datasetId: { type: Number, required: true, unique: true },
 
         // Core on-chain metadata (from the smart contract)
-        sellerAddress: { 
+        sellerAddress: {
             type: String,
             required: true,
             trim: true
         },
-        title: { 
+        title: {
             type: String,
             required: true,
             trim: true
         },
-        price: { 
+        price: {
             type: Number,
             required: true
         },
@@ -32,47 +32,51 @@ const datasetCatalogueSchema = new mongoose.Schema(
             trim: true
         },
         originalContentHash: {
-            type: String, required: true, trim: true },
+            type: String, 
+            required: true, 
+            trim: true,
+            unique: true // Ensure uniqueness to prevent duplicate datasets
+        },
 
         // Additional off-chain metadata for search & display
-        description: { 
+        description: {
             type: String,
             required: true
         },
-        coverImageUrl: { 
+        coverImageUrl: {
             type: String,
             trim: true
         },
-        tags: { 
+        tags: {
             type: [String],
-            trim: true 
+            trim: true
         },
-        fileSize: { 
+        fileSize: {
             type: String,
             trim: true
         },
-        extension: { 
+        extension: {
             type: String,
             trim: true
         },
-        downloads: { 
+        downloads: {
             type: Number,
             default: 0
         },
-        views: { 
+        views: {
             type: Number,
-            default: 0 
+            default: 0
         },
-        averageRating: { 
-            type: Number, 
-            default: 0 
+        averageRating: {
+            type: Number,
+            default: 0
         },
-        schema: { 
-            type: String, 
-            trim: true 
+        schema: {
+            type: String,
+            trim: true
         },
-        source: { 
-            type: String 
+        source: {
+            type: String
         },
     },
     { timestamps: true }
