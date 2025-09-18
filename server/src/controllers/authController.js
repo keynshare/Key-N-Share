@@ -62,7 +62,8 @@ async function register(req, res, next) {
         firstName: user.firstName, 
         email: user.email,
         termsAccepted: user.termsAccepted,
-        preferences: user.preferences
+        preferences: user.preferences,
+        publicKeyPEM: user.publicKeyPEM
       },
       token,
     });
@@ -106,7 +107,8 @@ async function login(req, res, next) {
         firstName: user.firstName, 
         email: user.email,
         termsAccepted: user.termsAccepted,
-        preferences: user.preferences
+        preferences: user.preferences,
+        publicKeyPEM: user.publicKeyPEM
       },
       token,
     });

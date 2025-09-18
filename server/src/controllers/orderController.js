@@ -55,7 +55,9 @@ const listOrders = async (req, res) => {
       Order.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limitNum).lean(),
       Order.countDocuments(filter)
     ]);
-
+    if (orders.length === 0) {
+      return res.status(404).json({ message: 'No orders found for this user.' });
+    }
     const datasetIds = [...new Set(orders.map(o => String(o.datasetId)))];
     const datasets = await DatasetCatalogue.find({ _id: { $in: datasetIds } })
       .select(DATASET_SELECT)
