@@ -19,7 +19,7 @@ type UIOrder = {
   Tags?: string[]
   status: OrderStatus
   orderedAt: string
-  txHash?: string
+  txnSign?: string
 }
 
 function OrdersPage() {
@@ -42,14 +42,14 @@ function OrdersPage() {
         const mapped: UIOrder[] = (res.orders || []).map((o: UserOrder) => ({
           id: o.datasetId,
           Title: o.dataset?.title,
-          Description: undefined,
+          Description: o.dataset?.description,
           Price: o.dataset?.price,
-          Type: undefined,
-          Image: o.dataset?.imageUrl,
-          Tags: [],
+          Type: o.dataset?.extension,
+          Image: o.dataset?.coverImageUrl,
+          Tags: o.dataset?.tags,
           status: 'delivered',
           orderedAt: o.createdAt,
-          txHash: o.txnSign,
+          txnSign: o.txnSign,
         }))
         setOrders(mapped)
       } catch (e: unknown) {
@@ -170,7 +170,7 @@ function OrdersPage() {
                   Tags={selectedOrder.Tags}
                   status={selectedOrder.status}
                   orderedAt={selectedOrder.orderedAt}
-                  txHash={selectedOrder.txHash}
+                  txHash={selectedOrder.txnSign}
                   onDownload={() => {}}
                   onRaiseDispute={() => {}}
                 />
@@ -208,7 +208,7 @@ function OrdersPage() {
                     Tags={selectedOrder.Tags}
                     status={selectedOrder.status}
                     orderedAt={selectedOrder.orderedAt}
-                    txHash={selectedOrder.txHash}
+                    txHash={selectedOrder.txnSign}
                     onDownload={() => {}}
                     onRaiseDispute={() => {}}
                   />

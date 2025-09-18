@@ -11,6 +11,7 @@ import { favoriteApi } from "@/lib/api/FavoriteApi"
 import { useState } from "react"
 import {useNotifications} from "@/lib/notification-context"
 import {AxiosError} from "axios"
+import DatasetPurchaseButton from "@/components/DatasetPurchase/DatasetPurchaseButton"
 
 type Dataset = {
   id?: string;
@@ -28,9 +29,10 @@ type Dataset = {
   Name?: string;
   Time?: string;
   UserImage?: string;
+  sellerAddress?: string;
 };
 
-export default function Header({ id, userRating=4, Rating=0, Size='0 mb', Extention='CSV', Price='46', Tags=[ "Arts and Entertainment", "Music", "Data Science", "Computer Science" ], CoverImage="/Thumbnail.svg", Title="Top Spotify Listening History Songs in Countries", Name='Mohammad Sumbul', Time='', UserImage=User.src}:Dataset) {
+export default function Header({ id, userRating=4, Rating=0, Size='0 mb', Extention='CSV', Price='46', Tags=[ "Arts and Entertainment", "Music", "Data Science", "Computer Science" ], CoverImage="/Thumbnail.svg", Title="Top Spotify Listening History Songs in Countries", Name='Mohammad Sumbul', Time='', UserImage=User.src, sellerAddress}:Dataset) {
   const { token } = useAuth()
   const {notify} = useNotifications()
   const [isAddingToCart, setIsAddingToCart] = useState(false)
@@ -126,15 +128,15 @@ export default function Header({ id, userRating=4, Rating=0, Size='0 mb', Extent
         ))}
       </div>
 
-        <div className="flex flex-wrap justify-start items-center gap-4">
+        <div className="flex flex-wrap justify-start items-center gap-3 sm:gap-4">
 
             <span className="flex items-center gap-2">
-            <Solana size={32} /> 
-            <h6 className="text-[42px]  ">{Price} </h6>
+            <Solana size={28} /> 
+            <h6 className="text-2xl sm:text-[42px]  ">{Price} </h6>
             </span>
 
              <button 
-            className="shadow-md flex items-center justify-center w-12 h-12 border dark:border-gray-600 rounded-full transition-all duration-500"
+            className="shadow-md flex items-center justify-center w-10 h-10 border dark:border-gray-600 rounded-full transition-all duration-500"
               onClick={handleAddToFavorites}
               disabled={isAddingToFavorites}
             >
@@ -148,7 +150,22 @@ export default function Header({ id, userRating=4, Rating=0, Size='0 mb', Extent
               <ShoppingCart size={20} /> {isAddingToCart ? 'Adding...' : 'Add to Cart'}
             </SecondaryBtn>
            
-            <PrimaryBtn >Buy Now</PrimaryBtn>
+            {/* Buy Now Button - Only show if we have seller address */}
+            {sellerAddress && (
+              <DatasetPurchaseButton
+                datasetId={id || ''}
+                sellerAddress={sellerAddress}
+                price={typeof Price === 'string' ? parseFloat(Price) : Price || 0}
+                datasetTitle={Title || 'Dataset'}
+                onPurchaseSuccess={(result) => {
+                  console.log("Dataset purchase successful:", result);
+                  console.log("Transaction ID:", result.signature);
+                }}
+                onPurchaseError={(error) => {
+                  console.error("Dataset purchase error:", error);
+                }}
+              />
+            )}
         </div>
 
     </div>
