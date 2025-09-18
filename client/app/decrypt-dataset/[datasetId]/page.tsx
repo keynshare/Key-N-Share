@@ -2,12 +2,13 @@
 import React from 'react'
 import { useParams } from 'next/navigation'
 import PrivateRoute from '@/lib/Authentication/PrivateRoute'
-import DeliveryPage from '../page';
+import DeliveryPage from '@/components/Delivery/DeliveryPage'
 function Page() {
     const { datasetId } = useParams<{ datasetId: string }>();
+    const params :string | number = datasetId ;
   return (
     <PrivateRoute>
-      <DeliveryPage Id={datasetId}/>
+      <DeliveryPage Id={params}/>
     </PrivateRoute>
   )
 }

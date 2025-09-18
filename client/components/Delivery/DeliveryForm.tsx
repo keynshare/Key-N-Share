@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React,{useEffect} from "react";
 import { useWalletConnection } from "@/lib/Authentication/walletConnection";
 import { useAuth } from "@/lib/Authentication/AuthContext";
 import { datasetApi } from "@/lib/api/DatasetApi";
@@ -29,14 +29,14 @@ export default function DeliveryForm({ values, onChange, onSubmit, busy }: Props
 		onChange({ ...values, [key]: e.target.value });
 
     // Auto-populate buyer address from wallet connection
-	React.useEffect(() => {
+	useEffect(() => {
 		if (address && !values.buyerAddress) {
 			onChange({ ...values, buyerAddress: address });
 		}
 	}, [address, values.buyerAddress, onChange, values]);
 
     // Auto-populate buyer ID from auth context
-    React.useEffect(() => {
+    useEffect(() => {
         if (userId && !values.buyerId) {
             onChange({ ...values, buyerId: userId });
         }

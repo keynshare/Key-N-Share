@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React,{useState} from "react";
 
 type KeySize = 1024 | 2048 | 4096;
 
@@ -63,11 +63,11 @@ function download(filename: string, text: string) {
 }
 
 export default function RSAKeyGenPage() {
-	const [keySize, setKeySize] = React.useState<KeySize>(2048);
-	const [privatePem, setPrivatePem] = React.useState("");
-	const [publicPem, setPublicPem] = React.useState("");
-	const [isGenerating, setIsGenerating] = React.useState(false);
-	const [message, setMessage] = React.useState<string | null>(null);
+	const [keySize, setKeySize] = useState<KeySize>(2048);
+	const [privatePem, setPrivatePem] = useState("");
+	const [publicPem, setPublicPem] = useState("");
+	const [isGenerating, setIsGenerating] = useState(false);
+	const [message, setMessage] = useState<string | null>(null);
 
 	const onGenerate = async () => {
 		setIsGenerating(true);
