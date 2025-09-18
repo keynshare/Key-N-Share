@@ -1,34 +1,70 @@
 "use client"
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import Breadcrumb from '@/components/SharedComponents/Breadcrumb/Breadcrumb'
-import DatasetData from '@/components/assets/dataset.json'
 import OrderDetailCard from '@/components/Orders/OrderDetailCard'
 import { Package, Clock, CheckCircle, XCircle } from 'lucide-react'
 import clsx from 'clsx'
+import { useAuth } from '@/lib/Authentication/AuthContext'
+import { userOrdersApi, UserOrder } from '@/lib/api/UserOrdersApi'
 
 type OrderStatus = 'processing' | 'delivered' | 'disputed'
 
-type OrderItem = (typeof DatasetData)[number] & {
+type UIOrder = {
+  id: string
+  Title?: string
+  Description?: string
+  Price?: number | string
+  Type?: string
+  Image?: string
+  Tags?: string[]
   status: OrderStatus
   orderedAt: string
   txHash?: string
 }
 
 function OrdersPage() {
+  const { userId, token } = useAuth()
   const breadcrumbItems = [
     { label: "Previous Orders", isActive: true }
   ]
 
-  const orders: OrderItem[] = useMemo(() =>
-    DatasetData.slice(0, 5).map((d, idx) => ({
-      ...d,
-      status: (['processing','delivered','delivered','processing','disputed'] as OrderStatus[])[idx % 5],
-      orderedAt: new Date(Date.now() - (idx + 1) * 86400000).toISOString(),
-      txHash: idx % 2 === 0 ? '0x' + Math.random().toString(16).substring(2, 10) : undefined
-    })),
-  [] )
+  const [orders, setOrders] = useState<UIOrder[]>([])
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const [selectedId, setSelectedId] = useState<number | string | null>(orders[0]?.id ?? null)
+  useEffect(() => {
+    const fetchOrders = async () => {
+      if (!userId) return
+      try {
+        setIsLoading(true)
+        setError(null)
+        const res = await userOrdersApi.listOrders({ userId, page: 1, limit: 20 }, token || undefined)
+        const mapped: UIOrder[] = (res.orders || []).map((o: UserOrder) => ({
+          id: o.datasetId,
+          Title: o.dataset?.title,
+          Description: undefined,
+          Price: o.dataset?.price,
+          Type: undefined,
+          Image: o.dataset?.imageUrl,
+          Tags: [],
+          status: 'delivered',
+          orderedAt: o.createdAt,
+          txHash: o.txnSign,
+        }))
+        setOrders(mapped)
+      } catch (e: unknown) {
+        setError('Failed to load orders')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    fetchOrders()
+  }, [userId, token])
+
+  const [selectedId, setSelectedId] = useState<number | string | null>(null)
+  useEffect(() => {
+    if (orders.length && !selectedId) setSelectedId(orders[0]?.id)
+  }, [orders, selectedId])
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   const selectedOrder = useMemo(() => orders.find(o => o.id === selectedId) ?? null, [orders, selectedId])
@@ -80,9 +116,15 @@ function OrdersPage() {
                   <Package className="w-6 h-6 text-orange-500" />
                   <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Orders</h2>
                 </div>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{orders.length} total</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{isLoading ? 'Loading…' : `${orders.length} total`}</p>
               </div>
               <div className="divide-y divide-gray-200 dark:divide-gray-700">
+                {error && (
+                  <div className="p-4 text-sm text-red-600">{error}</div>
+                )}
+                {!error && !isLoading && orders.length === 0 && (
+                  <div className="p-4 text-sm text-gray-500">No orders yet.</div>
+                )}
                 {orders.map((order) => (
                   <button
                     key={order.id}
@@ -97,8 +139,8 @@ function OrdersPage() {
                   >
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-medium text-gray-900 dark:text-white truncate">{order.Title}</h3>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 truncate">{order.Type}</p>
+                        <h3 className="font-medium text-gray-900 dark:text-white truncate">{order.Title || 'Dataset'}</h3>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 truncate">{order.Type || '—'}</p>
                       </div>
                       <div className={clsx('flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium', getStatusColor(order.status))}>
                         {getStatusIcon(order.status)}
@@ -106,7 +148,7 @@ function OrdersPage() {
                       </div>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600 dark:text-gray-400">{order.Price} Solana</span>
+                      <span className="text-gray-600 dark:text-gray-400">{order.Price ?? '—'} Solana</span>
                       <span className="text-gray-500 dark:text-gray-400">{formatDate(order.orderedAt)}</span>
                     </div>
                   </button>

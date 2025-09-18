@@ -8,7 +8,8 @@ type AuthContextType = {
   isInitialized: boolean;
   userId: string | null;
   token: string | null;
-  login: (userId: string, token: string, rememberMe?: boolean) => void;
+  PublicKeyRSA: string | null | undefined;
+  login: (userId: string, token: string, rememberMe?: boolean, publicKeyPEM?: string) => void;
   logout: () => void;
 };
 
@@ -19,6 +20,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isInitialized, setIsInitialized] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const [PublicKeyRSA, setPublicKeyRSA] = useState<string | undefined | null>(null);
 
   // On mount read from cookie
   useEffect(() => {
@@ -46,10 +48,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  const login = (userId: string, token: string, rememberMe?: boolean) => {
+  const login = (userId: string, token: string, rememberMe?: boolean, publicKeyPEM?: string) => {
     Cookies.set(
       "kns_token",
-      JSON.stringify({ token, userId }),
+      JSON.stringify({ token, userId,publicKeyPEM }),
       { 
         expires: rememberMe ? 30 : 7,
         secure: true,
@@ -59,6 +61,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsAuthenticated(true);
     setUserId(userId);
     setToken(token);
+    setPublicKeyRSA(publicKeyPEM);
   };
 
 
@@ -74,7 +77,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, isInitialized, userId, token, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, isInitialized, userId, token,PublicKeyRSA, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
