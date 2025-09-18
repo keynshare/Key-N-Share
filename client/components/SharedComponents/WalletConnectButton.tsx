@@ -126,7 +126,7 @@ export default function WalletConnectButton({
           onClick={handleDisconnect}
           disabled={disabled || isDisconnecting}
           sparkelClass="hidden"
-          className="w-full"
+          className=" w-full text-nowrap"
           Hovered={true}
         >
           {getButtonIcon()}

@@ -251,9 +251,9 @@ const { isAuthenticated, logout } = useAuth();
                 <Link title="Favorite Datasets" href='/favourite-datasets' className="p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white rounded-full">
                   <LucideFileHeart size={22} />
                 </Link>
-                <button title="Notifications" className="p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white rounded-full">
+                {/* <button title="Notifications" className="p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white rounded-full">
                   <Bell size={22} />
-                </button>
+                </button> */}
                
                 {/* Profile Dropdown */}
             <div className="relative">
@@ -398,9 +398,9 @@ const { isAuthenticated, logout } = useAuth();
                 <button className="p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white rounded-full">
                   <LucideFileHeart size={22} />
                 </button>
-                <button className="p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white rounded-full">
+                {/* <button className="p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white rounded-full">
                   <Bell size={22} />
-                </button>
+                </button> */}
                   
                     {/* Profile Dropdown */}
             <div className="relative">
@@ -456,7 +456,7 @@ const { isAuthenticated, logout } = useAuth();
                   className="w-full max-w-[200px]"
                   showBalance={true}
                   showDisconnect={false}
-                  compact={true}
+                  compact={false}
                   connect={true}
                 />
 
