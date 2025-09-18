@@ -13,6 +13,7 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "@pinata/sdk": "^2.1.0",
     "axios": "^1.11.0",
     "bcryptjs": "^2.4.3",

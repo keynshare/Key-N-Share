@@ -8,6 +8,7 @@ const PINATA_JWT = process.env.PINATA_JWT;
 const PINATA_API_KEY = process.env.PINATA_API_KEY;
 const PINATA_SECRET_KEY = process.env.PINATA_SECRET_KEY;
 const MASTER_KEY = process.env.MASTER_KEY;
+const GEMINI_KEY = process.env.GEMINI_KEY;
 
 module.exports = {
     PORT,
@@ -17,5 +18,6 @@ module.exports = {
     PINATA_JWT,
     PINATA_API_KEY,
     PINATA_SECRET_KEY,
-    MASTER_KEY
+    MASTER_KEY,
+    GEMINI_KEY
 }
