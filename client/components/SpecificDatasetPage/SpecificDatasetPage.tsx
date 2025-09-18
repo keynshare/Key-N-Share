@@ -29,7 +29,8 @@ export default function SpecificDatasetPage() {
     createdAt?: string;
     extension?: string;
     schema?: string;
-    source?:string;
+    source?: string;
+    sellerAddress?: string;
   } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -89,7 +90,8 @@ export default function SpecificDatasetPage() {
           Extention={dataset.extension || 'UNKNOWN'} 
           Price={dataset.price} 
           Tags={dataset.tags || []} 
-          CoverImage={dataset.coverImageUrl || 'https://via.placeholder.com/800x400?text=No+Image'} 
+          CoverImage={dataset.coverImageUrl || 'https://via.placeholder.com/800x400?text=No+Image'}
+          sellerAddress={dataset.sellerAddress}
         />
         <MetaDataSection
         
