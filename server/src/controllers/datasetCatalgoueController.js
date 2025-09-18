@@ -107,10 +107,9 @@ async function getDatasets(req, res) {
 async function getDatasetById(req, res) {
   try {
     const { id } = req.params;
-    console.log("Dataset ID:", id);
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({ message: 'Invalid dataset id' });
-  }
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: 'Invalid dataset id' });
+    }
     const dataset = await DatasetCatalogue.findById(id)
       .select(DATASET_SELECT)
       .lean();
@@ -132,7 +131,6 @@ async function getDatasetById(req, res) {
 async function getDatasetByUser(req, res) {
   try {
     const { userId } = req.params;
-    console.log("User ID:", userId);
     if (!mongoose.Types.ObjectId.isValid(userId)) {
       return res.status(400).json({ message: 'Invalid user id' });
     }
