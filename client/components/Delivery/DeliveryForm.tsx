@@ -48,6 +48,9 @@ export default function DeliveryForm({ values, onChange, onSubmit, busy }: Props
 				<div>
 					<label className="block text-sm font-medium mb-1">Dataset ID</label>
 					<input className="w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2" value={values.datasetId} onChange={set("datasetId")} placeholder="68c9a8..." />
+					{values.buyerAddress === address && (
+						<p className="text-xs text-green-600 dark:text-green-400 mt-1">✓ Auto-filled from orders</p>
+					)}
 				</div>
 				<div>
 					<label className="block text-sm font-medium mb-1">Buyer Address</label>

@@ -76,4 +76,76 @@ export async function deliverDecryptAndDownload(params: DeliverAndDownloadParams
 	});
 }
 
+export interface CheckDeliveryExistsRequest {
+	datasetId: string;
+	buyerId: string;
+}
 
+export interface CheckDeliveryExistsResponse {
+	exists: boolean;
+	cid?: string;
+	encryptedSymmetricKey?: string;
+	createdAt?: string;
+	updatedAt?: string;
+	message?: string;
+}
+
+export async function checkDeliveryExists(
+	body: CheckDeliveryExistsRequest,
+	token?: string
+): Promise<CheckDeliveryExistsResponse> {
+	const headers: Record<string, string> = { "Content-Type": "application/json" };
+	if (token) headers["Authorization"] = `Bearer ${token}`;
+	
+	const { data } = await axios.get(`${API_URL}delivery/delivery-exists`, { 
+		headers,
+		data: body
+	});
+	return data;
+}
+
+/**
+ * Utility function to check if delivery exists and optionally download it directly
+ * @param params - Parameters for checking delivery existence
+ * @param token - Optional authentication token
+ * @returns Promise with delivery status and data if exists
+ */
+export async function checkAndDownloadExistingDelivery(
+	params: CheckDeliveryExistsRequest & { 
+		privateKeyPem?: string; 
+		filename?: string; 
+		preserveOriginalFormat?: boolean;
+	},
+	token?: string
+): Promise<{ exists: boolean; downloaded?: boolean; data?: CheckDeliveryExistsResponse }> {
+	try {
+		const deliveryStatus = await checkDeliveryExists(params, token);
+		
+		if (deliveryStatus.exists && params.privateKeyPem && deliveryStatus.cid && deliveryStatus.encryptedSymmetricKey) {
+			// Download the existing delivery
+			await decryptDatasetByCidAndDownload({
+				cid: deliveryStatus.cid,
+				filename: params.filename,
+				encryptedAesKeyBase64: deliveryStatus.encryptedSymmetricKey,
+				privateKeyPem: params.privateKeyPem,
+				token,
+				preserveOriginalFormat: params.preserveOriginalFormat,
+			});
+			
+			return { 
+				exists: true, 
+				downloaded: true, 
+				data: deliveryStatus 
+			};
+		}
+		
+		return { 
+			exists: deliveryStatus.exists, 
+			downloaded: false, 
+			data: deliveryStatus 
+		};
+	} catch (error) {
+		console.error('Error checking delivery existence:', error);
+		return { exists: false, downloaded: false };
+	}
+}
