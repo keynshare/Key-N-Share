@@ -80,7 +80,7 @@ async function deliverDatasetToBuyer(req, res) {
 
 const checkReencryptedExists = async (req, res) => {
   try {
-    const { datasetId, buyerId } = req.body;
+    const { datasetId, buyerId } = req.query;
 
     if (!datasetId || !buyerId) {
       return res.status(400).json({
