@@ -16,6 +16,7 @@ const deliverDatasetRoutes = require('./routes/deliverDataset');
 const userRoutes = require('./routes/userRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const ledgerRoutes = require('./routes/ledgerRoutes');
+const nexusRoutes = require('./routes/nexus');
 
 const app = express();
 
@@ -53,7 +54,7 @@ app.use('/api/profile', authenticate, profileRoutes);
 app.use('/api/user', authenticate, userRoutes);
 app.use('/api/userOrders', orderRoutes);
 
-
+app.use('/api/nexus',nexusRoutes);
 
 // Authenticated routes for other catalogue operations
 app.use('/api/dataset-catalogue', authenticate, catalogueRoutes);
