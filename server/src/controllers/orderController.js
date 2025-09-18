@@ -39,7 +39,10 @@ const createOrder = async (req, res) => {
 
 const listOrders = async (req, res) => {
   try {
-    const { userId, page = 1, limit = 20 } = req.body;
+    const { userId } = req.query;
+    const page = Number(req.query.page) > 0 ? Number(req.query.page) : 1;
+    const limit = Math.min(100, Number(req.query.limit) > 0 ? Number(req.query.limit) : 20);
+
 
     if (!userId) {
       return res.status(400).json({ error: 'userId is required' });
