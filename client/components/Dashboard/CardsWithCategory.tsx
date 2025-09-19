@@ -17,6 +17,8 @@ type Data = {
     downloads?: number;
     views?: number;
     averageRating?: number;
+    name?: string;
+    role?: string;
 }
 
 type CardsWithCategoryProp={

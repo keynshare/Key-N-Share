@@ -116,7 +116,8 @@ function CartPage({userId}: {userId?: string}) {
                           Image: item.coverImageUrl || '/Thumbnail.svg',
                           size: item.fileSize,
                           uploadDate: item.createdAt,
-                          Rating: item.averageRating 
+                          Rating: item.averageRating,
+                          sellerAddress: item.sellerAddress 
                         }} 
                         variant="cart"
                         onRemove={() => handleRemoveFromCart(item._id)}
