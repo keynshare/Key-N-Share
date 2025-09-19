@@ -197,10 +197,10 @@ const { login } = useAuth();
 
               <div className="flex flex-col lg:flex-row gap-3 w-full items-center justify-center">
                 <SecondaryBtn Type="submit" className="w-full">{submitting ? 'Creating Account...' : 'Create Account'}</SecondaryBtn>
-                <SecondaryBtn className="w-full bg-slate-200 dark:bg-[#1f1f1f] dark:hover:bg-[#333333] dark:!text-white !text-black hover:bg-slate-300/95">
+                {/* <SecondaryBtn className="w-full bg-slate-200 dark:bg-[#1f1f1f] dark:hover:bg-[#333333] dark:!text-white !text-black hover:bg-slate-300/95">
                   <Image src={Google} className="w-5" alt="google logo" />
                   Continue with Google
-                </SecondaryBtn>
+                </SecondaryBtn> */}
               </div>
 
               <span className="text-[#A1A1A1] font-medium gap-2 w-full flex items-center justify-center">

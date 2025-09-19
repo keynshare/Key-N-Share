@@ -31,6 +31,10 @@ export default function SpecificDatasetPage() {
     schema?: string;
     source?: string;
     sellerAddress?: string;
+    user?: {
+      name?: string;
+      role?: string;
+    }
   } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -92,6 +96,8 @@ export default function SpecificDatasetPage() {
           Tags={dataset.tags || []} 
           CoverImage={dataset.coverImageUrl || 'https://via.placeholder.com/800x400?text=No+Image'}
           sellerAddress={dataset.sellerAddress}
+          Name={dataset.user?.name || 'Unknown Author'}
+         
         />
         <MetaDataSection
         

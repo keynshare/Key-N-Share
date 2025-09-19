@@ -30,6 +30,8 @@ type Dataset = {
   Time?: string;
   UserImage?: string;
   sellerAddress?: string;
+  
+ 
 };
 
 export default function Header({ id, userRating=4, Rating=0, Size='0 mb', Extention='CSV', Price='46', Tags=[ "Arts and Entertainment", "Music", "Data Science", "Computer Science" ], CoverImage="/Thumbnail.svg", Title="Top Spotify Listening History Songs in Countries", Name='Mohammad Sumbul', Time='', UserImage=User.src, sellerAddress}:Dataset) {

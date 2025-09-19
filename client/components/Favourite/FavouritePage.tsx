@@ -119,7 +119,8 @@ const breadcrumbItems = [
                 size: data.fileSize,
                 Image: data.coverImageUrl || '/Thumbnail.svg',
                 uploadDate: data.createdAt,
-                Rating: data.averageRating  
+                Rating: data.averageRating ,
+                sellerAddress: data.sellerAddress 
                }} 
                variant="cart"
                onRemove={() => handleRemoveFromCart(data._id)}  />

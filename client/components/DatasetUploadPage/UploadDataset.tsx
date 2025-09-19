@@ -88,7 +88,7 @@ function UploadDataset() {
       return;
     }
 
-    if (!formData.termsAccepted || !formData.securityTermsAccepted) {
+    if (!formData.termsAccepted ) {
       notify({ type: "error", message: "Please accept the terms and conditions" });
       return;
     }

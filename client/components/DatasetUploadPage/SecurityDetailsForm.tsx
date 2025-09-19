@@ -106,8 +106,8 @@ function SecurityDetailsForm({ formData, onFormDataChange, onUpload, isUploading
         <input
           type="checkbox"
           id="terms2"
-          checked={formData.securityTermsAccepted}
-          onChange={(e) => onFormDataChange({ securityTermsAccepted: e.target.checked })}
+          checked={formData.termsAccepted}
+          onChange={(e) => onFormDataChange({ termsAccepted: e.target.checked })}
           className="h-3 w-3 text-orange-500 border-gray-300 rounded focus:ring-orange-500"
           required
         />

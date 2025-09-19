@@ -31,6 +31,11 @@ interface Dataset {
   views?: number;
   averageRating?: number;
   createdAt?: string;
+  user?: {
+    name?: string;
+    role?: string;
+  }
+  
 }
 
 // Define the props for the component
@@ -136,8 +141,8 @@ export default function DatasetCard({Data}:DatasetCardProps) {
             className="rounded-full"
           />
           <div >
-            <p className=" font-medium text-gray-900 dark:text-white">{author.name}</p>
-            <p className="text-sm text-gray-500 dark:text-white">{author.designation}</p>
+            <p className=" font-medium text-gray-900 dark:text-white">{Data.user?.name || author.name}</p>
+            <p className="text-sm text-gray-500 dark:text-white">{Data.user?.role || author.designation}</p>
           </div>
         </div>
       </div>

@@ -6,7 +6,7 @@ import { CircleMinus, Star } from 'lucide-react'
 import StarRating from '../StarRating'
 import timeAgo from './timeAgo'
 
-
+import DatasetPurchaseButton from '@/components/DatasetPurchase/DatasetPurchaseButton'
 
 type Data={
     id?:number | string;
@@ -18,7 +18,8 @@ type Data={
     size?: string;
     Tags?: string[];
     uploadDate?: string;
-    Rating?: number 
+    Rating?: number;
+    sellerAddress?: string; 
 }
 
 type CheckOutDatasetCard = {
@@ -88,7 +89,15 @@ function CheckOutDatasetCard({Data, variant='cart', onRemove,onFavRemove}:CheckO
                 > 
                   <CircleMinus size={20} /> Remove
                 </SecondaryBtn>
-                <SecondaryBtn>Buy Dataset</SecondaryBtn>
+                 {Data?.sellerAddress && (
+                  <DatasetPurchaseButton
+                    datasetId={Data?.id?.toString() || ''}
+                    sellerAddress={Data.sellerAddress}
+                    price={typeof Data.Price === 'string' ? parseFloat(Data.Price) : Data.Price || 0}
+                    datasetTitle={Data.Title || 'Dataset'}
+                   
+                  />
+                )}
               </>
             ) : (
               <SecondaryBtn className='bg-red-600 dark:bg-red-600 hover:bg-[#fd5959] dark:hover:bg-[#fd5959] hover:text-white'>Raise Dispute</SecondaryBtn>

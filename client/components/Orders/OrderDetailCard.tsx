@@ -130,12 +130,12 @@ function OrderDetailCard({
             >
               <Download className="w-4 h-4" /> Download Dataset
             </SecondaryBtn>
-            <SecondaryBtn
+            {/* <SecondaryBtn
               className="bg-red-600 dark:bg-red-600 hover:bg-[#fd5959] dark:hover:bg-[#fd5959] text-white"
               onClick={() => onRaiseDispute?.(id)}
             >
               <AlertTriangle className="w-4 h-4" /> Raise Dispute
-            </SecondaryBtn>
+            </SecondaryBtn> */}
           </div>
         </div>
       </div>
