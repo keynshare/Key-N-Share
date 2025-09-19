@@ -15,7 +15,7 @@ export default function DeliveryPage({ Id }: { Id?: string | number | undefined 
         buyerId: "",
         buyerPublicKey: "",
         privateKeyPem: "",
-        filename: "dataset.bin",
+        filename: "dataset.csv",
     });
     const [busy, setBusy] = useState(false);
     const [message, setMessage] = useState<string | null>(null);
