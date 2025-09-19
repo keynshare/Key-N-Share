@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/lib/theme-context";
 import clsx from "clsx";
 import NavbarWrapper from "@/components/SharedComponents/NavbarWrapper";
 import {Providers} from "@/lib/Providers";
+import GoTONexusBtn from "@/components/Nexus/GoTONexusBtn";
 
 const cinzel_decorative = Cinzel_Decorative({
   variable: "--font-cinzel-decorative",
@@ -45,6 +46,7 @@ export default function RootLayout({
           <Providers>
           <NavbarWrapper>
           {children}
+          <GoTONexusBtn/>
           </NavbarWrapper>
           </Providers>
         </ThemeProvider>
