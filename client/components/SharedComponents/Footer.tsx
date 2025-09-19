@@ -131,7 +131,7 @@ const Footer = () => {
               isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'
             }`} style={{ transitionDelay: '650ms' }}>
               <h3 className="font-bold mb-2 text-lg xl:text-xl whitespace-nowrap font-bricola">Subscribe to our newsletter</h3>
-              <p className=" mb-3 text-base md:w-[120%] 2xl:w-[110%] 3xl:w-auto">Lorem Ipsum is simply dummy text of the printing and industry.</p>
+              {/* <p className=" mb-3 text-base md:w-[120%] 2xl:w-[110%] 3xl:w-auto">Lorem Ipsum is simply dummy text of the printing and industry.</p> */}
               <form className="flex flex-col gap-2">
              <input className="w-full bg-gray-200/55 p-2 py-[10px]  dark:bg-[#141414] rounded-md " type="text" placeholder="Enter First Name" />
 
