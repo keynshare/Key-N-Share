@@ -30,6 +30,10 @@ async function addDataset(req, res) {
     ) {
       return res.status(400).json({ message: 'Missing required fields.' });
     }
+    const existing = await DatasetCatalogue.findOne({ originalContentHash }).select('_id').lean();
+    if (existing) {
+      return res.status(404).json({ message: 'A dataset with this originalContentHash already exists.' });
+    }
 
     const newDataset = new DatasetCatalogue({
       userId,
