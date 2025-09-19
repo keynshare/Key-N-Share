@@ -291,6 +291,20 @@ const { isAuthenticated, logout } = useAuth();
       >
         Decrypt Dataset
       </Link>
+      <Link
+        href="/kns-ledger"
+        className="block px-4 py-2 text-sm hover:text-white hover:bg-[#242424] transition-colors"
+        onClick={() => setProfileMenu(false)}
+      >
+        Ledger
+      </Link>
+      <Link
+        href="/decrypt-dataset"
+        className="block px-4 py-2 text-sm hover:text-white hover:bg-[#242424] transition-colors"
+        onClick={() => setProfileMenu(false)}
+      >
+        Decrypt Dataset
+      </Link>
       <button
         onClick={() => {
           logout();
