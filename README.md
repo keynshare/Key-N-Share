@@ -38,6 +38,11 @@ KeyNShare consists of three main components:
 2. **Backend (Express)**: RESTful API server for business logic
 3. **Blockchain (Solana)**: Smart contracts for dataset metadata and ownership
 
+## 📚 Documentation
+
+- [API Documentation](./server/README.md) - Complete reference for the KeyNShare API endpoints
+- [Client Documentation](./client/README.md) - Guide for the Next.js client application
+
 ## 🚀 Getting Started
 
 ### Prerequisites
