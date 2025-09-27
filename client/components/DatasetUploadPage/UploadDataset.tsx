@@ -182,7 +182,7 @@ if (!formData.encryptionKey) {
       };
 
       const catalogueResponse = await datasetApi.addDatasetToCatalogue(catalogueData, token);
-       // Store encryption key as secret using dataset CID as identifier
+       // Store encryption key as secret using dataset id as identifier
        try {
         console.log(catalogueResponse)
         await SecretApi.storeSecret(catalogueResponse._id, formData.encryptionKey, token);
