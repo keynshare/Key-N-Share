@@ -1,14 +1,43 @@
-# Profile API Documentation
+# KeyNShare API Documentation
+
+<div align="center">
+  <h2>Profile API Documentation</h2>
+  <p>Complete reference for the KeyNShare Profile API endpoints</p>
+</div>
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Authentication](#authentication)
+- [API Endpoints](#api-endpoints)
+  - [Public Endpoints](#public-endpoints)
+    - [Get User Profile](#1-get-user-profile-public)
+    - [Increment Profile Views](#2-increment-profile-views-public)
+    - [Get User Datasets](#3-get-user-datasets-public)
+  - [Protected Endpoints](#protected-endpoints)
+    - [Get Current User Profile](#4-get-current-user-profile-protected)
+    - [Update User Profile](#5-update-user-profile-protected)
+    - [Get Current User Datasets](#6-get-current-user-datasets-protected)
+    - [Get User Sold Datasets](#7-get-user-sold-datasets-protected)
+    - [Get User Statistics](#8-get-user-statistics-protected)
+- [Error Responses](#error-responses)
+- [Frontend Integration Examples](#frontend-integration-examples)
+- [Notes for Frontend Developer](#notes-for-frontend-developer)
+- [Complete Model System](#complete-model-system)
+
+## Overview
 
 This document outlines all the available APIs for the profile section of the Key-N-Share application.
 
-## Base URL
+### Base URL
 ```
 http://localhost:4000/api/profile
 ```
 
 ## Authentication
+
 Protected routes require a valid JWT token in the Authorization header:
+
 ```
 Authorization: Bearer <your-jwt-token>
 ```
@@ -17,8 +46,11 @@ Authorization: Bearer <your-jwt-token>
 
 ## API Endpoints
 
-### 1. Get User Profile (Public)
-**GET** `/api/profile/:userId`
+### Public Endpoints
+
+#### 1. Get User Profile (Public)
+
+> **GET** `/api/profile/:userId`
 
 Get any user's public profile information.
 
@@ -76,64 +108,9 @@ Get any user's public profile information.
 }
 ```
 
----
+#### 2. Increment Profile Views (Public)
 
-### 2. Get Current User Profile (Protected)
-**GET** `/api/profile/me/profile`
-
-Get the currently authenticated user's profile.
-
-**Headers:**
-```
-Authorization: Bearer <jwt-token>
-```
-
-**Response:** Same as above but for the authenticated user.
-
----
-
-### 3. Update User Profile (Protected)
-**PUT** `/api/profile/me/profile`
-
-Update the current user's profile information.
-
-**Headers:**
-```
-Authorization: Bearer <jwt-token>
-```
-
-**Body:**
-```json
-{
-  "role": "Senior Data Engineer",
-  "bio": "Updated bio information"
-}
-```
-
-**Response:**
-```json
-{
-  "success": true,
-  "message": "Profile updated successfully",
-  "data": {
-    "_id": "user_id",
-    "firstName": "John",
-    "email": "john@example.com",
-    "role": "Senior Data Engineer",
-    "bio": "Updated bio information",
-    // ... other fields
-  }
-}
-```
-
-**Validation Rules:**
-- `role`: Max 100 characters
-- `bio`: Max 500 characters
-
----
-
-### 4. Increment Profile Views (Public)
-**POST** `/api/profile/:userId/view`
+> **POST** `/api/profile/:userId/view`
 
 Increment the profile view count for a user.
 
@@ -148,16 +125,17 @@ Increment the profile view count for a user.
 }
 ```
 
----
+#### 3. Get User Datasets (Public)
 
-### 5. Get User Datasets (Public)
-**GET** `/api/profile/:userId/datasets`
+> **GET** `/api/profile/:userId/datasets`
 
 Get datasets uploaded by a specific user with pagination.
 
 **Query Parameters:**
-- `page` (optional): Page number (default: 1)
-- `limit` (optional): Items per page (default: 10)
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| page | Number | No | 1 | Page number |
+| limit | Number | No | 10 | Items per page |
 
 **Response:**
 ```json
@@ -188,10 +166,65 @@ Get datasets uploaded by a specific user with pagination.
 }
 ```
 
----
+### Protected Endpoints
 
-### 6. Get Current User Datasets (Protected)
-**GET** `/api/profile/me/datasets`
+#### 4. Get Current User Profile (Protected)
+
+> **GET** `/api/profile/me/profile`
+
+Get the currently authenticated user's profile.
+
+**Headers:**
+```
+Authorization: Bearer <jwt-token>
+```
+
+**Response:** Same as [Get User Profile](#1-get-user-profile-public)
+
+#### 5. Update User Profile (Protected)
+
+> **PUT** `/api/profile/me/profile`
+
+Update the current user's profile information.
+
+**Headers:**
+```
+Authorization: Bearer <jwt-token>
+```
+
+**Body:**
+```json
+{
+  "role": "Senior Data Engineer",
+  "bio": "Updated bio information"
+}
+```
+
+**Validation Rules:**
+| Field | Validation |
+|-------|------------|
+| role | Max 100 characters |
+| bio | Max 500 characters |
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Profile updated successfully",
+  "data": {
+    "_id": "user_id",
+    "firstName": "John",
+    "email": "john@example.com",
+    "role": "Senior Data Engineer",
+    "bio": "Updated bio information",
+    // ... other fields
+  }
+}
+```
+
+#### 6. Get Current User Datasets (Protected)
+
+> **GET** `/api/profile/me/datasets`
 
 Get datasets uploaded by the currently authenticated user.
 
@@ -200,12 +233,11 @@ Get datasets uploaded by the currently authenticated user.
 Authorization: Bearer <jwt-token>
 ```
 
-**Response:** Same as above but for the authenticated user.
+**Response:** Same as [Get User Datasets](#3-get-user-datasets-public)
 
----
+#### 7. Get User Sold Datasets (Protected)
 
-### 7. Get User Sold Datasets (Protected)
-**GET** `/api/profile/me/sold-datasets`
+> **GET** `/api/profile/me/sold-datasets`
 
 Get datasets sold by the currently authenticated user.
 
@@ -215,9 +247,11 @@ Authorization: Bearer <jwt-token>
 ```
 
 **Query Parameters:**
-- `page` (optional): Page number (default: 1)
-- `limit` (optional): Items per page (default: 10)
-- `status` (optional): Filter by transaction status (pending, completed, failed, cancelled)
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| page | Number | No | 1 | Page number |
+| limit | Number | No | 10 | Items per page |
+| status | String | No | - | Filter by transaction status (pending, completed, failed, cancelled) |
 
 **Response:**
 ```json
@@ -255,10 +289,9 @@ Authorization: Bearer <jwt-token>
 }
 ```
 
----
+#### 8. Get User Statistics (Protected)
 
-### 8. Get User Statistics (Protected)
-**GET** `/api/profile/me/statistics`
+> **GET** `/api/profile/me/statistics`
 
 Get comprehensive statistics for the currently authenticated user.
 
@@ -305,38 +338,12 @@ Authorization: Bearer <jwt-token>
 
 All APIs return consistent error responses:
 
-**400 Bad Request:**
-```json
-{
-  "success": false,
-  "message": "Validation error message"
-}
-```
-
-**401 Unauthorized:**
-```json
-{
-  "success": false,
-  "message": "Access token required"
-}
-```
-
-**404 Not Found:**
-```json
-{
-  "success": false,
-  "message": "User not found"
-}
-```
-
-**500 Internal Server Error:**
-```json
-{
-  "success": false,
-  "message": "Internal server error",
-  "error": "Error details"
-}
-```
+| Status Code | Description | Response |
+|-------------|-------------|----------|
+| 400 | Bad Request | `{ "success": false, "message": "Validation error message" }` |
+| 401 | Unauthorized | `{ "success": false, "message": "Access token required" }` |
+| 404 | Not Found | `{ "success": false, "message": "User not found" }` |
+| 500 | Internal Server Error | `{ "success": false, "message": "Internal server error", "error": "Error details" }` |
 
 ---
 
@@ -420,9 +427,11 @@ const updateProfile = async (updates) => {
 
 Your User schema is now **100% complete** with all referenced models available:
 
-✅ **User.js** - Complete user profile with all fields and methods
-✅ **Transaction.js** - Complete transaction tracking for dataset sales  
-✅ **DatasetCatalogue.js** - Complete dataset management
-✅ **Dispute.js** - Complete dispute resolution system (NEW!)
+| Model | Status | Description |
+|-------|--------|-------------|
+| **User.js** | ✅ | Complete user profile with all fields and methods |
+| **Transaction.js** | ✅ | Complete transaction tracking for dataset sales |
+| **DatasetCatalogue.js** | ✅ | Complete dataset management |
+| **Dispute.js** | ✅ | Complete dispute resolution system (NEW!) |
 
 The APIs are designed to be RESTful and follow consistent patterns for easy integration.
