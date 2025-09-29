@@ -51,7 +51,7 @@ function OrdersPage() {
           status: 'delivered',
           orderedAt: o.createdAt,
           txnSign: o.txnSign,
-          sellerUserId: (o as any)?.dataset?.userId,
+          sellerUserId: o.dataset?.userId,
         }))
         setOrders(mapped)
       } catch (e: unknown) {

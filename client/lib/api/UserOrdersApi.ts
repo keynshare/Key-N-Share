@@ -21,6 +21,7 @@ export interface DatasetSummary {
   tags?: string[];
   description?: string;
   extension?: string;
+  userId?: string;
 }
 
 export interface RatingSummary {

@@ -103,7 +103,7 @@ function OrderDetailCard({
           setHasRated(true);
         }
       }
-    } catch (error) {
+    } catch (error :unknown) {
       console.error("Failed to fetch existing rating:", error);
     }
   };
@@ -125,7 +125,7 @@ useEffect(() => {
           setSellerHasRated(false);
         }
       }
-    } catch (e) {
+    } catch (e : unknown) {
       console.error('Failed to load seller rating summary', e);
     }
   };
@@ -248,7 +248,7 @@ useEffect(() => {
       setSellerSubmitting(true);
       await ratingApi.submitRating({ userId: String(sellerUserId), rating: sellerRating, comment: sellerComment || undefined, ratingType: 'seller' }, token);
       setSellerHasRated(true);
-    } catch (e) {
+    } catch (e : unknown) {
       console.error('Failed to submit seller rating', e);
     } finally {
       setSellerSubmitting(false);
@@ -256,7 +256,7 @@ useEffect(() => {
   };
 
   const renderSellerRating = () => {
-    const effective = sellerHovered || sellerRating; // Do not prefill with average
+const effective = sellerHovered || sellerRating || (sellerHasRated ? sellerAverage : 0);
     return (
       <div className="flex flex-col gap-2">
         <div className="flex items-center gap-2">
