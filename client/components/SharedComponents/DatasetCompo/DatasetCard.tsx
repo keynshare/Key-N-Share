@@ -32,6 +32,7 @@ interface Dataset {
   averageRating?: number;
   createdAt?: string;
   user?: {
+    id?: string;
     name?: string;
     role?: string;
   }
@@ -132,7 +133,7 @@ export default function DatasetCard({Data}:DatasetCardProps) {
         </div>
 
         
-        <div className="flex gap-3 border-t dark:border-gray-600 items-center pt-2">
+        <Link href={`/profile/${Data.user?.id}`} className="flex gap-3 border-t dark:border-gray-600 items-center pt-2">
           <Image
             src={User}
             alt="Author"
@@ -144,7 +145,7 @@ export default function DatasetCard({Data}:DatasetCardProps) {
             <p className=" font-medium text-gray-900 dark:text-white">{Data.user?.name || author.name}</p>
             <p className="text-sm text-gray-500 dark:text-white">{Data.user?.role || author.designation}</p>
           </div>
-        </div>
+        </Link>
       </div>
     </Link>
   );

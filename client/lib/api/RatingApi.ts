@@ -70,9 +70,14 @@ export const ratingApi = {
     return response.data;
   },
 
-  getUserRatingSummary: async (userId: string, ratingType: 'seller' | 'buyer' = 'seller'): Promise<RatingSummary> => {
+  getUserRatingSummary: async (userId: string, ratingType: 'seller' | 'buyer' = 'seller',token: string): Promise<RatingSummary> => {
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+
     const response = await axios.get(`${API_URL}users/${userId}/rating-summary`, {
-      params: { ratingType }
+      params: { ratingType },
+      headers
     });
     return response.data;
   },

@@ -218,11 +218,14 @@ const getUserRatingSummary = async (req, res) => {
       if (!ratingDistribution[i]) ratingDistribution[i] = 0;
     }
 
+    const raterIds = ratings.map(r => String(r.raterId));
+
     res.status(200).json({
       averageRating: Math.round(averageRating * 10) / 10,
       totalRatings,
       ratingDistribution,
-      ratingType
+      ratingType,
+      raterIds
     });
   } catch (err) {
     console.error('getUserRatingSummary error:', err);

@@ -52,6 +52,10 @@ export interface ListOrdersResponse {
   orders: UserOrder[];
 }
 
+export interface DatasetBuyersResponse {
+  buyers: { id: string; name: string }[];
+}
+
 export const userOrdersApi = {
   createOrder: async (payload: CreateOrderRequest, token?: string): Promise<CreateOrderResponse> => {
     const headers: Record<string, string> = {
@@ -84,6 +88,16 @@ export const userOrdersApi = {
     if (token) headers.Authorization = `Bearer ${token}`;
 
     const response = await axios.get(`${API_URL}userOrders/orders/${id}`, { headers });
+    return response.data;
+  },
+  
+  getDatasetBuyers: async (datasetId: string, token?: string): Promise<DatasetBuyersResponse> => {
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+    if (token) headers.Authorization = `Bearer ${token}`;
+
+    const response = await axios.get(`${API_URL}userOrders/datasets/${datasetId}/buyers`, { headers });
     return response.data;
   },
 };
