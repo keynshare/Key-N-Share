@@ -148,7 +148,7 @@ function BuyerSidebar({
           <div className="flex flex-col">
             <span className="line-clamp-1">{b.name}</span>
 
-            {UploaderId === userId && (
+            {UploaderId !== userId && (
               <div className="flex mt-1">
                 {[1,2,3,4,5].map((index) => {
                   const hoverVal = buyerHoverRating[b.id] ?? 0;
@@ -170,7 +170,14 @@ function BuyerSidebar({
                     />
                   );
                 })}
+                 {buyerHasRated[b.id] && (
+    <span className="text-sm text-gray-600 dark:text-gray-400">
+      {buyerAverageRating[b.id]?.toFixed(1) ?? "0.0"}
+    </span>
+  )}
               </div>
+              
+              
             )}
 
             {/* {!buyerHasRated[b.id] && UploaderId !== userId && (

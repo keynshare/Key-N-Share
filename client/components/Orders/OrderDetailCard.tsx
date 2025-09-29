@@ -25,6 +25,7 @@ export interface OrderDetailProps {
   txHash?: string;
   onRaiseDispute?: (id: number | string) => void;
   onDownload?: (id: number | string) => void;
+  sellerUserId?: string;
 }
 
 function OrderDetailCard({
@@ -38,6 +39,7 @@ function OrderDetailCard({
   status,
   orderedAt,
   txHash,
+  sellerUserId,
 }: OrderDetailProps) {
   const { token,userId } = useAuth();
   const [rating, setRating] = useState(0);
@@ -46,6 +48,14 @@ function OrderDetailCard({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [HasRated, setHasRated] = useState<boolean>(false);
+
+  // Seller rating states
+  const [sellerRating, setSellerRating] = useState(0);
+  const [sellerHovered, setSellerHovered] = useState(0);
+  const [sellerComment, setSellerComment] = useState("");
+  const [sellerSubmitting, setSellerSubmitting] = useState(false);
+  const [sellerHasRated, setSellerHasRated] = useState<boolean>(false);
+  const [sellerAverage, setSellerAverage] = useState(0);
 
   const { reportError } = useNotifications();
 
@@ -100,6 +110,27 @@ function OrderDetailCard({
 
   fetchExistingRating();
 }, [token, id]);
+
+// Preload seller rating summary to determine if current user already rated
+useEffect(() => {
+  const fetchSellerRating = async () => {
+    if (!token || !sellerUserId) return;
+    try {
+      const summary = await ratingApi.getUserRatingSummary(String(sellerUserId), 'seller', token);
+      if (summary) {
+        setSellerAverage(summary.averageRating || 0);
+        if (userId && summary.raterIds?.includes(userId)) {
+          setSellerHasRated(true);
+        } else {
+          setSellerHasRated(false);
+        }
+      }
+    } catch (e) {
+      console.error('Failed to load seller rating summary', e);
+    }
+  };
+  fetchSellerRating();
+}, [token, sellerUserId, userId]);
 
 
   const handleRatingSubmit = async () => {
@@ -211,6 +242,65 @@ function OrderDetailCard({
     );
   };
 
+  const handleSellerRatingSubmit = async () => {
+    if (!sellerUserId || !token || !sellerRating) return;
+    try {
+      setSellerSubmitting(true);
+      await ratingApi.submitRating({ userId: String(sellerUserId), rating: sellerRating, comment: sellerComment || undefined, ratingType: 'seller' }, token);
+      setSellerHasRated(true);
+    } catch (e) {
+      console.error('Failed to submit seller rating', e);
+    } finally {
+      setSellerSubmitting(false);
+    }
+  };
+
+  const renderSellerRating = () => {
+    const effective = sellerHovered || sellerRating; // Do not prefill with average
+    return (
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center gap-2">
+          {[1,2,3,4,5].map(star => (
+            <Star
+              key={star}
+              className={clsx(
+                "w-5 h-5",
+                effective >= star ? "text-yellow-500 fill-current" : "text-gray-300",
+                !sellerHasRated && "hover:text-yellow-400 cursor-pointer",
+                sellerHasRated && "opacity-60 cursor-not-allowed"
+              )}
+              onClick={() => !sellerHasRated && setSellerRating(star)}
+              onMouseEnter={() => !sellerHasRated && setSellerHovered(star)}
+              onMouseLeave={() => !sellerHasRated && setSellerHovered(0)}
+            />
+          ))}
+          <span className="text-sm text-gray-600 dark:text-gray-400">
+            Avg {sellerAverage.toFixed(1)}
+          </span>
+        </div>
+        {!sellerHasRated && sellerRating > 0 && (
+          <div className="flex flex-col gap-2">
+            <textarea
+              value={sellerComment}
+              onChange={(e) => setSellerComment(e.target.value)}
+              placeholder="Optional: Add a comment for the seller..."
+              className="w-full p-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white resize-none"
+              rows={2}
+              maxLength={500}
+            />
+            <button
+              onClick={handleSellerRatingSubmit}
+              disabled={sellerSubmitting}
+              className="px-4 py-2 bg-orange-500 hover:bg-orange-600 disabled:bg-gray-400 text-white text-sm rounded-md transition-colors"
+            >
+              {sellerSubmitting ? 'Submitting...' : 'Submit Seller Rating'}
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className="w-full">
       <div className="flex flex-col gap-4">
@@ -288,6 +378,12 @@ function OrderDetailCard({
               </div>
               {renderStarRating()}
             </div>
+          <div className="col-span-1 flex flex-col justify-center gap-2">
+            <div className="text-xs text-gray-500 dark:text-gray-400">
+              Rate Seller
+            </div>
+            {renderSellerRating()}
+          </div>
             <div className="col-span-1 flex flex-col justify-center gap-2">
               <div className="text-xs text-gray-500 dark:text-gray-400">
                 Ordered

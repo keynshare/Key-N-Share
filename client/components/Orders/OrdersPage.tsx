@@ -20,6 +20,7 @@ type UIOrder = {
   status: OrderStatus
   orderedAt: string
   txnSign?: string
+  sellerUserId?: string
 }
 
 function OrdersPage() {
@@ -50,6 +51,7 @@ function OrdersPage() {
           status: 'delivered',
           orderedAt: o.createdAt,
           txnSign: o.txnSign,
+          sellerUserId: (o as any)?.dataset?.userId,
         }))
         setOrders(mapped)
       } catch (e: unknown) {
@@ -172,6 +174,7 @@ function OrdersPage() {
                   status={selectedOrder.status}
                   orderedAt={selectedOrder.orderedAt}
                   txHash={selectedOrder.txnSign}
+                  sellerUserId={selectedOrder.sellerUserId}
                   onDownload={() => {}}
                   onRaiseDispute={() => {}}
                 />
@@ -210,6 +213,7 @@ function OrdersPage() {
                     status={selectedOrder.status}
                     orderedAt={selectedOrder.orderedAt}
                     txHash={selectedOrder.txnSign}
+                    sellerUserId={selectedOrder.sellerUserId}
                     onDownload={() => {}}
                     onRaiseDispute={() => {}}
                   />
