@@ -21,6 +21,12 @@ export interface DatasetSummary {
   tags?: string[];
   description?: string;
   extension?: string;
+  userId?: string;
+}
+
+export interface RatingSummary {
+  averageRating: number;
+  totalRatings: number;
 }
 
 export interface UserOrder {
@@ -32,6 +38,7 @@ export interface UserOrder {
   createdAt: string;
   updatedAt: string;
   dataset: DatasetSummary;
+  ratingSummary: RatingSummary;
 }
 
 export interface CreateOrderResponse {
@@ -44,6 +51,10 @@ export interface ListOrdersResponse {
   limit: number;
   total: number;
   orders: UserOrder[];
+}
+
+export interface DatasetBuyersResponse {
+  buyers: { id: string; name: string }[];
 }
 
 export const userOrdersApi = {
@@ -78,6 +89,16 @@ export const userOrdersApi = {
     if (token) headers.Authorization = `Bearer ${token}`;
 
     const response = await axios.get(`${API_URL}userOrders/orders/${id}`, { headers });
+    return response.data;
+  },
+  
+  getDatasetBuyers: async (datasetId: string, token?: string): Promise<DatasetBuyersResponse> => {
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+    if (token) headers.Authorization = `Bearer ${token}`;
+
+    const response = await axios.get(`${API_URL}userOrders/datasets/${datasetId}/buyers`, { headers });
     return response.data;
   },
 };

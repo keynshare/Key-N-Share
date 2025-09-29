@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Header from "@/components/SpecificDatasetPage/Header";
-import RequestSidebar from "./RequestSidebar";
+import BuyerSidebar from "./BuyerSidebar";
 import { Mails } from "lucide-react";
 import MetaDataSection from "./MetaDataSection";
 import { useParams } from "next/navigation";
@@ -107,7 +107,7 @@ export default function SpecificDatasetPage() {
         />
       </div>
 
-      <RequestSidebar ShowRequest={ShowRequest} />
+      <BuyerSidebar ShowRequest={ShowRequest} UploaderId={dataset.sellerAddress} datasetId={dataset._id} />
 
       <button
         onClick={() => setShowRequest(!ShowRequest)}

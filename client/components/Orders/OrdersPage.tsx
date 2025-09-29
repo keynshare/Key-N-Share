@@ -20,6 +20,7 @@ type UIOrder = {
   status: OrderStatus
   orderedAt: string
   txnSign?: string
+  sellerUserId?: string
 }
 
 function OrdersPage() {
@@ -50,6 +51,7 @@ function OrdersPage() {
           status: 'delivered',
           orderedAt: o.createdAt,
           txnSign: o.txnSign,
+          sellerUserId: o.dataset?.userId,
         }))
         setOrders(mapped)
       } catch (e: unknown) {
@@ -96,6 +98,7 @@ function OrdersPage() {
   }
 
   const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+
 
   return (
     <div className="min-h-screen ">
@@ -171,6 +174,7 @@ function OrdersPage() {
                   status={selectedOrder.status}
                   orderedAt={selectedOrder.orderedAt}
                   txHash={selectedOrder.txnSign}
+                  sellerUserId={selectedOrder.sellerUserId}
                   onDownload={() => {}}
                   onRaiseDispute={() => {}}
                 />
@@ -209,6 +213,7 @@ function OrdersPage() {
                     status={selectedOrder.status}
                     orderedAt={selectedOrder.orderedAt}
                     txHash={selectedOrder.txnSign}
+                    sellerUserId={selectedOrder.sellerUserId}
                     onDownload={() => {}}
                     onRaiseDispute={() => {}}
                   />

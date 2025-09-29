@@ -1,6 +1,8 @@
 
 const Order = require('../models/Order');
 const DatasetCatalogue = require('../models/DatasetCatalogue');
+const Rating = require('../models/Rating');
+const User = require('../models/User');
 
 // Projection for dataset fields returned to clients
 const DATASET_SELECT =
@@ -67,9 +69,31 @@ const listOrders = async (req, res) => {
       .lean();
     const datasetMap = new Map(datasets.map(d => [String(d._id), d]));
 
+    // Get rating summaries for datasets
+    const datasetRatingSummaries = await Promise.all(
+      datasetIds.map(async (datasetId) => {
+        const ratings = await Rating.find({ datasetId, ratingType: 'dataset' }).lean();
+        const totalRatings = ratings.length;
+        const averageRating = totalRatings > 0 
+          ? ratings.reduce((sum, r) => sum + r.rating, 0) / totalRatings 
+          : 0;
+        
+        return {
+          datasetId,
+          ratingSummary: {
+            averageRating: Math.round(averageRating * 10) / 10,
+            totalRatings
+          }
+        };
+      })
+    );
+
+    const ratingMap = new Map(datasetRatingSummaries.map(r => [r.datasetId, r.ratingSummary]));
+
     const enriched = orders.map(o => ({
       ...o,
-      dataset: datasetMap.get(String(o.datasetId)) || null
+      dataset: datasetMap.get(String(o.datasetId)) || null,
+      ratingSummary: ratingMap.get(String(o.datasetId)) || { averageRating: 0, totalRatings: 0 }
     }));
 
     return res.status(200).json({
@@ -96,10 +120,23 @@ const getOrderById = async (req, res) => {
       .select(DATASET_SELECT)
       .lean();
 
+    // Get rating summary for the dataset
+    const ratings = await Rating.find({ datasetId: order.datasetId, ratingType: 'dataset' }).lean();
+    const totalRatings = ratings.length;
+    const averageRating = totalRatings > 0 
+      ? ratings.reduce((sum, r) => sum + r.rating, 0) / totalRatings 
+      : 0;
+
+    const ratingSummary = {
+      averageRating: Math.round(averageRating * 10) / 10,
+      totalRatings
+    };
+
     return res.status(200).json({
       order: {
         ...order,
-        dataset
+        dataset,
+        ratingSummary
       }
     });
   } catch (err) {
@@ -111,5 +148,33 @@ const getOrderById = async (req, res) => {
 module.exports = {
   createOrder,
   listOrders,
-  getOrderById
+  getOrderById,
+  // New: list unique buyers (id and firstName) for a dataset
+  async listDatasetBuyers(req, res) {
+    try {
+      const { datasetId } = req.params;
+      if (!datasetId) {
+        return res.status(400).json({ error: 'datasetId is required' });
+      }
+
+      // Find unique buyerIds that purchased this dataset
+      const orders = await Order.find({ datasetId }).select('buyerId').lean();
+      const uniqueBuyerIds = [...new Set(orders.map(o => String(o.buyerId)))];
+
+      if (uniqueBuyerIds.length === 0) {
+        return res.status(200).json({ buyers: [] });
+      }
+
+      // Fetch minimal user info
+      const users = await User.find({ _id: { $in: uniqueBuyerIds } })
+        .select('firstName')
+        .lean();
+
+      const buyers = users.map(u => ({ id: String(u._id), name: u.firstName }));
+      return res.status(200).json({ buyers });
+    } catch (err) {
+      console.error('listDatasetBuyers error:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+  }
 };
