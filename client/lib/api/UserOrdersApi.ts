@@ -23,6 +23,11 @@ export interface DatasetSummary {
   extension?: string;
 }
 
+export interface RatingSummary {
+  averageRating: number;
+  totalRatings: number;
+}
+
 export interface UserOrder {
   _id: string;
   buyerId: string;
@@ -32,6 +37,7 @@ export interface UserOrder {
   createdAt: string;
   updatedAt: string;
   dataset: DatasetSummary;
+  ratingSummary: RatingSummary;
 }
 
 export interface CreateOrderResponse {
