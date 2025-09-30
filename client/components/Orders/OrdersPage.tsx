@@ -21,6 +21,7 @@ type UIOrder = {
   orderedAt: string
   txnSign?: string
   sellerUserId?: string
+  orderId?: string | number | null | undefined;
 }
 
 function OrdersPage() {
@@ -52,9 +53,12 @@ function OrdersPage() {
           orderedAt: o.createdAt,
           txnSign: o.txnSign,
           sellerUserId: o.dataset?.userId,
+          orderId: o._id
         }))
+        
         setOrders(mapped)
       } catch (e: unknown) {
+        console.log('orders error', e)
         setError('Failed to load orders')
       } finally {
         setIsLoading(false)
@@ -165,6 +169,7 @@ function OrdersPage() {
               <div className="bg-white dark:bg-[#131313] rounded-xl border h-fit max-w-full border-gray-200 dark:border-gray-700 shadow-sm p-6">
                 <OrderDetailCard
                   id={selectedOrder.id}
+                  orderId={selectedOrder.orderId}
                   Title={selectedOrder.Title}
                   Description={selectedOrder.Description}
                   Price={selectedOrder.Price}
@@ -205,6 +210,7 @@ function OrdersPage() {
                   <OrderDetailCard
                     id={selectedOrder.id}
                     Title={selectedOrder.Title}
+                    orderId={selectedOrder.orderId}
                     Description={selectedOrder.Description}
                     Price={selectedOrder.Price}
                     Type={selectedOrder.Type}

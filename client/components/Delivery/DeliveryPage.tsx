@@ -6,9 +6,10 @@ import { deliverDecryptAndDownload, checkDeliveryExists, checkAndDownloadExistin
 import type { CheckDeliveryExistsResponse } from "@/lib/api/DeliveryApi";
 import { useAuth } from "@/lib/Authentication/AuthContext";
 import { datasetApi } from "@/lib/api/DatasetApi";
-
-export default function DeliveryPage({ Id }: { Id?: string | number | undefined | null}) {
+import { useNotifications } from "@/lib/notification-context";
+export default function DeliveryPage({ Id, orderId }: { Id?: string | number | undefined | null , orderId?: string | number | undefined | null}) {
     const { token } = useAuth();
+    const {reportError,notify} = useNotifications();
     const [values, setValues] = useState<DeliveryFormValues>({
         datasetId: Id ? Id.toString() : "",
         buyerAddress: "",
@@ -107,7 +108,7 @@ export default function DeliveryPage({ Id }: { Id?: string | number | undefined 
 
         try {
             // First check if delivery already exists
-            if (deliveryExists && existingDeliveryData && values.privateKeyPem) {
+            if (deliveryExists && existingDeliveryData ) {
                 setMessage("Found existing delivery, downloading directly...");
                 await checkAndDownloadExistingDelivery({
                     datasetId: values.datasetId,
@@ -129,11 +130,13 @@ export default function DeliveryPage({ Id }: { Id?: string | number | undefined 
                     privateKeyPem: values.privateKeyPem,
                     token: token || undefined,
                     preserveOriginalFormat: true,
+                    orderId: orderId,
                 });
                 setMessage("Download started from new delivery.");
             }
         } catch (e: unknown) {
             console.error(e);
+            
             const message = e instanceof Error ? e.message : "Delivery or decryption failed.";
             setMessage(message);
         } finally {
