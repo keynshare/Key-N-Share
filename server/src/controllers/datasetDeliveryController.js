@@ -5,14 +5,23 @@ const { fetchDataFromIPFS, uploadToIPFS } = require('../utils/IPFSData');
 const { insertInvisibleWatermark } = require('../utils/watermarkingUtil');
 const { generateSymmetricKey, symmetricEncrypt, asymmetricEncryptSymKey } = require('../utils/encryptionUtil');
 const { decryptObject } = require('../utils/crypto');
-const { decryptDatasetBuffer } = require('../utils/decryptDatasetBuffer'); 
+const { decryptDatasetBuffer } = require('../utils/decryptDatasetBuffer');
+const Order = require('../models/Order');
 
 async function deliverDatasetToBuyer(req, res) {
-  try { 
-    const { datasetId, buyerAddress, buyerId, buyerPublicKey } = req.body;
-    if (!datasetId || !buyerAddress || !buyerPublicKey) {
+  try {
+    const { datasetId, buyerAddress, buyerId, buyerPublicKey, orderId } = req.body;
+    if (!datasetId || !buyerAddress || !buyerPublicKey || !orderId || !buyerId) {
       return res.status(400).json({ message: 'Missing required fields.' });
     }
+    //Checking if Order is valid
+    console.log("buyerId:", buyerId, "orderId:", orderId);
+    const order = await Order.findOne({ _id: orderId, buyerId }).lean();
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found.' });
+    }
+
+
 
     // 1. Get Dataset record with CID
     const dataset = await DatasetCatalogue.findById(datasetId).lean();
