@@ -284,13 +284,13 @@ const { isAuthenticated, logout } = useAuth();
       >
         Generate Key
       </Link>
-      <Link
+      {/* <Link
         href="/decrypt-dataset"
         className="block px-4 py-2 text-sm hover:text-white hover:bg-[#242424] transition-colors"
         onClick={() => setProfileMenu(false)}
       >
         Decrypt Dataset
-      </Link>
+      </Link> */}
       <Link
         href="/kns-ledger"
         className="block px-4 py-2 text-sm hover:text-white hover:bg-[#242424] transition-colors"
@@ -298,13 +298,13 @@ const { isAuthenticated, logout } = useAuth();
       >
         Ledger
       </Link>
-      <Link
+      {/* <Link
         href="/decrypt-dataset"
         className="block px-4 py-2 text-sm hover:text-white hover:bg-[#242424] transition-colors"
         onClick={() => setProfileMenu(false)}
       >
         Decrypt Dataset
-      </Link>
+      </Link> */}
       <button
         onClick={() => {
           logout();
@@ -438,6 +438,13 @@ const { isAuthenticated, logout } = useAuth();
       >
         Profile
       </Link>
+       <Link
+        href="/kns-ledger"
+        className="block px-4 py-2 text-sm hover:text-white hover:bg-[#242424] transition-colors"
+        onClick={() => setProfileMenu(false)}
+      >
+        Ledger
+      </Link>
       <Link
         href="/generate-key"
         className="block px-4 py-2 text-sm hover:text-white hover:bg-[#242424] transition-colors"
@@ -445,13 +452,13 @@ const { isAuthenticated, logout } = useAuth();
       >
         Generate Key
       </Link>
-      <Link
+      {/* <Link
         href="/decrypt-dataset"
         className="block px-4 py-2 text-sm hover:text-white hover:bg-[#242424] transition-colors"
         onClick={() => setProfileMenu(false)}
       >
         Decrypt Dataset
-      </Link>
+      </Link> */}
       <button
         onClick={() => {
           logout();

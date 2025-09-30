@@ -77,9 +77,11 @@ export default function DeliveryForm({ values, onChange, onSubmit, busy, dataset
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 				<div>
 					<label className="block text-sm font-medium mb-1">Dataset ID</label>
-					<input className="w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2" value={values.datasetId} onChange={set("datasetId")} placeholder="68c9a8..." />
-					{values.buyerAddress === address && (
+					<input className="w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2" value={values.datasetId} onChange={set("datasetId")} disabled placeholder="68c9a8..." />
+					{values.buyerAddress === address && values.datasetId ? (
 						<p className="text-xs text-green-600 dark:text-green-400 mt-1">✓ Auto-filled from orders</p>
+					) : !values.datasetId && (
+						<p className="text-xs text-red-600 dark:text-red-400 mt-1">✗ Not auto-filled please come through orders</p>
 					)}
 				</div>
 				<div>

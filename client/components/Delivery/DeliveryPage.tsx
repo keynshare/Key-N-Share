@@ -7,6 +7,7 @@ import type { CheckDeliveryExistsResponse } from "@/lib/api/DeliveryApi";
 import { useAuth } from "@/lib/Authentication/AuthContext";
 import { datasetApi } from "@/lib/api/DatasetApi";
 import { useNotifications } from "@/lib/notification-context";
+import { AxiosError } from "axios";
 export default function DeliveryPage({ Id, orderId }: { Id?: string | number | undefined | null , orderId?: string | number | undefined | null}) {
     const { token } = useAuth();
     const {reportError,notify} = useNotifications();
@@ -130,14 +131,14 @@ export default function DeliveryPage({ Id, orderId }: { Id?: string | number | u
                     privateKeyPem: values.privateKeyPem,
                     token: token || undefined,
                     preserveOriginalFormat: true,
-                    orderId: orderId,
+                    orderId: orderId || 'none',
                 });
                 setMessage("Download started from new delivery.");
             }
         } catch (e: unknown) {
             console.error(e);
-            
-            const message = e instanceof Error ? e.message : "Delivery or decryption failed.";
+
+            const message = e instanceof AxiosError? e.response?.data.message : "Delivery or decryption failed.";
             setMessage(message);
         } finally {
             setBusy(false);
