@@ -15,6 +15,7 @@ type OrderStatus = "processing" | "delivered" | "disputed";
 export interface OrderDetailProps {
   id: number | string;
   Title?: string;
+  orderId?: string | number | null | undefined;
   Description?: string;
   Price?: number | string;
   Type?: string;
@@ -32,6 +33,7 @@ function OrderDetailCard({
   id,
   Title,
   Description,
+  orderId,
   Price,
   Type,
   Image,
@@ -407,7 +409,7 @@ const effective = sellerHovered || sellerRating || (sellerHasRated ? sellerAvera
           <div className="mt-6 flex flex-col sm:flex-row gap-3">
             <SecondaryBtn
               className="bg-gray-900 dark:bg-white text-white dark:text-black hover:opacity-90"
-              Href={`/decrypt-dataset/${id}`}
+              Href={`/decrypt-dataset/${id}/${orderId}`}
             >
               <Download className="w-4 h-4" /> Download Dataset
             </SecondaryBtn>

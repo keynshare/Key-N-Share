@@ -55,6 +55,7 @@ export interface DeliverAndDownloadParams extends DeliverDatasetRequest {
 	filename?: string;
 	token?: string;
 	preserveOriginalFormat?: boolean; // if true, use original filename and MIME type
+	orderId?: string | number | null | undefined; 
 }
 
 export async function deliverDecryptAndDownload(params: DeliverAndDownloadParams): Promise<void> {
