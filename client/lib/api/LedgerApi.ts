@@ -6,13 +6,13 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/";
 
 export interface LedgerEntry {
   buyerAddress: string;
-  sellerAddress: string;
-  dataset: {
-    id: string;
-    name: string;
-    cost: number;
-    cid: string;
-    hash: string;
+  sellerAddress?: string;
+  dataset?: {
+    id?: string;
+    name?: string;
+    cost?: number;
+    cid?: string;
+    hash?: string;
   };
   txnSign: string;
   createdAt: string;

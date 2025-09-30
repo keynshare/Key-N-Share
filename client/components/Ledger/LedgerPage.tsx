@@ -169,8 +169,8 @@ export default function LedgerPage() {
                         <DollarSign className="w-5 h-5 text-white" />
                       </div>
                       <div>
-                        <h3 title={entry.dataset.name} className="text-lg line-clamp-1 max-w-[200px] truncate md:max-w-[498px] lg:max-w-[800px]   font-semibold text-gray-900 dark:text-white">
-                          {entry.dataset.name}
+                        <h3 title={entry?.dataset?.name || 'none'} className="text-lg line-clamp-1 max-w-[200px] truncate md:max-w-[498px] lg:max-w-[800px]   font-semibold text-gray-900 dark:text-white">
+                          {entry?.dataset?.name || 'none'}
                         </h3>
                         <p className="text-sm text-gray-500 dark:text-gray-400">
                           {formatDate(entry.createdAt)}
@@ -179,7 +179,7 @@ export default function LedgerPage() {
                     </div>
                     <div className="text-right">
                       <p className="text-2xl font-bold text-orange-500">
-                        {entry.dataset.cost} SOL
+                        {entry?.dataset?.cost} SOL
                       </p>
                     </div>
                   </div>
@@ -212,11 +212,11 @@ export default function LedgerPage() {
                         Seller Address
                       </label>
                       <div className="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                        <code title={entry.sellerAddress} className="text-sm font-mono text-gray-900 dark:text-white flex-1">
-                          {formatAddress(entry.sellerAddress)}
+                        <code title={entry?.sellerAddress || 'none'} className="text-sm font-mono text-gray-900 dark:text-white flex-1">
+                          {formatAddress(entry?.sellerAddress || 'none')}
                         </code>
                         <button
-                          onClick={() => copyToClipboard(entry.sellerAddress, 'Seller address')}
+                          onClick={() => copyToClipboard(entry?.sellerAddress || 'none', 'Seller address')}
                           className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded transition-colors"
                         >
                           <Copy className="w-4 h-4 text-gray-500" />
@@ -259,7 +259,7 @@ export default function LedgerPage() {
                           Dataset ID
                         </label>
                         <p className="text-sm font-mono text-gray-900 dark:text-white mt-1">
-                          {entry.dataset.id}
+                          {entry?.dataset?.id && entry?.dataset?.id}
                         </p>
                       </div>
                       <div>
@@ -267,7 +267,7 @@ export default function LedgerPage() {
                           IPFS CID
                         </label>
                         <p className="text-sm font-mono text-gray-900 dark:text-white mt-1">
-                          {entry.dataset.cid.slice(0, 20)}...
+                          {entry?.dataset?.cid && entry?.dataset?.cid.slice(0, 20)}...
                         </p>
                       </div>
                     </div>
