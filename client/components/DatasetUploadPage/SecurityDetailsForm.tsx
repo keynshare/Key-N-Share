@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PrimaryBtn from "@/components/SharedComponents/Btns/PrimaryBtn";
 import { Copy, Download, Check } from "lucide-react";
 import SecondaryBtn from "../SharedComponents/Btns/SecondaryBtn";
-import { DatasetFormData } from "./UploadDataset";
+import { DatasetFormData } from "../../public/UploadDataset";
 import { useNotifications } from "@/lib/notification-context";
 
 interface SecurityDetailsFormProps {

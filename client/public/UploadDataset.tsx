@@ -1,15 +1,15 @@
 "use client"
 import React, { useState } from "react";
 import { AxiosError } from "axios";
-import FileUpload from "./FileUpload";
-import DatasetDetailsForm from "./DatasetDetailsForm";
-import SecurityDetailsForm from "./SecurityDetailsForm";
+import FileUpload from "../components/DatasetUploadPage/FileUpload";
+import DatasetDetailsForm from "../components/DatasetUploadPage/DatasetDetailsForm";
+import SecurityDetailsForm from "../components/DatasetUploadPage/SecurityDetailsForm";
 import { useAuth } from "@/lib/Authentication/AuthContext";
 import { useNotifications } from "@/lib/notification-context";
 import {useWalletConnection} from "@/lib/Authentication/walletConnection";
 import { useProcessDialog } from "@/lib/process-dialog-context";
-import Breadcrumb from "../SharedComponents/Breadcrumb/Breadcrumb";
-import Audp from '/ErrorSound.mp3'
+import Breadcrumb from "../components/SharedComponents/Breadcrumb/Breadcrumb";
+
 
 export interface DatasetFormData {
   title: string;
@@ -28,10 +28,10 @@ export interface DatasetFormData {
 }
 
 
-const playSound = () => {
-    const audio = new Audio(Audp);
-    audio.play();
-  };
+// const playSound = () => {
+//     const audio = new Audio('/ErrorSound.mp3');
+//     audio.play();
+//   };
 
 //File size formatter
 const formatFileSize = (bytes: number): string => {
@@ -127,7 +127,7 @@ if (!formData.encryptionKey) {
       const watermarkRegex = /\n--watermark:(.*?)--\n/;
       const match = fileText.match(watermarkRegex);
       if (match && match[1]) {
-        playSound();
+        // playSound();
         notify({ type: "error", message: "Policy Violation:  Protected Asset Detected" });
         return;
       }

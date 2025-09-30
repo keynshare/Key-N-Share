@@ -1,4 +1,4 @@
-import UploadDataset from '@/components/DatasetUploadPage/UploadDataset'
+import UploadDataset from '@/public/UploadDataset'
 import PrivateRoute from '@/lib/Authentication/PrivateRoute'
 function page() {
   return (
