@@ -1,5 +1,5 @@
 import { Upload } from "lucide-react";
-import { DatasetFormData } from "../../public/UploadDataset";
+import { DatasetFormData } from  "@/components/DatasetUploadPage/UploadDataset";
 
 interface CoverUploadProps {
   formData: DatasetFormData;

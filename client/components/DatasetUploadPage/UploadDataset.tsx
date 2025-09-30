@@ -9,7 +9,7 @@ import { useNotifications } from "@/lib/notification-context";
 import {useWalletConnection} from "@/lib/Authentication/walletConnection";
 import { useProcessDialog } from "@/lib/process-dialog-context";
 import Breadcrumb from "../SharedComponents/Breadcrumb/Breadcrumb";
-import Audp from '/ErrorSound.mp3'
+
 
 export interface DatasetFormData {
   title: string;
@@ -28,10 +28,10 @@ export interface DatasetFormData {
 }
 
 
-const playSound = () => {
-    const audio = new Audio(Audp);
-    audio.play();
-  };
+// const playSound = () => {
+//     const audio = new Audio('/ErrorSound.mp3');
+//     audio.play();
+//   };
 
 //File size formatter
 const formatFileSize = (bytes: number): string => {
@@ -127,7 +127,7 @@ if (!formData.encryptionKey) {
       const watermarkRegex = /\n--watermark:(.*?)--\n/;
       const match = fileText.match(watermarkRegex);
       if (match && match[1]) {
-        playSound();
+        // playSound();
         notify({ type: "error", message: "Policy Violation:  Protected Asset Detected" });
         return;
       }
@@ -142,8 +142,9 @@ if (!formData.encryptionKey) {
         steps: [
           "Encrypting file",
           "Generating hash",
-          "Adding to catalogue",
           "Uploading to IPFS",
+          "Adding to catalogue",
+          
         ],
       });
       // Import APIs
@@ -176,9 +177,16 @@ if (!formData.encryptionKey) {
 
       const FileType = formData.file.name.split('.').pop()?.toUpperCase() || 'UNKNOWN'
       
-     
-      // Add dataset to catalogue
+      // Upload file to IPFS
       setActiveStep(2);
+      const uploadResponse = await datasetApi.uploadFile(encryptedFile, token);
+      updateStep(2, { status: "done" });
+
+      if (!uploadResponse.success) {
+        throw new Error(uploadResponse.message);
+      }
+      // Add dataset to catalogue
+      setActiveStep(3);
       const catalogueData = {
          userId, 
         sellerAddress: address,
@@ -203,16 +211,9 @@ if (!formData.encryptionKey) {
       } catch (e) {
         console.error("Failed to store encryption key secret", e);
       }
-      updateStep(2, { status: "done" });
-
-       // Upload file to IPFS
-      setActiveStep(3);
-      const uploadResponse = await datasetApi.uploadFile(encryptedFile, token);
       updateStep(3, { status: "done" });
 
-      if (!uploadResponse.success) {
-        throw new Error(uploadResponse.message);
-      }
+      
       
       notify({ type: "success", message: "Dataset uploaded successfully!" });
       closeProcess();

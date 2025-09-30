@@ -2,7 +2,7 @@
 import PrimaryBtn from "@/components/SharedComponents/Btns/PrimaryBtn";
 import { FolderUp, X, DollarSign, TrendingUp } from "lucide-react";
 import SecondaryBtn from "../SharedComponents/Btns/SecondaryBtn";
-import { DatasetFormData } from "../../public/UploadDataset";
+import { DatasetFormData } from "@/components/DatasetUploadPage/UploadDataset";
 import { useState, useEffect } from "react";
 
 interface DatasetDetailsFormProps {
