@@ -1,5 +1,5 @@
 import { Upload } from "lucide-react";
-import { DatasetFormData } from "./UploadDataset";
+import { DatasetFormData } from "../../public/UploadDataset";
 
 interface CoverUploadProps {
   formData: DatasetFormData;
@@ -38,12 +38,12 @@ function FileUpload({ formData, onFormDataChange }: CoverUploadProps) {
         type="file"
         className="hidden"
         onChange={handleFileSelect}
-        accept=".csv,.json,.xlsx,.txt,.zip"
+        accept=".csv,.json,.xlsx,.txt,.pdf"
       />
       
       <Upload size={40}/>
       <p className="text-gray-600 text-lg">Drop dataset file here <br /> or <span className="text-blue-600 underline">browse</span></p>
-      <p className="text-xs text-gray-500">Supports: CSV, JSON, XLSX, TXT, ZIP</p>
+      <p className="text-xs text-gray-500">Supports: CSV, JSON, XLSX, TXT, PDF</p>
             {formData.file && (
         <p className="text-sm text-green-600 mt-2">
           Selected: {formData.file.name} ({(formData.file.size / 1024 / 1024).toFixed(2)} MB)
