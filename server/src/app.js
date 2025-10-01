@@ -48,25 +48,26 @@ app.get('/', (_req, res) => {
 });
 
 app.use('/api', ledgerRoutes);
-
+app.use('/api/nexus',nexusRoutes);
 app.use('/api/auth', authRoutes);
+// Public access for main catalogue GET endpoint
+app.get('/api/dataset-catalogue', getDatasets);
+
+app.use('/api/userOrders', authenticate,orderRoutes);
 app.use('/api/datasets', authenticate, datasetRoutes);
 app.use('/api/profile', authenticate, profileRoutes);
 app.use('/api/user', authenticate, userRoutes);
-app.use('/api/userOrders', orderRoutes);
 app.use('/api', authenticate, ratingRoutes);
 
-app.use('/api/nexus',nexusRoutes);
 
 // Authenticated routes for other catalogue operations
 app.use('/api/dataset-catalogue', authenticate, catalogueRoutes);
-// Public access for main catalogue GET endpoint
-app.get('/api/dataset-catalogue', getDatasets);
 app.use('/api/cart', authenticate, cartRoutes);
 app.use('/api/favorites', authenticate, favoritesRoutes);
 app.use('/api/secrets', authenticate, secretsRoutes);
-
 app.use('/api/delivery', authenticate, deliverDatasetRoutes);//Testing
+
+
 
 
 
