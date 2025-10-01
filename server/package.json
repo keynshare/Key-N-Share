@@ -13,7 +13,7 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-
+    "@google/genai": "^1.21.0",
     "@google/generative-ai": "^0.24.1",
     "@pinata/sdk": "^2.1.0",
     "@solana/web3.js": "^1.98.4",
