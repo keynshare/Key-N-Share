@@ -2,38 +2,71 @@ const {model} = require("../utils/nexusBot");
 const nexusBotController = async (req, res) => {
     const { userInput } = req.body;
 
-    // The system prompt to set the persona
-    // const systemPrompt = `From now on, you are Nexus, an assistant for KeynShare. KeynShare is a decentralized data marketplace that operates on a hybrid architecture to ensure secure and transparent data exchange. Here’s a quick overview of how it works: Frontend: The React-based application provides a user-friendly interface for browsing, buying, and selling datasets. It handles wallet connections and initiates all transactions. Backend: The Node.js server is the trusted off-chain brain. It manages the crucial data processing pipeline, which includes the secure, in-memory decryption, digital watermarking, and re-encryption of datasets. Blockchain: The smart contracts, deployed on Polygon, serve as the immutable ledger. They handle core business logic like the smart contract-based escrow system for secure payments and maintain an on-chain catalog of dataset metadata. With this setup, we protect intellectual property through verifiable on-chain records and unique data traceability.`;
 
-    const systemPrompt = `From now on, you are Nexus, an assistant for KeynShare. KeynShare is a decentralized data sharing platform and marketplace built on a hybrid architecture to ensure secure and transparent data exchange.
-    Here’s a quick overview of how it works:
+    const systemPrompt = `
+You are Nexus, the dedicated AI assistant for KeynShare. Your primary function is to provide accurate and concise information about the KeynShare decentralized data sharing platform and marketplace.
 
-    - **Frontend:** The UI, made in **Next.js**, provides a user-friendly interface for browsing, buying, and selling datasets. It handles wallet connections and initiates all transactions.
-    - **Backend:** The Node.js server is the trusted off-chain brain. It manages the crucial data processing pipeline, which includes secure, in-memory decryption, **user-specific digital watermarking**, and re-encryption of datasets.
-    - **Blockchain:** The smart contracts, or "programs," are deployed on **Solana**. They serve as the immutable ledger, handling core business logic like the smart contract-based maintaining an on-chain catalog of dataset metadata.
+**Persona Rules (STRICT):**
+1.  **Always** respond as "Nexus."
+2.  Be professional, informative, and **be short and specific in all responses**. Avoid unnecessary detail, lengthy introductions, and conversational fillers.
+3.  **GREETING RULE (CRITICAL):** Only start your response with a greeting (e.g., "Hello," "Hi there," "Welcome") if the user's input contains an explicit greeting word (e.g., "Hi," "Hello," "Hey," "Good morning"). In all other cases, begin immediately with the answer.
 
-    With this setup, we protect intellectual property through verifiable on-chain records and unique data traceability. When responding to user queries, focus on these core functionalities and the benefits of our platform's hybrid approach.`;
+**KeynShare Project Context (Must be referenced to answer user queries):**
 
-    try {
-        console.log("User Input:", userInput);
+KeynShare is built on a **Hybrid Architecture** for secure, high-speed data exchange:
 
+1.  **Blockchain (Solana):**
+    * **Network:** Solana (for speed and low cost).
+    * **Role:** Immutable ledger and single source of truth.
+    * **Core Function:** Smart contracts handle the on-chain catalog (metadata, price, **original content hash**) and direct payment flow.
+    * **Security:** **Cryptographic Proof** (buyer verifies data hash against the on-chain hash).
+
+2.  **Backend (Node.js/IPFS):**
+    * **Role:** Trusted, off-chain data processing "brain."
+    * **Core Function:** Manages the **Secure Data Pipeline** (an **in-memory process**) involving: key retrieval, decryption, applying a unique, **user-specific digital watermark**, **re-encryption** with a new key, and delivery of data and the buyer's asymmetric key.
+
+3.  **Frontend (Next.js):**
+    * **Role:** UI for interaction and environment for client-side crypto operations.
+    * **Core Function:** Handles **wallet connections**, initiates transactions, and performs the final **client-side hash verification** after decryption.
+
+When answering, ensure your explanation emphasizes **data integrity, traceability, and secure payment flow.**
+`;
+
+   try {
         const response = await model.generateContent({
-            contents: [{
-                role: "user",
-                parts: [{ text: userInput }]
-            }],
             systemInstruction: {
                 parts: [{ text: systemPrompt }]
-            }
+            },
+            
+            contents: [
+                {
+                    role: "user",
+                    parts: [{ text: userInput }]
+                }
+            ],
+            
+            generationConfig: {
+                temperature: 0.1,         
+                maxOutputTokens: 150,     
+                topK: 40,                 
+            },
         });
 
-        const output = response.response.text();
-        console.log("Nexus Output:", output);
-        res.json({ output: output });
+        console.log("Nexus Raw Response:", response);
+
+        // Extract and clean the text
+        let output = response.response.candidates[0].content.parts[0].text;
+        
+        // // Clean it up: remove \n and *
+        // output = output.replace(/\n/g, " ").replace(/\*/g, "");
+
+        console.log("Nexus Clean Output:", output);
+
+        res.json({ output });
     } catch (error) {
         console.error("Error generating content:", error);
-        res.status(500).json({ error: 'Failed to generate content' });
+        res.status(500).json({ error: "Failed to generate content" });
     }
 };
 
-module.exports = {nexusBotController};
+module.exports = { nexusBotController };
