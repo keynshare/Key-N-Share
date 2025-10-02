@@ -2,6 +2,10 @@
 
 We welcome contributions from the community! This document provides guidelines and instructions for contributing to the KeyNShare project.
 
+## Code of Conduct
+
+We expect all contributors to adhere to our [Code of Conduct](./CODE_OF_CONDUCT.md). Please read it before participating in the project.
+
 ## How to Contribute
 
 ### 1. Fork and Clone

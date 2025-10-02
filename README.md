@@ -90,6 +90,10 @@ npm run deploy:local
 
 We welcome contributions from the community! Please see our [Contributing Guidelines](./CONTRIBUTING.md) for details on how to get started, coding standards, and the pull request process.
 
+## 📜 Code of Conduct
+
+We are committed to fostering an inclusive and welcoming community. Please read our [Code of Conduct](./CODE_OF_CONDUCT.md) to understand the expectations for all participants.
+
 ## 📝 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
