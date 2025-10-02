@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Key-N-Share | Project Showcase</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #f0f0f0;
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #4f46e5, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .bar-label {
+            fill: white;
+            font-weight: bold;
+            text-anchor: middle;
+        }
+        .comparison-card {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        .comparison-card:hover {
+            transform: translateY(-5px);
+            background-color: rgba(255, 255, 255, 0.05);
+            border-color: #4f46e5;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header & Hero Section -->
+    <header class="relative text-white text-center py-24 px-4 overflow-hidden">
+        <div class="absolute inset-0 bg-gray-900/50 backdrop-blur-sm"></div>
+        <div class="absolute inset-0 z-0 opacity-10">
+            <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="a" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M16 4.5l-11.5 23h23L16 4.5zm0 2.5L25.5 26h-19L16 7z" fill="#fff" fill-opacity=".2"/></pattern></defs><rect width="100%" height="100%" fill="url(#a)"/></svg>
+        </div>
+        <div class="relative z-10 max-w-4xl mx-auto">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight">
+                <span class="gradient-text">Key-N-Share</span>
+            </h1>
+            <h2 class="text-2xl md:text-4xl font-bold mb-4">The Future of Secure Data Exchange</h2>
+            <p class="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-8">
+                A hybrid decentralized data marketplace using blockchain to guarantee data integrity, traceability, and ownership.
+            </p>
+            <a href="#comparison" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition-transform duration-300 inline-block transform hover:scale-105">
+                View Analysis
+            </a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-16 space-y-24">
+
+        <!-- Problem & Solution Section -->
+        <section id="problem-solution">
+            <div class="text-center max-w-3xl mx-auto">
+                 <h2 class="text-3xl md:text-4xl font-bold mb-4">The Challenge with Centralized Data Markets</h2>
+                 <p class="text-gray-400 text-lg">
+                    Existing platforms suffer from high fees, single points of failure, and a critical lack of post-sale IP protection. This creates risk for sellers and uncertainty for buyers, hindering the growth of a true data economy.
+                 </p>
+            </div>
+            <div class="mt-12 grid md:grid-cols-2 gap-8 items-center bg-gray-900/50 p-8 rounded-2xl border border-gray-800">
+                <div class="text-center md:text-left">
+                    <h3 class="text-2xl font-bold gradient-text mb-3">Our Solution: A Trustless Model</h3>
+                    <p class="text-gray-300">
+                        Key-N-Share introduces a trustless transaction model via a secure, in-memory data pipeline. It combines Solana's low-cost speed with a private backend to deliver uniquely watermarked and cryptographically verified datasets directly to the buyer, ensuring authenticity and preventing piracy.
+                    </p>
+                </div>
+                <div class="flex justify-center">
+                    <div class="grid grid-cols-2 gap-4 text-center">
+                        <div class="bg-gray-800 p-4 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto mb-2 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                            <p class="font-semibold">IP Protection</p>
+                        </div>
+                        <div class="bg-gray-800 p-4 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto mb-2 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                            <p class="font-semibold">Data Security</p>
+                        </div>
+                        <div class="bg-gray-800 p-4 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto mb-2 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                            <p class="font-semibold">High Speed</p>
+                        </div>
+                        <div class="bg-gray-800 p-4 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto mb-2 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                             <p class="font-semibold">Low Fees</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Platform Spectrum Analysis -->
+        <section id="spectrum-analysis">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold">Platform Spectrum Analysis</h2>
+                <p class="text-gray-400 mt-2">Where Key-N-Share fits in the data exchange ecosystem.</p>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-gray-900/50 border border-gray-800 rounded-lg shadow-lg">
+                    <thead class="bg-gray-800/80">
+                        <tr>
+                            <th class="py-4 px-6 text-left text-sm font-semibold uppercase tracking-wider">Feature</th>
+                            <th class="py-4 px-6 text-center text-sm font-semibold uppercase tracking-wider">Cloud Storage<br><span class="font-normal text-xs text-gray-400">(e.g., Google Drive)</span></th>
+                            <th class="py-4 px-6 text-center text-sm font-semibold uppercase tracking-wider">Centralized Markets<br><span class="font-normal text-xs text-gray-400">(e.g., Kaggle)</span></th>
+                            <th class="py-4 px-6 text-center text-sm font-semibold uppercase tracking-wider text-indigo-400">Key-N-Share<br><span class="font-normal text-xs text-indigo-400">(Decentralized)</span></th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-800">
+                        <tr class="hover:bg-gray-800/50 transition-colors">
+                            <td class="py-4 px-6 font-semibold">Monetization</td>
+                            <td class="text-center text-2xl">➖</td>
+                            <td class="text-center text-2xl">✅</td>
+                            <td class="text-center text-2xl font-bold text-green-400">✅</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800/50 transition-colors">
+                            <td class="py-4 px-6 font-semibold">Verifiable IP Protection</td>
+                            <td class="text-center text-2xl">❌</td>
+                            <td class="text-center text-2xl">❌</td>
+                            <td class="text-center text-2xl font-bold text-green-400">✅</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800/50 transition-colors">
+                            <td class="py-4 px-6 font-semibold">Decentralization</td>
+                           <td class="text-center text-2xl">❌</td>
+                           <td class="text-center text-2xl">❌</td>
+                           <td class="text-center text-2xl font-bold text-green-400">✅</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800/50 transition-colors">
+                            <td class="py-4 px-6 font-semibold">Cryptographic Verifiability</td>
+                           <td class="text-center text-2xl">❌</td>
+                           <td class="text-center text-2xl">➖</td>
+                           <td class="text-center text-2xl font-bold text-green-400">✅</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800/50 transition-colors">
+                            <td class="py-4 px-6 font-semibold">Censorship Resistance</td>
+                           <td class="text-center text-2xl">❌</td>
+                           <td class="text-center text-2xl">➖</td>
+                           <td class="text-center text-2xl font-bold text-green-400">✅</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+
+        <!-- Competitive Advantage Section -->
+        <section id="comparison">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold">A New Paradigm for Data Exchange</h2>
+                <p class="text-gray-400 mt-2">Key-N-Share vs. Traditional Data Platforms.</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- IP Protection -->
+                <div class="comparison-card">
+                    <h3 class="text-xl font-bold mb-4">IP Protection & Provenance</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex items-center"><span class="text-red-500 mr-2">&#10007;</span><h4 class="font-semibold">Traditional Platforms</h4></div>
+                            <p class="text-sm text-gray-400 pl-6">Relies on legal agreements. No technical enforcement against redistribution. Data provenance is trust-based.</p>
+                        </div>
+                        <div>
+                            <div class="flex items-center"><span class="text-green-500 mr-2">&#10003;</span><h4 class="font-semibold gradient-text">Key-N-Share</h4></div>
+                            <p class="text-sm text-gray-300 pl-6"><strong>Strong:</strong> Unique digital watermarking cryptographically links data to the buyer. Blockchain provides an immutable, auditable history of ownership.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Data Authenticity -->
+                <div class="comparison-card">
+                    <h3 class="text-xl font-bold mb-4">Data Authenticity</h3>
+                     <div class="space-y-4">
+                        <div>
+                            <div class="flex items-center"><span class="text-red-500 mr-2">&#10007;</span><h4 class="font-semibold">Traditional Platforms</h4></div>
+                            <p class="text-sm text-gray-400 pl-6">Trust-based model. Buyers have no way to verify if the received data is the original, untampered version.</p>
+                        </div>
+                        <div>
+                            <div class="flex items-center"><span class="text-green-500 mr-2">&#10003;</span><h4 class="font-semibold gradient-text">Key-N-Share</h4></div>
+                            <p class="text-sm text-gray-300 pl-6"><strong>Cryptographically Guaranteed:</strong> On-chain hash verification allows anyone to confirm data integrity against an immutable public record.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Security Model -->
+                <div class="comparison-card">
+                    <h3 class="text-xl font-bold mb-4">Security & Platform Risk</h3>
+                     <div class="space-y-4">
+                        <div>
+                            <div class="flex items-center"><span class="text-red-500 mr-2">&#10007;</span><h4 class="font-semibold">Traditional Platforms</h4></div>
+                            <p class="text-sm text-gray-400 pl-6">Centralized servers are a single point of failure. If the platform shuts down, listings and data may be lost.</p>
+                        </div>
+                        <div>
+                            <div class="flex items-center"><span class="text-green-500 mr-2">&#10003;</span><h4 class="font-semibold gradient-text">Key-N-Share</h4></div>
+                            <p class="text-sm text-gray-300 pl-6"><strong>Decentralized & Resilient:</strong> Encrypted data on IPFS and listings on Solana exist independently of any single server, eliminating platform risk.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Fees & Payment -->
+                <div class="comparison-card">
+                    <h3 class="text-xl font-bold mb-4">Fees & Payment Rails</h3>
+                     <div class="space-y-4">
+                        <div>
+                            <div class="flex items-center"><span class="text-red-500 mr-2">&#10007;</span><h4 class="font-semibold">Traditional Platforms</h4></div>
+                            <p class="text-sm text-gray-400 pl-6">High fees (15-30%) via traditional payment gateways like Stripe, which have regional restrictions.</p>
+                        </div>
+                        <div>
+                            <div class="flex items-center"><span class="text-green-500 mr-2">&#10003;</span><h4 class="font-semibold gradient-text">Key-N-Share</h4></div>
+                            <p class="text-sm text-gray-300 pl-6"><strong>Extremely Low & Global:</strong> Near-zero fees with direct, borderless wallet-to-wallet crypto payments on Solana.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Transparency -->
+                <div class="comparison-card">
+                    <h3 class="text-xl font-bold mb-4">Transparency</h3>
+                     <div class="space-y-4">
+                        <div>
+                            <div class="flex items-center"><span class="text-red-500 mr-2">&#10007;</span><h4 class="font-semibold">Traditional Platforms</h4></div>
+                            <p class="text-sm text-gray-400 pl-6">Transaction records are private, controlled by the company. No public auditability.</p>
+                        </div>
+                        <div>
+                            <div class="flex items-center"><span class="text-green-500 mr-2">&#10003;</span><h4 class="font-semibold gradient-text">Key-N-Share</h4></div>
+                            <p class="text-sm text-gray-300 pl-6"><strong>Fully Transparent:</strong> All transactions are recorded on a public, immutable blockchain ledger for anyone to inspect.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Censorship Resistance -->
+                <div class="comparison-card">
+                    <h3 class="text-xl font-bold mb-4">Censorship Resistance</h3>
+                     <div class="space-y-4">
+                        <div>
+                            <div class="flex items-center"><span class="text-red-500 mr-2">&#10007;</span><h4 class="font-semibold">Traditional Platforms</h4></div>
+                            <p class="text-sm text-gray-400 pl-6">The central authority can arbitrarily remove datasets or de-platform users.</p>
+                        </div>
+                        <div>
+                            <div class="flex items-center"><span class="text-green-500 mr-2">&#10003;</span><h4 class="font-semibold gradient-text">Key-N-Share</h4></div>
+                            <p class="text-sm text-gray-300 pl-6"><strong>Inherently Resistant:</strong> No central party can remove a dataset listed on the blockchain or stored on IPFS.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Solana vs Ethereum Visualization -->
+        <section id="tech-choice">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold">Technology Choice: Built for Performance & Scale</h2>
+                <p class="text-gray-400 mt-2">Why Solana provides the perfect foundation for Key-N-Share.</p>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="bg-gray-900/50 p-8 rounded-2xl border border-gray-800">
+                    <h3 class="text-xl font-bold mb-4 text-center">Comparative Metrics</h3>
+                    <div id="blockchain-chart-container"></div>
+                </div>
+                <div class="space-y-4">
+                    <div class="bg-gray-900/30 p-6 rounded-lg">
+                        <h4 class="font-bold text-lg text-indigo-400">Unmatched Speed</h4>
+                        <p class="text-gray-300">With transaction finality of ~2.5 seconds, Solana enables a seamless, real-time user experience, crucial for a high-volume marketplace.</p>
+                    </div>
+                     <div class="bg-gray-900/30 p-6 rounded-lg">
+                        <h4 class="font-bold text-lg text-pink-400">Negligible Cost</h4>
+                        <p class="text-gray-300">Average fees of less than $0.00025 make micropayments and frequent data exchanges economically viable, unlike Ethereum's prohibitive gas fees.</p>
+                    </div>
+                     <div class="bg-gray-900/30 p-6 rounded-lg">
+                        <h4 class="font-bold text-lg text-teal-400">Massive Scalability</h4>
+                        <p class="text-gray-300">Solana's architecture is designed for thousands of transactions per second, ensuring Key-N-Share can scale to a global user base without performance degradation.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Block Creation Visualization -->
+        <section id="block-creation">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold">From Click to Chain: A Transaction's Journey</h2>
+                <p class="text-gray-400 mt-2 max-w-3xl mx-auto">While Key-N-Share doesn't create blocks, every user action initiates a transaction that becomes a permanent, verifiable part of the Solana blockchain.</p>
+            </div>
+            <div class="bg-gray-900/50 p-8 rounded-2xl border border-gray-800">
+                <div class="flex flex-col md:flex-row justify-around items-stretch text-center space-y-8 md:space-y-0">
+
+                    <!-- Step 1 -->
+                    <div class="flex-1 flex flex-col items-center">
+                        <div class="bg-gray-800 w-24 h-24 rounded-full flex items-center justify-center border-2 border-indigo-500">
+                           <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L15.232 5.232z" /></svg>
+                        </div>
+                        <h4 class="font-bold mt-4">1. User Action</h4>
+                        <p class="text-sm text-gray-400 mt-1">Seller lists data or Buyer makes a purchase in the dApp.</p>
+                    </div>
+                    <div class="self-center text-gray-500 font-mono text-2xl transform rotate-90 md:rotate-0">&rarr;</div>
+                    
+                    <!-- Step 2 -->
+                    <div class="flex-1 flex flex-col items-center">
+                        <div class="bg-gray-800 w-24 h-24 rounded-full flex items-center justify-center border-2 border-pink-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                        </div>
+                        <h4 class="font-bold mt-4">2. Transaction Sent</h4>
+                        <p class="text-sm text-gray-400 mt-1">User signs a transaction, which is sent to Solana's network of validators.</p>
+                    </div>
+                     <div class="self-center text-gray-500 font-mono text-2xl transform rotate-90 md:rotate-0">&rarr;</div>
+
+                    <!-- Step 3 -->
+                    <div class="flex-1 flex flex-col items-center">
+                        <div class="bg-gray-800 w-24 h-24 rounded-full flex items-center justify-center border-2 border-teal-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10l2-2h8a1 1 0 001-1z" /></svg>
+                        </div>
+                        <h4 class="font-bold mt-4">3. Validation & Execution</h4>
+                        <p class="text-sm text-gray-400 mt-1">Validators verify the transaction and execute our on-chain program's logic.</p>
+                    </div>
+                     <div class="self-center text-gray-500 font-mono text-2xl transform rotate-90 md:rotate-0">&rarr;</div>
+
+                    <!-- Step 4 -->
+                    <div class="flex-1 flex flex-col items-center">
+                        <div class="bg-gray-800 w-24 h-24 rounded-full flex items-center justify-center border-2 border-green-500">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
+                        </div>
+                        <h4 class="font-bold mt-4">4. Block Inclusion</h4>
+                        <p class="text-sm text-gray-400 mt-1">The successful transaction is bundled into a new block and permanently added to the chain.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEW: Cryptography Visualization -->
+        <section id="crypto-core">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold">The Cryptographic Core: A Multi-Layered Security Pipeline</h2>
+                <p class="text-gray-400 mt-2 max-w-3xl mx-auto">This is how we ensure end-to-end security, integrity, and traceability for every dataset.</p>
+            </div>
+            <div class="bg-gray-900/50 p-8 rounded-2xl border border-gray-800">
+                <div class="grid lg:grid-cols-3 gap-8 items-start">
+                    <!-- Column 1: Seller Side -->
+                    <div class="text-center space-y-4">
+                        <h3 class="text-xl font-bold text-indigo-400">At Listing (Seller)</h3>
+                        <!-- Raw Data -->
+                        <div class="bg-gray-800 p-4 rounded-lg flex items-center space-x-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" /></svg>
+                            <div>
+                                <h4 class="font-semibold text-left">Raw Dataset</h4>
+                                <p class="text-xs text-left text-gray-400">Seller uploads the original file.</p>
+                            </div>
+                        </div>
+                        <div class="text-gray-500 text-2xl">&darr;</div>
+                        <!-- Hashing -->
+                        <div class="bg-gray-800 p-4 rounded-lg">
+                            <h4 class="font-semibold text-pink-400">SHA-256 Hashing</h4>
+                            <p class="text-xs text-gray-400 mt-1">A unique, tamper-proof fingerprint of the original data is generated. This hash is stored on Solana.</p>
+                        </div>
+                        <div class="text-gray-500 text-2xl">&darr;</div>
+                         <!-- AES Encryption -->
+                        <div class="bg-gray-800 p-4 rounded-lg flex items-center space-x-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" /></svg>
+                            <div>
+                                <h4 class="font-semibold text-left text-teal-400">AES-GCM Encryption</h4>
+                                <p class="text-xs text-left text-gray-400">The dataset is encrypted with a strong, unique symmetric key.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Column 2: Platform & Purchase -->
+                    <div class="text-center space-y-4">
+                         <h3 class="text-xl font-bold text-pink-400">At Purchase (Platform)</h3>
+                         <!-- Watermarking -->
+                        <div class="bg-gray-800 p-4 rounded-lg">
+                            <h4 class="font-semibold text-green-400">Digital Watermarking</h4>
+                            <p class="text-xs text-gray-400 mt-1">The buyer's unique wallet ID is embedded into their copy of the dataset for traceability.</p>
+                        </div>
+                        <div class="text-gray-500 text-2xl">&darr;</div>
+                        <!-- Encrypted Data -->
+                        <div class="bg-gray-800 p-4 rounded-lg flex items-center space-x-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                            <div>
+                                <h4 class="font-semibold text-left">Encrypted & Watermarked Data</h4>
+                                <p class="text-xs text-left text-gray-400">Stored on IPFS, ready for the buyer.</p>
+                            </div>
+                        </div>
+                        <div class="text-gray-500 text-2xl">&darr;</div>
+                        <!-- RSA Encryption -->
+                        <div class="bg-gray-800 p-4 rounded-lg">
+                            <h4 class="font-semibold text-purple-400">RSA-OAEP Key Encryption</h4>
+                            <p class="text-xs text-gray-400 mt-1">The AES key is asymmetrically encrypted using the <span class="font-bold">Buyer's Public Key</span>. Only the buyer's private key can unlock it.</p>
+                        </div>
+                    </div>
+
+                    <!-- Column 3: Buyer Side -->
+                    <div class="text-center space-y-4">
+                        <h3 class="text-xl font-bold text-teal-400">At Delivery (Buyer)</h3>
+                        <!-- Key Decryption -->
+                        <div class="bg-gray-800 p-4 rounded-lg">
+                             <h4 class="font-semibold text-purple-400">1. Decrypt AES Key</h4>
+                             <p class="text-xs text-gray-400 mt-1">Buyer uses their <span class="font-bold">Private Key</span> to securely decrypt the symmetric AES key.</p>
+                        </div>
+                        <div class="text-gray-500 text-2xl">&darr;</div>
+                        <!-- Data Decryption -->
+                         <div class="bg-gray-800 p-4 rounded-lg">
+                             <h4 class="font-semibold text-teal-400">2. Decrypt Dataset</h4>
+                             <p class="text-xs text-gray-400 mt-1">The decrypted AES key is used to unlock the dataset file.</p>
+                        </div>
+                        <div class="text-gray-500 text-2xl">&darr;</div>
+                        <!-- Hash Verification -->
+                        <div class="bg-gray-800 p-4 rounded-lg flex items-center space-x-3">
+                           <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6-6l-8 8-4-4" /></svg>
+                            <div>
+                                <h4 class="font-semibold text-left text-green-400">3. Verify Integrity</h4>
+                                <p class="text-xs text-left text-gray-400">The dApp automatically re-hashes the decrypted file and compares it to the on-chain hash. A match provides 100% certainty of authenticity.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Data Handling Section -->
+        <section id="data-handling">
+             <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold">Flexible & Scalable Data Handling</h2>
+                <p class="text-gray-400 mt-2">Designed to be data-agnostic and ready for enterprise-level volume.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 bg-gray-900/50 p-8 rounded-2xl border border-gray-800">
+                <div>
+                    <h3 class="text-xl font-bold mb-3 gradient-text">No Restriction on Data Type</h3>
+                    <p class="text-gray-300">
+                        The Key-N-Share architecture is fundamentally data-agnostic. The encryption and watermarking pipeline can process any binary file—from CSVs and JSON to images and proprietary formats. The system's core logic is independent of the data's content.
+                    </p>
+                </div>
+                 <div>
+                    <h3 class="text-xl font-bold mb-3 gradient-text">Built for Any Data Size</h3>
+                    <p class="text-gray-300">
+                        Current size limits are a practical consideration of our development-tier IPFS pinning service (Pinata), not a hard limit of the architecture. The hybrid model was explicitly designed to handle large files off-chain, and can easily integrate with premium or self-hosted IPFS solutions to support datasets of any size, from kilobytes to terabytes.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Architecture Section -->
+        <section id="architecture">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold">Project Architecture</h2>
+                <p class="text-gray-400 mt-2">A look under the hood at the hybrid on-chain and off-chain model.</p>
+            </div>
+            
+            <div class="bg-gray-900/50 p-8 rounded-2xl border border-gray-800">
+                <h3 class="text-xl font-bold text-center mb-8">System Architecture Flow (Simplified)</h3>
+                <div class="flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0 md:space-x-4">
+                    <!-- Seller -->
+                    <div class="text-center w-48">
+                         <div class="bg-indigo-900/50 p-4 rounded-full w-24 h-24 mx-auto flex items-center justify-center border-2 border-indigo-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-indigo-300" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
+                         </div>
+                         <h4 class="font-bold mt-2">1. Seller</h4>
+                         <p class="text-sm text-gray-400">Uploads Raw Data & Metadata</p>
+                    </div>
+                    
+                    <div class="text-gray-500 font-mono text-2xl transform rotate-90 md:rotate-0">&rarr;</div>
+
+                    <!-- Frontend -->
+                    <div class="text-center w-48">
+                         <div class="bg-gray-800 p-4 rounded-lg flex items-center justify-center h-24 border-2 border-gray-600">
+                             <p class="text-lg font-bold">Decentralized Frontend</p>
+                         </div>
+                         <h4 class="font-bold mt-2">2. Application</h4>
+                         <p class="text-sm text-gray-400">Encrypts data & lists metadata on-chain</p>
+                    </div>
+
+                    <div class="text-gray-500 font-mono text-2xl transform rotate-90 md:rotate-0">&rarr;</div>
+
+                    <!-- Blockchain & DFS -->
+                    <div class="text-center w-48 space-y-4">
+                        <div class="bg-pink-900/50 p-4 rounded-lg border-2 border-pink-600">
+                            <h4 class="font-bold">Blockchain</h4>
+                            <p class="text-sm text-gray-400">Immutability, Transparency</p>
+                        </div>
+                        <div class="bg-teal-900/50 p-4 rounded-lg border-2 border-teal-600">
+                            <h4 class="font-bold">DFS (IPFS)</h4>
+                            <p class="text-sm text-gray-400">Availability, Integrity</p>
+                        </div>
+                    </div>
+                    
+                    <div class="text-gray-500 font-mono text-2xl transform rotate-90 md:rotate-0">&rarr;</div>
+
+                    <!-- Buyer -->
+                     <div class="text-center w-48">
+                         <div class="bg-indigo-900/50 p-4 rounded-full w-24 h-24 mx-auto flex items-center justify-center border-2 border-indigo-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-indigo-300" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
+                         </div>
+                         <h4 class="font-bold mt-2">3. Buyer</h4>
+                         <p class="text-sm text-gray-400">Receives custom watermarked & re-encrypted dataset</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900/50 border-t border-gray-800 mt-24">
+        <div class="container mx-auto py-8 px-6 text-center text-gray-400">
+            <h3 class="text-xl font-bold text-white mb-2">Key-N-Share</h3>
+            <p class="mb-1">A Project By: <span class="font-semibold text-gray-200">G-9</span></p>
+            <p class="mb-4">Under the guidance of Dr. Sonali Ridhorkar & Mrs. Hemlata Kosare</p>
+            <p class="text-sm">G.H. Raisoni College of Engineering & Management, Nagpur | Session: 2025-2026</p>
+        </div>
+    </footer>
+
+    <script>
+        // D3.js Bar Chart for Solana vs Ethereum
+        const data = [
+            { platform: 'Ethereum', metric: 'Avg. Fee ($)', value: 5.00, color: '#ec4899' },
+            { platform: 'Solana', metric: 'Avg. Fee ($)', value: 0.00025, color: '#a855f7' },
+            { platform: 'Ethereum', metric: 'TPS', value: 20, color: '#ec4899' },
+            { platform: 'Solana', metric: 'TPS', value: 3000, color: '#a855f7' },
+        ];
+
+        const feeData = data.filter(d => d.metric === 'Avg. Fee ($)');
+        const tpsData = data.filter(d => d.metric === 'TPS');
+        
+        function createChart(containerId, chartData, yLabel, isLog) {
+            const container = d3.select(containerId);
+            if (container.empty()) return;
+            
+            container.html(""); // Clear previous chart
+            
+            const margin = { top: 40, right: 30, bottom: 40, left: 60 };
+            const width = container.node().getBoundingClientRect().width - margin.left - margin.right;
+            const height = 250 - margin.top - margin.bottom;
+
+            const svg = container.append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
+            
+            const x = d3.scaleBand()
+                .domain(chartData.map(d => d.platform))
+                .range([0, width])
+                .padding(0.4);
+
+            const y = isLog 
+                ? d3.scaleLog().clamp(true).domain([d3.min(chartData, d => d.value > 0 ? d.value : 1e-5), d3.max(chartData, d => d.value)]) 
+                : d3.scaleLinear().domain([0, d3.max(chartData, d => d.value)]);
+            
+            y.range([height, 0]);
+
+            svg.append("g")
+                .attr("transform", `translate(0,${height})`)
+                .call(d3.axisBottom(x))
+                .selectAll("text")
+                .style("font-size", "12px")
+                .style("fill", "#9ca3af");
+
+            svg.append("g")
+                .call(d3.axisLeft(y).ticks(5, d3.format(isLog ? "" : "~s")))
+                .selectAll("text")
+                .style("font-size", "12px")
+                .style("fill", "#9ca3af");
+            
+            svg.selectAll(".domain").attr("stroke", "#4b5563");
+            svg.selectAll(".tick line").attr("stroke", "#4b5563");
+
+            svg.append("text")
+                .attr("x", -(height / 2))
+                .attr("y", -margin.left + 15)
+                .attr("transform", "rotate(-90)")
+                .attr("text-anchor", "middle")
+                .style("font-size", "12px")
+                .style("fill", "#9ca3af")
+                .text(yLabel);
+
+            svg.selectAll(".bar")
+                .data(chartData)
+                .enter().append("rect")
+                .attr("class", "bar")
+                .attr("x", d => x(d.platform))
+                .attr("width", x.bandwidth())
+                .attr("y", height)
+                .attr("height", 0)
+                .attr("fill", d => d.color)
+                .attr("rx", 4)
+                .transition()
+                .duration(800)
+                .delay((d, i) => i * 150)
+                .attr("y", d => y(d.value))
+                .attr("height", d => height - y(d.value));
+
+             svg.selectAll(".bar-label")
+                .data(chartData)
+                .enter().append("text")
+                .attr("class", "bar-label")
+                .attr("x", d => x(d.platform) + x.bandwidth() / 2)
+                .attr("y", d => y(d.value) - 10)
+                 .style("font-size", "12px")
+                .style("opacity", 0)
+                .text(d => isLog ? d.value : d3.format(",.0f")(d.value))
+                 .transition()
+                 .duration(800)
+                 .delay((d,i) => 300 + i*150)
+                 .style("opacity", 1);
+        }
+
+        function drawCharts() {
+            // Chart 1: Average Fee (Log Scale)
+            const feeChartContainer = d3.select("#blockchain-chart-container")
+                .append("div")
+                .attr("id", "fee-chart");
+            
+            feeChartContainer.append("h4")
+                .attr("class", "font-bold text-center mb-2 text-gray-300")
+                .text("Average Transaction Fee (USD) - Log Scale");
+                
+            createChart("#fee-chart", feeData, "Fee ($)", true);
+
+            // Chart 2: Transactions Per Second
+            const tpsChartContainer = d3.select("#blockchain-chart-container")
+                .append("div")
+                .attr("id", "tps-chart")
+                .style("margin-top", "40px");
+                
+            tpsChartContainer.append("h4")
+                .attr("class", "font-bold text-center mb-2 text-gray-300")
+                .text("Transactions Per Second (TPS)");
+
+            createChart("#tps-chart", tpsData, "TPS", false);
+        }
+
+        // Use Intersection Observer to trigger animation when section is visible
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    drawCharts();
+                    observer.unobserve(entry.target); // Animate only once
+                }
+            });
+        }, { threshold: 0.5 });
+
+        observer.observe(document.querySelector("#tech-choice"));
+
+    </script>
+</body>
+</html>
+

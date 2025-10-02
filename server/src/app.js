@@ -65,7 +65,7 @@ app.use('/api/dataset-catalogue', authenticate, catalogueRoutes);
 app.use('/api/cart', authenticate, cartRoutes);
 app.use('/api/favorites', authenticate, favoritesRoutes);
 app.use('/api/secrets', authenticate, secretsRoutes);
-app.use('/api/delivery', authenticate, deliverDatasetRoutes);//Testing
+app.use('/api/delivery', authenticate, deliverDatasetRoutes);
 
 
 
