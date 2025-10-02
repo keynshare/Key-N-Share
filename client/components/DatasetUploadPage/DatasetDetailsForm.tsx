@@ -14,17 +14,20 @@ interface DatasetDetailsFormProps {
 
 function DatasetDetailsForm({ formData, onFormDataChange, onUpload, isUploading }: DatasetDetailsFormProps) {
   const [tagInput, setTagInput] = useState("");
-  const [solanaPrice, setSolanaPrice] = useState<number | null>(null);
+  const [solanaPrices, setSolanaPrices] = useState<{usd: number | null, inr: number | null}>({usd: null, inr: null});
   const [priceLoading, setPriceLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
-  // Fetch Solana price
+  // Fetch Solana price in USD and INR
   const fetchSolanaPrice = async () => {
     try {
       setPriceLoading(true);
-      const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd');
+      const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd,inr');
       const data = await response.json();
-      setSolanaPrice(data.solana.usd);
+      setSolanaPrices({
+        usd: data.solana.usd,
+        inr: data.solana.inr
+      });
       setLastUpdated(new Date());
     } catch (err) {
       console.error('Error fetching Solana price:', err);
@@ -40,10 +43,17 @@ function DatasetDetailsForm({ formData, onFormDataChange, onUpload, isUploading 
   }, []);
 
   const calculateUSDValue = () => {
-    if (!formData.price || !solanaPrice || isNaN(parseFloat(formData.price))) {
+    if (!formData.price || !solanaPrices.usd || isNaN(parseFloat(formData.price))) {
       return 0;
     }
-    return (parseFloat(formData.price) * solanaPrice).toFixed(2);
+    return (parseFloat(formData.price) * solanaPrices.usd).toFixed(2);
+  };
+
+  const calculateINRValue = () => {
+    if (!formData.price || !solanaPrices.inr || isNaN(parseFloat(formData.price))) {
+      return 0;
+    }
+    return (parseFloat(formData.price) * solanaPrices.inr).toFixed(2);
   };
 
   const handleAddTag = () => {
@@ -100,7 +110,7 @@ function DatasetDetailsForm({ formData, onFormDataChange, onUpload, isUploading 
             {priceLoading ? (
               <span>Loading...</span>
             ) : (
-              <span>1 SOL = {solanaPrice ? solanaPrice.toFixed(2) : "Loading..."} USD</span>
+              <span>1 SOL = ${solanaPrices.usd?.toFixed(2)} / ₹{solanaPrices.inr?.toFixed(2)}</span>
             )}
           </div>
         </div>
@@ -123,8 +133,8 @@ function DatasetDetailsForm({ formData, onFormDataChange, onUpload, isUploading 
             </div>
           </div>
           
-          {/* USD Value Display */}
-          {formData.price && !priceLoading && solanaPrice && (
+          {/* USD and INR Value Display */}
+          {formData.price && !priceLoading && solanaPrices.usd && solanaPrices.inr && (
             <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -136,7 +146,20 @@ function DatasetDetailsForm({ formData, onFormDataChange, onUpload, isUploading 
                 </span>
               </div>
               <div className="mt-1 text-xs text-gray-500">
-                {formData.price} SOL × ${solanaPrice.toFixed(2)} = ${calculateUSDValue()} USD
+                {formData.price} SOL × ${solanaPrices.usd.toFixed(2)} = ${calculateUSDValue()} USD
+              </div>
+              
+              <div className="flex items-center justify-between mt-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-green-600 font-bold">₹</span>
+                  <span className="text-sm font-medium text-gray-700">INR Value:</span>
+                </div>
+                <span className="text-lg font-bold text-green-600">
+                  ₹{calculateINRValue()}
+                </span>
+              </div>
+              <div className="mt-1 text-xs text-gray-500">
+                {formData.price} SOL × ₹{solanaPrices.inr.toFixed(2)} = ₹{calculateINRValue()} INR
               </div>
             </div>
           )}
