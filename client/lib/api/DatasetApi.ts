@@ -37,6 +37,8 @@ export interface DatasetCatalogueData {
   averageRating?: number;
   createdAt?: string;
   schema: string;
+  blockchainTxSignature?: string;
+  blockchainAccount?: string;
 }
 
 export const datasetApi = {

@@ -9,6 +9,7 @@ import { useNotifications } from "@/lib/notification-context";
 import {useWalletConnection} from "@/lib/Authentication/walletConnection";
 import { useProcessDialog } from "@/lib/process-dialog-context";
 import Breadcrumb from "../SharedComponents/Breadcrumb/Breadcrumb";
+import { useDatasetSmartContract, validateDatasetMetadata } from "@/lib/solana/DatasetSmartContractHelper";
 
 
 export interface DatasetFormData {
@@ -67,6 +68,7 @@ function UploadDataset() {
   const { token, userId } = useAuth();
   const { notify } = useNotifications();
   const { open: openProcess, setActiveStep, updateStep, close: closeProcess } = useProcessDialog();
+  const { addDataset: addToBlockchain, isWalletConnected } = useDatasetSmartContract();
 
   const handleFormDataChange = (updates: Partial<DatasetFormData>) => {
     setFormData(prev => ({ ...prev, ...updates }));
@@ -110,7 +112,7 @@ function UploadDataset() {
   return;
 }
 
-if (!address) {
+if (!address || !isWalletConnected) {
   notify({ type: "error", message: "Please connect your wallet." });
   setIsUploading(false);
   return;
@@ -143,8 +145,8 @@ if (!formData.encryptionKey) {
           "Encrypting file",
           "Generating hash",
           "Uploading to IPFS",
+          "Adding to blockchain",
           "Adding to catalogue",
-          
         ],
       });
       // Import APIs
@@ -185,8 +187,32 @@ if (!formData.encryptionKey) {
       if (!uploadResponse.success) {
         throw new Error(uploadResponse.message);
       }
-      // Add dataset to catalogue
+
+      // Add dataset to blockchain
       setActiveStep(3);
+      const blockchainMetadata = {
+        title: formData.title,
+        price: parseFloat(formData.price),
+        dataCid: uploadResponse.data.cid,
+        originalContentHash: originalContentHash,
+        description: formData.description,
+        fileSize: formData.file.size
+      };
+
+      // Validate metadata before sending to blockchain
+      const validationErrors = validateDatasetMetadata(blockchainMetadata);
+      if (validationErrors.length > 0) {
+        throw new Error(`Validation failed: ${validationErrors.join(', ')}`);
+      }
+
+      const blockchainResult = await addToBlockchain(blockchainMetadata);
+      if (!blockchainResult.success) {
+        throw new Error(`Blockchain error: ${blockchainResult.error}`);
+      }
+      updateStep(3, { status: "done" });
+
+      // Add dataset to catalogue
+      setActiveStep(4);
       const catalogueData = {
          userId, 
         sellerAddress: address,
@@ -200,7 +226,9 @@ if (!formData.encryptionKey) {
         coverImageUrl: coverImageUrl, 
         tags: formData.tags,
         fileSize: formatFileSize(formData.file.size),
-        schema:formData.schema
+        schema:formData.schema,
+        blockchainTxSignature: blockchainResult.signature,
+        blockchainAccount: blockchainResult.datasetAccount?.toString()
       };
 
       const catalogueResponse = await datasetApi.addDatasetToCatalogue(catalogueData, token);
@@ -211,7 +239,7 @@ if (!formData.encryptionKey) {
       } catch (e) {
         console.error("Failed to store encryption key secret", e);
       }
-      updateStep(3, { status: "done" });
+      updateStep(4, { status: "done" });
 
       
       
@@ -241,6 +269,7 @@ if (!formData.encryptionKey) {
       updateStep(1, { status: "error" });
       updateStep(2, { status: "error" });
       updateStep(3, { status: "error" });
+      updateStep(4, { status: "error" });
 
       if (error instanceof AxiosError) {
         if (error.response?.status === 413) {

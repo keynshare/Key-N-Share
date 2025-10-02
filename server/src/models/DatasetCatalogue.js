@@ -78,6 +78,15 @@ const datasetCatalogueSchema = new mongoose.Schema(
         source: {
             type: String
         },
+        // Blockchain integration fields
+        blockchainTxSignature: {
+            type: String,
+            trim: true
+        },
+        blockchainAccount: {
+            type: String,
+            trim: true
+        },
     },
     { timestamps: true }
 );

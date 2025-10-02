@@ -2,9 +2,8 @@ const DatasetCatalogue = require('../models/DatasetCatalogue');
 const User = require('../models/User');
 const mongoose = require('mongoose');
 
-const DATASET_SELECT = 'title description sellerAddress price coverImageUrl fileSize extension averageRating createdAt dataCID originalContentHash tags schema source userId';
+const DATASET_SELECT = 'title description sellerAddress price coverImageUrl fileSize extension averageRating createdAt dataCID originalContentHash tags schema source userId blockchainTxSignature blockchainAccount';
 const USER_SELECT = 'firstName role';
-
 
 async function addDataset(req, res) {
   try {
@@ -21,7 +20,9 @@ async function addDataset(req, res) {
       tags,
       fileSize,
       schema,
-      source
+      source,
+      blockchainTxSignature,
+      blockchainAccount
     } = req.body;
 
     if (
@@ -49,6 +50,8 @@ async function addDataset(req, res) {
       extension,
       schema,
       source,
+      blockchainTxSignature,
+      blockchainAccount,
     });
 
     const savedDataset = await newDataset.save();
