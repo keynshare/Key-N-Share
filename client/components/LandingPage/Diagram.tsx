@@ -169,7 +169,7 @@ export const Diagram: React.FC<DiagramProp> = ({
           </div>
         <div className="flex h-full w-full flex-row items-stretch justify-between max-w-3xl">
           <div className="flex flex-col justify-center gap-10 md:gap-24">
-            <Circle Tooltip="Polygon Block Chain" ref={div1Ref} forceHover={forceHover[0]}>{icons.image1()}</Circle>
+            <Circle Tooltip="Solana Block Chain" ref={div1Ref} forceHover={forceHover[0]}>{icons.image1()}</Circle>
             <Circle Tooltip='Encrypted File' ref={div2Ref} forceHover={forceHover[1]}>{icons.image2()}</Circle>
             <Circle Tooltip='IPFS' ref={div3Ref} forceHover={forceHover[2]}>{icons.image3()}</Circle>
           </div>
