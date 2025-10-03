@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { addDataset,getDatasets,getDatasetById,getDatasetByUser } = require("../controllers/datasetCatalgoueController")
+const { addDataset,getDatasets,getDatasetById,getDatasetByUser,getDatasetName } = require("../controllers/datasetCatalgoueController")
 
 const router = Router();
 
@@ -7,7 +7,9 @@ router.post('/', addDataset);
 // GET /api/datasets?page=1&limit=10
 router.get('/', getDatasets);
 
+router.get('/name', getDatasetName);
 router.get('/user/:userId', getDatasetByUser);
+
 
 router.get('/user', (req, res) => {
   res.status(400).json({ message: 'Missing userId parameter' });
