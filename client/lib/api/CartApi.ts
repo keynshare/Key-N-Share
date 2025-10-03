@@ -8,6 +8,7 @@ export interface CartItem {
   _id: string;
   title: string;
   price: number;
+  userId?: string;
   extension: string;
   description: string;
   coverImageUrl?: string;
