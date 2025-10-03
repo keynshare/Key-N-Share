@@ -9,6 +9,7 @@ import { useAuth } from "@/lib/Authentication/AuthContext";
 import { ratingApi } from "@/lib/api/RatingApi";
 import { useNotifications } from "@/lib/notification-context";
 import { AxiosError } from "axios";
+import {checkHashIntegrity} from '@/lib/api/DeliveryApi'
 
 type OrderStatus = "processing" | "delivered" | "disputed";
 
@@ -134,6 +135,12 @@ useEffect(() => {
   fetchSellerRating();
 }, [token, sellerUserId, userId]);
 
+
+// const CheckIntegrity= async()=>{
+//   try{
+//     const response= await checkHashIntegrity({datasetId:id,dataHash:txHash});
+//   }
+// }
 
   const handleRatingSubmit = async () => {
     if (!rating || !token) return;
@@ -413,6 +420,12 @@ const effective = sellerHovered || sellerRating || (sellerHasRated ? sellerAvera
             >
               <Download className="w-4 h-4" /> Download Dataset
             </SecondaryBtn>
+
+            {/* <SecondaryBtn
+              className="bg-gray-900 dark:bg-white text-white dark:text-black hover:opacity-90"
+            >
+               Check Integrity
+            </SecondaryBtn> */}
           </div>
         </div>
       </div>

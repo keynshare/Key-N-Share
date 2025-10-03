@@ -3,13 +3,14 @@
 import React,{useEffect} from "react";
 import { useWalletConnection } from "@/lib/Authentication/walletConnection";
 import { useAuth } from "@/lib/Authentication/AuthContext";
-import { datasetApi } from "@/lib/api/DatasetApi";
+// import { datasetApi } from "@/lib/api/DatasetApi";
 import { publicKeyApi } from "@/lib/api/PublicKeyApi";
 
 export interface DeliveryFormValues {
 	datasetId: string;
 	buyerAddress: string;
 	buyerId: string;
+	BuyerName:string;
 	buyerPublicKey: string;
 	privateKeyPem: string;
 	filename: string;
@@ -76,8 +77,8 @@ export default function DeliveryForm({ values, onChange, onSubmit, busy, dataset
 		<div className="space-y-5">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 				<div>
-					<label className="block text-sm font-medium mb-1">Dataset ID</label>
-					<input className="w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2" value={values.datasetId} onChange={set("datasetId")} disabled placeholder="68c9a8..." />
+					<label className="block text-sm font-medium mb-1">Dataset Title</label>
+					<input className="w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2" value={datasetInfo?.title || "Loading..."} onChange={set("datasetId")} disabled placeholder="68c9a8..." />
 					{values.buyerAddress === address && values.datasetId ? (
 						<p className="text-xs text-green-600 dark:text-green-400 mt-1">✓ Auto-filled from orders</p>
 					) : !values.datasetId && (
@@ -98,16 +99,16 @@ export default function DeliveryForm({ values, onChange, onSubmit, busy, dataset
 					)}
 				</div>
                 <div>
-                    <label className="block text-sm font-medium mb-1">Buyer ID</label>
+                    <label className="block text-sm font-medium mb-1">Buyer Name</label>
                     <input 
                         className="w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2" 
-                        value={values.buyerId} 
+                        value={values.BuyerName} 
                         onChange={set("buyerId")} 
                         placeholder={userId ? "Auto-filled from account" : "Login required"}
                         disabled={!!userId && values.buyerId === userId}
                     />
-                    {userId && values.buyerId === userId && (
-                        <p className="text-xs text-green-600 dark:text-green-400 mt-1">✓ Auto-filled from your account</p>
+                    {userId && values.buyerId === userId || values.BuyerName && (
+                        <p className="text-xs text-green-600 dark:text-green-400 mt-1">✓ Auto-filled from orders</p>
                     )}
                 </div>
 				{/* <div>
