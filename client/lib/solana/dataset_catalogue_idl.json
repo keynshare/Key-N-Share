@@ -1,4 +1,5 @@
 {
+  "address": "9dGx4usjmHMv9osGXBi2UMhH6bxCq4kWasH5ZAqZoijd",
   "version": "0.1.0",
   "name": "dataset_catalogue",
   "instructions": [
@@ -90,8 +91,5 @@
         ]
       }
     }
-  ],
-  "metadata": {
-    "address": "9dGx4usjmHMv9osGXBi2UMhH6bxCq4kWasH5ZAqZoijd"
-  }
+  ]
 }

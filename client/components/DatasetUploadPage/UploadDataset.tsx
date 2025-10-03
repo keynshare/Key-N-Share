@@ -190,14 +190,28 @@ if (!formData.encryptionKey) {
 
       // Add dataset to blockchain
       setActiveStep(3);
+      
+      // Validate and parse price
+      const parsedPrice = parseFloat(formData.price);
+      if (isNaN(parsedPrice) || parsedPrice <= 0) {
+        throw new Error(`Invalid price: "${formData.price}". Please enter a valid positive number.`);
+      }
+      
+      // Validate file size
+      if (!formData.file.size || formData.file.size <= 0) {
+        throw new Error(`Invalid file size: ${formData.file.size}. File appears to be empty.`);
+      }
+      
       const blockchainMetadata = {
         title: formData.title,
-        price: parseFloat(formData.price),
+        price: parsedPrice,
         dataCid: uploadResponse.data.cid,
         originalContentHash: originalContentHash,
         description: formData.description,
         fileSize: formData.file.size
       };
+      
+      console.log("Blockchain metadata being sent:", blockchainMetadata);
 
       // Validate metadata before sending to blockchain
       const validationErrors = validateDatasetMetadata(blockchainMetadata);
