@@ -12,6 +12,7 @@ import { useState } from "react"
 import {useNotifications} from "@/lib/notification-context"
 import {AxiosError} from "axios"
 import DatasetPurchaseButton from "@/components/DatasetPurchase/DatasetPurchaseButton"
+import Link from "next/link";
 
 type Dataset = {
   id?: string;
@@ -30,12 +31,13 @@ type Dataset = {
   Time?: string;
   UserImage?: string;
   sellerAddress?: string;
+  userId?: string
   
  
 };
 
-export default function Header({ id, userRating=4, Rating=0, Size='0 mb', Extention='CSV', Price='46', Tags=[ "Arts and Entertainment", "Music", "Data Science", "Computer Science" ], CoverImage="/Thumbnail.svg", Title="Top Spotify Listening History Songs in Countries", Name='Mohammad Sumbul', Time='', UserImage=User.src, sellerAddress}:Dataset) {
-  const { token } = useAuth()
+export default function Header({ id, userRating=4, Rating=0, Size='0 mb', Extention='CSV', Price='46', Tags=[ "Arts and Entertainment", "Music", "Data Science", "Computer Science" ], CoverImage="/Thumbnail.svg",userId, Title="Top Spotify Listening History Songs in Countries", Name='Mohammad Sumbul', Time='', UserImage=User.src, sellerAddress}:Dataset) {
+  const { token, userId: currentUserId } = useAuth()
   const {notify} = useNotifications()
   const [isAddingToCart, setIsAddingToCart] = useState(false)
   const [isAddingToFavorites, setIsAddingToFavorites] = useState(false)
@@ -105,13 +107,13 @@ export default function Header({ id, userRating=4, Rating=0, Size='0 mb', Extent
         {Title}
       </h1>
        
-       <div className="flex items-start gap-3">
+       <Link href={`/profile/${userId}`} className="flex items-start gap-3">
                 <Image src={UserImage} alt={Name} width={50} height={50} className="rounded-full" />
                 <div className="flex flex-col">
                   <span className=" font-medium">{Name}</span>
                   <span className="inline-flex items-center gap-1"><Star size={18} className="text-yellow-500"/>{userRating}</span>
                 </div>
-        </div>
+        </Link>
 
       <div className="flex flex-wrap items-center gap-2  text-gray-500">
         <span>Uploaded {timeAgo(Time)}</span>
@@ -152,8 +154,8 @@ export default function Header({ id, userRating=4, Rating=0, Size='0 mb', Extent
               <ShoppingCart size={20} /> {isAddingToCart ? 'Adding...' : 'Add to Cart'}
             </SecondaryBtn>
            
-            {/* Buy Now Button - Only show if we have seller address */}
-            {sellerAddress && (
+            {/* Buy Now Button - hide if current user owns this dataset */}
+            {sellerAddress && currentUserId !== userId && (
               <DatasetPurchaseButton
                 datasetId={id || ''}
                 sellerAddress={sellerAddress}

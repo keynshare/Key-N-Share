@@ -5,7 +5,7 @@ import SecondaryBtn from '../Btns/SecondaryBtn'
 import { CircleMinus, Star } from 'lucide-react'
 import StarRating from '../StarRating'
 import timeAgo from './timeAgo'
-
+import { useAuth } from '@/lib/Authentication/AuthContext'
 import DatasetPurchaseButton from '@/components/DatasetPurchase/DatasetPurchaseButton'
 
 type Data={
@@ -13,6 +13,7 @@ type Data={
     Image?: string;
     Title?: string;
     Description?: string;
+    userId?: string;
     Type?: string;
     Price?: number | string;
     size?: string;
@@ -30,6 +31,7 @@ type CheckOutDatasetCard = {
 }
 function CheckOutDatasetCard({Data, variant='cart', onRemove,onFavRemove}:CheckOutDatasetCard) {
   const [userRating, setUserRating] = useState<number>(Data?.Rating || 0);
+  const{userId} =useAuth();
   
   const handleRatingChange = (newRating: number) => {
     setUserRating(newRating);
@@ -89,7 +91,7 @@ function CheckOutDatasetCard({Data, variant='cart', onRemove,onFavRemove}:CheckO
                 > 
                   <CircleMinus size={20} /> Remove
                 </SecondaryBtn>
-                 {Data?.sellerAddress && (
+                 {Data?.sellerAddress && userId !== Data?.userId && (
                   <DatasetPurchaseButton
                     datasetId={Data?.id?.toString() || ''}
                     sellerAddress={Data.sellerAddress}
