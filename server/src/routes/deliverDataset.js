@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { deliverDatasetToBuyer,checkReencryptedExists } = require('../controllers/datasetDeliveryController'); 
+const { deliverDatasetToBuyer,checkReencryptedExists,checkHashIntegrity } = require('../controllers/datasetDeliveryController'); 
 
 router.post('/deliver-dataset', deliverDatasetToBuyer);
 
 router.get('/delivery-exists', checkReencryptedExists);
+
+router.post('/check-integrity',checkHashIntegrity);
 // router.get('/getKey', getKeyController); Testing
 
 module.exports = router;
