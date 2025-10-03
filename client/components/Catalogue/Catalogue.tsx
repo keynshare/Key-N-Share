@@ -13,6 +13,7 @@ import { useAuth } from "@/lib/Authentication/AuthContext";
 function Catalogue() {
   const [isOpen, setIsOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
   const [datasets, setDatasets] = useState<Array<{
     _id: string;
     title: string;
@@ -36,7 +37,7 @@ function Catalogue() {
     const fetchDatasets = async () => {
       try {
         setLoading(true);
-        const response = await datasetApi.getDatasets(currentPage, itemsPerPage, token || undefined);
+        const response = await datasetApi.getDatasets(currentPage, itemsPerPage, token || undefined, searchQuery || undefined);
         setDatasets(response.data || []);
         setTotalPages(response.totalPages || 1);
       } catch (err) {
@@ -48,7 +49,7 @@ function Catalogue() {
     };
 
     fetchDatasets();
-  }, [currentPage, token]);
+  }, [currentPage, token, searchQuery]);
   const breadcrumbItems = [
     { label: "Catalogue", isActive: true }
   ]; 
@@ -60,7 +61,7 @@ function Catalogue() {
       <div className="grid grid-cols-4  pb-20 px-3 md:px-10 xl:px-16  gap-5">
         {/* Sidebar for xl and up */}
         <div className="hidden sticky top-0 grid-cols-1 h-fit w-fit xl:block">
-          <FilterSidebar />
+          <FilterSidebar onSearch={setSearchQuery} />
         </div>
 
         {/* Content */}
@@ -71,6 +72,8 @@ function Catalogue() {
             <input
               type="text"
               placeholder="Search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="flex-1 outline-none !border-none text-lg px-4 py-2 "
             />
             <PrimaryBtn
@@ -142,7 +145,7 @@ function Catalogue() {
             ✕
           </button>
         </div>
-        <FilterSidebar />
+        <FilterSidebar onSearch={setSearchQuery} />
       </div>
     </>
   );
