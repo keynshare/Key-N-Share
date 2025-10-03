@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDatasetPurchase, PaymentResult } from '@/lib/solana/DatasetPaymentHelper';
 import { useAuth } from '@/lib/Authentication/AuthContext';
 import { useNotifications } from '@/lib/notification-context';
 import WalletConnectButton from '@/components/SharedComponents/WalletConnectButton';
 import { ShoppingCart, Loader2, CheckCircle } from 'lucide-react';
+import { userOrdersApi } from '@/lib/api/UserOrdersApi';
 
 interface DatasetPurchaseButtonProps {
   datasetId: string;
@@ -37,6 +38,36 @@ export default function DatasetPurchaseButton({
   } = useDatasetPurchase();
   
   const [showSuccess, setShowSuccess] = useState(false);
+  const [hasPurchased, setHasPurchased] = useState<boolean>(false);
+  const [checkingPurchase, setCheckingPurchase] = useState<boolean>(false);
+  const [datafetchLoading, setDatafetchLoading] = useState<boolean>(true);
+
+  // Check if current user already purchased this dataset
+  useEffect(() => {
+    let cancelled = false;
+    const check = async () => {
+      if (!datasetId || !userId || !token) {
+        setHasPurchased(false);
+        return;
+      }
+      try {
+        setCheckingPurchase(true);
+        // Prefer checking buyers of this dataset from orders service
+        const buyersRes = await userOrdersApi.getDatasetBuyers(datasetId, token);
+        const alreadyBought = Array.isArray(buyersRes?.buyers) && buyersRes.buyers.some(b => b.id === userId);
+        if (!cancelled) setHasPurchased(alreadyBought);
+        
+      } catch (e) {
+        console.error('Purchase status check failed', e);
+      } finally {
+        setDatafetchLoading(false);
+        if (!cancelled) setCheckingPurchase(false);
+       
+      }
+    };
+    check();
+    return () => { cancelled = true; };
+  }, [datasetId, userId, token]);
 
   const handlePurchase = async () => {
     if (!isWalletConnected) {
@@ -96,32 +127,38 @@ export default function DatasetPurchaseButton({
 
 
   return (
-    <div className={`space-y-3 ${className}`}>
-      {/* Purchase Button */}
-      <button 
-        onClick={handlePurchase} 
-        disabled={isProcessing}
-        className={`
-          w-full flex items-center justify-center sm:text-base text-sm gap-2 px-4 py-[10px] rounded-lg font-medium
-          transition-all duration-200 transform 
-          ${isProcessing 
-            ? 'bg-[#292929] text-white cursor-not-allowed' 
-            : 'bg-[#101010] dark:bg-[#242424] hover:bg-[#e4e4e4] dark:hover:bg-[#e4e4e4] text-white hover:text-[#101010] shadow-lg hover:shadow-xl'
-          }
-        `}
-      >
-        {isProcessing ? (
-          <>
-            <Loader2 className="w-5 h-5 animate-spin" />
-            <span>Processing Payment...</span>
-          </>
-        ) : (
-          <>
-            
-            <span>Buy for {formatPrice(price)} SOL</span>
-          </>
-        )}
-      </button>
+    <>
+    {!datafetchLoading && <div className={`space-y-3 ${className}`}>
+      {hasPurchased ? (
+        <div className="w-full flex items-center justify-center sm:text-base text-sm gap-2 px-4 py-[10px] rounded-lg font-medium border border-green-300 dark:border-green-700 text-green-700 dark:text-green-300 bg-green-50 dark:bg-green-900/20">
+          <CheckCircle className="w-4 h-4" />
+          <span>Already purchased</span>
+        </div>
+      ) : (
+        <button 
+          onClick={handlePurchase} 
+          disabled={isProcessing || checkingPurchase}
+          className={`
+            w-full flex items-center justify-center sm:text-base text-sm gap-2 px-4 py-[10px] rounded-lg font-medium
+            transition-all duration-200 transform 
+            ${isProcessing || checkingPurchase
+              ? 'bg-[#292929] text-white cursor-not-allowed' 
+              : 'bg-[#101010] dark:bg-[#242424] hover:bg-[#e4e4e4] dark:hover:bg-[#e4e4e4] text-white hover:text-[#101010] shadow-lg hover:shadow-xl'
+            }
+          `}
+        >
+          {isProcessing || checkingPurchase ? (
+            <>
+              <Loader2 className="w-5 h-5 animate-spin" />
+              <span>{checkingPurchase ? 'Checking purchase…' : 'Processing Payment...'}</span>
+            </>
+          ) : (
+            <>
+              <span>Buy for {formatPrice(price)} SOL</span>
+            </>
+          )}
+        </button>
+      )}
 
       
 
@@ -145,7 +182,8 @@ export default function DatasetPurchaseButton({
 
       {/* Dataset Info */}
     
-    </div>
+    </div>}
+    </>
   );
 }
 

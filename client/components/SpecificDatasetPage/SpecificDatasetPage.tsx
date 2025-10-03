@@ -32,6 +32,7 @@ export default function SpecificDatasetPage() {
     source?: string;
     sellerAddress?: string;
     user?: {
+      id?: string;
       name?: string;
       role?: string;
     }
@@ -97,6 +98,7 @@ export default function SpecificDatasetPage() {
           CoverImage={dataset.coverImageUrl || 'https://via.placeholder.com/800x400?text=No+Image'}
           sellerAddress={dataset.sellerAddress}
           Name={dataset.user?.name || 'Unknown Author'}
+          userId={dataset?.user?.id || ''}
          
         />
         <MetaDataSection

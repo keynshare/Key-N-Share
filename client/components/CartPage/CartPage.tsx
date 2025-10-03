@@ -108,6 +108,7 @@ function CartPage({userId}: {userId?: string}) {
                       <CheckOutDatasetCard 
                         Data={{
                           id: item._id,
+                          userId: item.userId,
                           Title: item.title,
                           Description: item.description,
                           Type: item.extension,
