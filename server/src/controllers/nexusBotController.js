@@ -55,8 +55,7 @@ const nexusBotController = async (req, res) => {
             ],
             // ADJUSTED GENERATION CONFIG
             generationConfig: {
-                temperature: 0.7, // Lowered for more focused, reliable analysis
-                maxOutputTokens: 500,
+                temperature: 1, // Lowered for more focused, reliable analysis
                 topK: 40,
             },
             safetySettings: [
