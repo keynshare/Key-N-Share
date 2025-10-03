@@ -98,6 +98,7 @@ const Footer = () => {
                 <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/favourite-datasets">Favourites</Link></li>
                 <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/cart">Cart</Link></li>
                 <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/kns-ledger">Transactions</Link></li>
+                <li className='hover:text-orange-500 transition-colors duration-300'><Link target='_blank' href="https://knsanalysis.netlify.app/">Comparative Analysis</Link></li>
               </ul>
             </div>
 
