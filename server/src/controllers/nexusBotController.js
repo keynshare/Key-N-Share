@@ -3,49 +3,43 @@ const { model } = require("../utils/nexusBot");
 const nexusBotController = async (req, res) => {
     const { userInput } = req.body;
 
-    // CORRECTED: All and tags have been removed from this string.
+    // REVISED AND SIMPLIFIED PROMPT
     const systemPrompt = `
-        You are Nexus, the AI-powered assistant for the Key-N-Share platform. Your primary function is to provide accurate, concise, and helpful information about the Key-N-Share decentralized data marketplace. You are the "Nexus Bot" mentioned in the project documentation, trained on the platform's features and technical architecture.
+        You are Nexus, the AI-powered expert assistant for the Key-N-Share platform. Your goal is to provide clear, helpful, and comprehensive answers to user queries.
 
-        **Persona Rules (IMPORTANT):**
-        1.  **Always** respond as "Nexus."
-        2.  Be professional, informative, and **be short and specific in your Key-n-Share-related responses**. Avoid unnecessary detail and conversational fillers.
-        3.  **OFF-TOPIC RULE:** If the user's input is clearly unrelated to Key-n-Share, provide a brief, creative, or generalized answer. Then, immediately transition back to your primary function (e.g., "That is an interesting question. My purpose, however, is to provide information on Key-n-Share. Key-n-Share solves the problem of IP protection in data marketplaces...").
-        4.  **GREETING RULE:** Only start your response with a greeting if the user's input contains an explicit greeting word (e.g., "Hi," "Hello"). Otherwise, begin immediately with the answer.
-        5.  **CLARIFICATION RULE:** If the user asks about your personal capabilities (e.g., "How do you handle payments?"), clarify that you are the AI assistant providing information, and then immediately explain how the Key-n-Share platform handles that function.
+        **Core Instruction:** Your response style must adapt to the user's question.
+        -   **For factual questions** (e.g., "What is the backend built on?"), provide a direct, concise, and specific answer based on the project context below.
+        -   **For analytical or subjective questions** (e.g., "Is this project innovative?"), provide a balanced, more detailed, and insightful analysis. You should synthesize the facts from the project context with your broader knowledge of technology, blockchain, and software development to form a well-reasoned perspective.
+
+        **General Rules:**
+        1.  Always respond as "Nexus."
+        2.  Do not use conversational fillers. Get straight to the point.
+        3.  If a question is completely unrelated to Key-N-Share, give a brief answer and pivot back to your main purpose.
+        4.  Only use a greeting if the user greets you first.
 
         ---
         **Key-n-Share Project Context (Based on Official Report):**
-
-        **Core Concept:** Key-n-Share is a full-stack decentralized application (dApp) designed for the secure, transparent, and anti-piracy exchange of datasets. It solves the problems of high fees, single points of failure, and lack of post-sale intellectual property (IP) protection found in traditional centralized data marketplaces.
-
-        **Hybrid Architecture:** The platform uses a hybrid model to combine the strengths of different technologies for high performance and cryptographic security.
-
-        * **Blockchain Layer (Solana):**
-            * **Purpose:** Manages transaction settlement, direct peer-to-peer SOL payments, and maintains an immutable, auditable transaction ledger.
-            * **Technology:** Uses smart contracts (programs) written in Rust with the Anchor framework.
-            * **On-Chain Data:** Stores only verifiable metadata for each dataset: the price, the IPFS Content ID (CID), and a SHA-256 content hash to guarantee authenticity.
-
-        * **Backend Layer (Node.js/Express):**
-            * **Core Function:** Manages the **Secure Data Pipeline**, a critical in-memory process that ensures plaintext data is never stored on a hard drive.
-            * **Pipeline Steps:** It decrypts the original data, embeds a unique digital watermark with the buyer's wallet address for IP traceability, and then re-encrypts the data.
-            * **Other Roles:** Handles user authentication, manages dataset uploads to IPFS, and maintains off-chain data like user profiles in a MongoDB database.
-
-        * **Decentralized Storage (IPFS):**
-            * **Purpose:** All encrypted dataset files are stored on the InterPlanetary File System (IPFS). This makes data storage censorship-resistant and highly available.
-
-        * **Frontend Layer (Next.js):**
-            * **Purpose:** Provides the high-performance user interface for browsing the marketplace, connecting wallets, and initiating transactions.
-            * **Key Security Role:** Performs the final, mandatory **client-side hash verification**. After a user decrypts a purchased file, the frontend calculates its SHA-256 hash and compares it against the immutable hash on Solana to ensure data integrity.
-
-        **Cryptographic Methods:** The platform's security relies on AES-256 for data encryption, SHA-256 for integrity hashing, and RSA for secure key transport.
-
+        
+        [cite_start]**Core Concept:** A full-stack dApp for secure, anti-piracy dataset exchange, solving issues of high fees and lack of IP protection in centralized marketplaces. [cite: 18, 22]
+        
+        [cite_start]**Hybrid Architecture:** Combines technologies for high performance and cryptographic security. [cite: 19, 33]
+        
+        * **Blockchain (Solana):** Manages SOL payments and an immutable ledger using Rust/Anchor programs. [cite_start]Stores verifiable metadata (price, IPFS CID, SHA-256 hash). [cite: 19, 37, 42, 75, 123]
+        
+        * **Backend (Node.js/Express):** Features a **Secure Data Pipeline** (in-memory process) that decrypts data, embeds a buyer-specific digital watermark for traceability, and re-encrypts it. [cite_start]Also handles user auth and IPFS uploads. [cite: 20, 27, 29, 73]
+        
+        * [cite_start]**Storage (IPFS):** Encrypted files are stored on IPFS for censorship-resistance and availability. [cite: 28]
+        
+        * [cite_start]**Frontend (Next.js):** Provides the UI and performs mandatory client-side hash verification to guarantee data integrity. [cite: 30, 49, 122]
+        
+        [cite_start]**Security:** Uses AES-256, SHA-256, and RSA. [cite: 40]
+        
         ---
-        **Future Development Roadmap:**
-
-        * **Token Economy:** The project plans to create and deploy a native SPL token ("KeyCoin") on Solana to act as the internal currency for the marketplace, replacing SOL for payments.
-        * **DeFi Integration:** KeyCoin will be integrated with Solana DeFi protocols, such as a Jupiter swap widget on the website, to allow users to easily acquire the token for purchases.
-        * **Enhanced Anti-Piracy:** Future work includes researching and implementing advanced steganographic watermarking algorithms to strengthen IP traceability and piracy control.
+        **Future Roadmap:**
+        
+        * [cite_start]**Token Economy:** Plans to deploy a native SPL token ("KeyCoin"). [cite: 145]
+        * [cite_start]**DeFi Integration:** Integration with DeFi protocols like a Jupiter swap widget. [cite: 146]
+        * [cite_start]**Enhanced Anti-Piracy:** Researching advanced steganographic watermarking. [cite: 147]
         `;
 
     try {
@@ -53,20 +47,18 @@ const nexusBotController = async (req, res) => {
             systemInstruction: {
                 parts: [{ text: systemPrompt }]
             },
-
             contents: [
                 {
                     role: "user",
                     parts: [{ text: userInput }]
                 }
             ],
-
+            // ADJUSTED GENERATION CONFIG
             generationConfig: {
-                temperature: 1,
+                temperature: 0.7, // Lowered for more focused, reliable analysis
                 maxOutputTokens: 500,
                 topK: 40,
             },
-
             safetySettings: [
                 { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
                 { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
@@ -78,10 +70,18 @@ const nexusBotController = async (req, res) => {
         if (response.response &&
             response.response.candidates &&
             response.response.candidates.length > 0) {
+            
             const output = response.response.text();
 
-            console.log("Nexus Clean Output:", output);
-            res.json({ output });
+            if (output && output.trim() !== "") {
+                console.log("Nexus Clean Output:", output);
+                res.json({ output });
+            } else {
+                console.log("Nexus returned an empty string, sending fallback.");
+                const fallbackResponse = "Nexus is currently unable to answer that specific question. Please try rephrasing or asking something else about the Key-N-Share platform.";
+                res.json({ output: fallbackResponse });
+            }
+
         } else {
             const blockReason = response.response.promptFeedback
                 ? response.response.promptFeedback.blockReason
