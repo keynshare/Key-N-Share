@@ -15,7 +15,7 @@ export default function DeliveryPage({ Id, orderId }: { Id?: string | number | u
     const [values, setValues] = useState<DeliveryFormValues>({
         datasetId: Id ? Id.toString() : "",
         buyerAddress: "",
-        buyerId: "Loading...",
+        buyerId: "",
         BuyerName:"Loading...",
         buyerPublicKey: "",
         privateKeyPem: "",
