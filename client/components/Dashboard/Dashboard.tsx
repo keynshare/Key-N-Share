@@ -31,6 +31,7 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { token } = useAuth();
+  const [searchQuery, setSearchQuery] = useState("");
  
 const categories = ["Trending", "Highest Rating", "Newly Added"];
 
@@ -39,7 +40,7 @@ useEffect(() => {
   const fetchDatasets = async () => {
     try {
       setLoading(true);
-      const response = await datasetApi.getDatasets(1, 20, token || undefined);
+      const response = await datasetApi.getDatasets(1, 20, token || undefined, searchQuery || undefined);
       setDatasets(response.data || []);
     } catch (err) {
       console.error('Error fetching datasets:', err);
@@ -50,7 +51,7 @@ useEffect(() => {
   };
 
   fetchDatasets();
-}, [token]);
+}, [token, searchQuery]);
 
 
   return (
@@ -59,7 +60,7 @@ useEffect(() => {
 
       <div className="grid grid-cols-4 pb-20 px-3 md:px-10 xl:px-16 gap-5">
         <div className="hidden sticky top-0 grid-cols-1 h-fit w-fit xl:block">
-          <FilterSidebar />
+          <FilterSidebar onSearch={setSearchQuery} />
         </div>
 
         <div className="flex flex-col col-span-full xl:col-span-3 gap-10 items-start justify-start">
@@ -67,6 +68,8 @@ useEffect(() => {
             <input
               type="text"
               placeholder="Search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="flex-1 outline-none !border-none text-lg w-full px-4 py-2 bg-transparent"
             />
             <PrimaryBtn
@@ -117,7 +120,7 @@ useEffect(() => {
             ✕
           </button>
         </div>
-        <FilterSidebar />
+        <FilterSidebar onSearch={setSearchQuery} />
       </div>
     </>
   );

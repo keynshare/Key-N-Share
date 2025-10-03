@@ -79,8 +79,8 @@ export const datasetApi = {
     return response.data;
   },
 
-  // Get all datasets with pagination
-  getDatasets: async (page = 1, limit = 12, token?: string) => {
+  // Get all datasets with pagination and optional search
+  getDatasets: async (page = 1, limit = 12, token?: string, search?: string) => {
     const headers: Record<string, string> = {
       'Content-Type': 'application/json'
     };
@@ -89,8 +89,9 @@ export const datasetApi = {
       headers.Authorization = `Bearer ${token}`;
     }
     
+    const searchParam = search ? `&search=${encodeURIComponent(search)}` : "";
     const response = await axios.get(
-      `${API_URL}dataset-catalogue?page=${page}&limit=${limit}`,
+      `${API_URL}dataset-catalogue?page=${page}&limit=${limit}${searchParam}`,
       { headers }
     );
     return response.data;

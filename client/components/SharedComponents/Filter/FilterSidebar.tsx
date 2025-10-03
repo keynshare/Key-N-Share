@@ -2,9 +2,14 @@
 import { useState } from "react";
 import { Search, Star } from "lucide-react";
 
-const FilterSidebar = () => {
+interface FilterSidebarProps {
+  onSearch?: (query: string) => void;
+}
+
+const FilterSidebar = ({ onSearch }: FilterSidebarProps) => {
   const [minSize, setMinSize] = useState("");
   const [maxSize, setMaxSize] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const fileTypes = ["XML", "JSON", "CSV"];
   const ratings = [
@@ -33,6 +38,11 @@ const FilterSidebar = () => {
         <input
           type="text"
           placeholder="Search"
+          value={searchQuery}
+          onChange={(e) => {
+            setSearchQuery(e.target.value);
+            onSearch?.(e.target.value);
+          }}
           className="flex-1 outline-none dark:bg-[#141414] !border-none px-2 py-1 text-sm"
         />
         <Search className="w-4 h-4 text-gray-500" />
