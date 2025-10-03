@@ -173,10 +173,26 @@ async function getDatasetByUser(req, res) {
   }
 }
 
+async function getDatasetName(req, res) {
+  try {
+    const { id } = req.query;
+    console.log("Dataset ID:", id); // Debug log
+    const dataset = await DatasetCatalogue.findById(id)
+      .select('title')
+      .lean();  
+    if (!dataset) {
+      return res.status(404).json({ message: 'Dataset not found.' });
+    } 
+    res.status(200).json({ title: dataset.title });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  } 
+}
 
 module.exports = {
   addDataset,
   getDatasets,
   getDatasetById,
-  getDatasetByUser
+ getDatasetByUser,
+  getDatasetName
 };

@@ -117,5 +117,23 @@ const checkReencryptedExists = async (req, res) => {
     return res.status(500).json({ message: 'Server error', exists: false });
   }
 };
+async function checkHashIntegrity(req, res) {
+  try {
+    const { datasetId, dataHash } = req.body;
+    if (!datasetId || !dataHash) {
+      return res.status(400).json({ message: 'Missing required fields.' });
+    }
+    const dataset = await DatasetCatalogue.findById(datasetId);
+    if (!dataset) {
+      return res.status(404).json({ message: 'Dataset not found.' });
+    }
 
-module.exports = { deliverDatasetToBuyer, checkReencryptedExists };
+    const isValid = dataset.originalContentHash === dataHash;
+    return res.status(200).json({ valid: isValid });
+  } catch (error) {
+    console.error('Check hash integrity error:', error);
+    return res.status(500).json({ message: 'Failed to check hash integrity', error: error.message });
+  }
+}
+
+module.exports = { deliverDatasetToBuyer, checkReencryptedExists, checkHashIntegrity };
