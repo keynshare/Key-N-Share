@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Smart Contract Deployment</title>
+    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+</head>
+<body>
+    <h1>Smart Contract Deployment Test</h1>
+    <button onclick="testProgram()">Test Program Exists</button>
+    <div id="result"></div>
+
+    <script>
+        async function testProgram() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Testing...';
+            
+            try {
+                const connection = new solanaWeb3.Connection('https://api.devnet.solana.com', 'confirmed');
+                const programId = new solanaWeb3.PublicKey('9dGx4usjmHMv9osGXBi2UMhH6bxCq4kWasH5ZAqZoijd');
+                
+                const accountInfo = await connection.getAccountInfo(programId);
+                
+                if (accountInfo) {
+                    resultDiv.innerHTML = `
+                        <h2 style="color: green;">✅ Program EXISTS on Devnet!</h2>
+                        <p><strong>You don't need to deploy.</strong></p>
+                        <p>Owner: ${accountInfo.owner.toString()}</p>
+                        <p>Executable: ${accountInfo.executable}</p>
+                        <p>Data Length: ${accountInfo.data.length} bytes</p>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <h2 style="color: red;">❌ Program NOT FOUND on Devnet</h2>
+                        <p><strong>You need to deploy the smart contract.</strong></p>
+                        <p>Follow the deployment instructions.</p>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <h2 style="color: orange;">⚠️ Error Testing Program</h2>
+                    <p>Error: ${error.message}</p>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

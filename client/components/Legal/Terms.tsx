@@ -1,18 +1,19 @@
 "use client";
 
 import React from 'react';
+import Link from "next/link";
 
 const Terms = () => {
   return (
     <>
       <div className="min-h-screen dark:text-gray-100 transition-colors duration-200">
         <header className="max-w-6xl mx-auto p-6 flex items-center justify-between">
-          <a href="/" className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-md bg-gradient-to-br from-indigo-600 to-pink-500 flex items-center justify-center text-white font-bold">K</div>
             <span className="font-semibold text-lg">Key-N-Share</span>
-          </a>
+          </Link>
           <nav>
-            <a href="/privacy-policy" className="text-sm hover:underline">Privacy Policy</a>
+            <Link href="/privacy-policy" className="text-sm hover:underline">Privacy Policy</Link>
           </nav>
         </header>
 
@@ -23,7 +24,7 @@ const Terms = () => {
           <section className="prose prose-md dark:prose-invert max-w-none">
             <h2>Acceptance of Terms</h2>
             <p>
-              By accessing or using Key-N-Share (the "Service"), you agree to be bound by these
+              By accessing or using Key-N-Share (the &quot;Service&quot;), you agree to be bound by these
               Terms &amp; Conditions. If you do not agree, you must not use the Service.
             </p>
 
@@ -100,8 +101,8 @@ const Terms = () => {
           <div className="flex items-center justify-between">
             <span>© {new Date().getFullYear()} Key-N-Share</span>
             <div className="space-x-4">
-              <a href="/privacy-policy">Privacy</a>
-              <a href="/terms-and-conditions">Terms</a>
+              <Link href="/privacy-policy">Privacy</Link>
+              <Link href="/terms-and-conditions">Terms</Link>
             </div>
           </div>
         </footer>

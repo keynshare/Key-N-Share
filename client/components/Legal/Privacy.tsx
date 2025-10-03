@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import Link from "next/link";
 
 const Privacy = () => {
   return (
@@ -8,16 +9,12 @@ const Privacy = () => {
      
       <div className="min-h-screen  dark:text-gray-100 transition-colors duration-200">
         <header className="max-w-6xl mx-auto p-6 flex items-center justify-between">
-          <a href="/">
-            <a className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-md bg-gradient-to-br from-indigo-600 to-pink-500 flex items-center justify-center text-white font-bold">K</div>
-              <span className="font-semibold text-lg">Key-N-Share</span>
-            </a>
-          </a>
+          <Link href="/" className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-md bg-gradient-to-br from-indigo-600 to-pink-500 flex items-center justify-center text-white font-bold">K</div>
+            <span className="font-semibold text-lg">Key-N-Share</span>
+          </Link>
           <nav>
-            <a href="/terms-and-conditions">
-              <a className="text-sm hover:underline">Terms &amp; Conditions</a>
-            </a>
+            <Link href="/terms-and-conditions" className="text-sm hover:underline">Terms &amp; Conditions</Link>
           </nav>
         </header>
 
@@ -95,7 +92,7 @@ const Privacy = () => {
             <h2>Changes to This Policy</h2>
             <p>
               We may update this Privacy Policy from time to time. If we make material changes, we
-              will notify you by posting the updated policy and updating the "Last updated" date.
+              will notify you by posting the updated policy and updating the &quot;Last updated&quot; date.
             </p>
 
             <h2>Contact</h2>
@@ -109,8 +106,8 @@ const Privacy = () => {
           <div className="flex items-center justify-between">
             <span>© {new Date().getFullYear()} Key-N-Share</span>
             <div className="space-x-4">
-              <a href="/privacy-policy"><a>Privacy</a></a>
-              <a href="/terms-and-conditions"><a>Terms</a></a>
+              <Link href="/privacy-policy">Privacy</Link>
+              <Link href="/terms-and-conditions">Terms</Link>
             </div>
           </div>
         </footer>
