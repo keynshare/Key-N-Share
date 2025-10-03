@@ -78,6 +78,20 @@ const datasetCatalogueSchema = new mongoose.Schema(
         source: {
             type: String
         },
+        // Blockchain metadata
+        blockchainSignature: {
+            type: String,
+            trim: true
+        },
+        blockchainAccount: {
+            type: String,
+            trim: true
+        },
+        blockchainNetwork: {
+            type: String,
+            enum: ['devnet', 'testnet', 'mainnet-beta'],
+            default: 'devnet'
+        }
     },
     { timestamps: true }
 );

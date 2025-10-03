@@ -8,7 +8,9 @@ import { useAuth } from "@/lib/Authentication/AuthContext";
 import { useNotifications } from "@/lib/notification-context";
 import {useWalletConnection} from "@/lib/Authentication/walletConnection";
 import { useProcessDialog } from "@/lib/process-dialog-context";
+import { useDatasetSmartContract } from "@/lib/solana/DatasetSmartContractHelper";
 import Breadcrumb from "../SharedComponents/Breadcrumb/Breadcrumb";
+import { DatasetCatalogueData } from "@/lib/api/DatasetApi";
 
 
 export interface DatasetFormData {
@@ -47,6 +49,7 @@ const formatFileSize = (bytes: number): string => {
 
 function UploadDataset() {
   const { address } = useWalletConnection();
+  const { addDataset } = useDatasetSmartContract();
   const [activeTab, setActiveTab] = useState("dataset");
   const [formData, setFormData] = useState<DatasetFormData>({
     title: "",
@@ -143,6 +146,7 @@ if (!formData.encryptionKey) {
           "Encrypting file",
           "Generating hash",
           "Uploading to IPFS",
+          "Writing to blockchain",
           "Adding to catalogue",
           
         ],
@@ -185,22 +189,37 @@ if (!formData.encryptionKey) {
       if (!uploadResponse.success) {
         throw new Error(uploadResponse.message);
       }
-      // Add dataset to catalogue
+      // Write metadata to blockchain
       setActiveStep(3);
-      const catalogueData = {
-         userId, 
-        sellerAddress: address,
-        source:formData.source,
+      const bcResult = await addDataset({
         title: formData.title,
-        extension:FileType ,
+        price: parseFloat(formData.price),
+        dataCid: uploadResponse.data.cid,
+        originalContentHash,
+        description: formData.description,
+        fileSize: formData.file.size,
+      });
+      if (!bcResult.success) {
+        throw new Error(bcResult.error || 'Blockchain transaction failed');
+      }
+      updateStep(3, { status: "done" });
+
+      // Add dataset to catalogue
+      setActiveStep(4);
+      const catalogueData: DatasetCatalogueData = {
+        userId: String(userId),
+        sellerAddress: address,
+        source: formData.source,
+        title: formData.title,
+        extension: FileType,
         price: parseFloat(formData.price),
         dataCID: uploadResponse.data.cid,
         originalContentHash: originalContentHash,
         description: formData.description,
-        coverImageUrl: coverImageUrl, 
+        coverImageUrl: coverImageUrl,
         tags: formData.tags,
         fileSize: formatFileSize(formData.file.size),
-        schema:formData.schema
+        schema: formData.schema
       };
 
       const catalogueResponse = await datasetApi.addDatasetToCatalogue(catalogueData, token);
@@ -211,7 +230,7 @@ if (!formData.encryptionKey) {
       } catch (e) {
         console.error("Failed to store encryption key secret", e);
       }
-      updateStep(3, { status: "done" });
+      updateStep(4, { status: "done" });
 
       
       

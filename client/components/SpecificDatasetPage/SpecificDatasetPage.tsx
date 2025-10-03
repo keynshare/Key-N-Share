@@ -102,10 +102,10 @@ export default function SpecificDatasetPage() {
          
         />
         <MetaDataSection
-        
           About={dataset.description}
           Source={dataset.source}
           Schema={dataset.schema}
+          datasetId={dataset._id}
         />
       </div>
 
