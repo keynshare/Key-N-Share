@@ -36,6 +36,15 @@ export interface DeliverDatasetResponse {
 	encryptedSymmetricKey?: string;
 }
 
+export interface CheckHashIntegrityRequest {
+  datasetId: string;
+  dataHash: string;
+}
+
+export interface CheckHashIntegrityResponse {
+  valid: boolean;
+}
+
 export async function requestDelivery(
 	body: DeliverDatasetRequest,
 	token?: string
@@ -149,4 +158,20 @@ export async function checkAndDownloadExistingDelivery(
 		console.error('Error checking delivery existence:', error);
 		return { exists: false, downloaded: false };
 	}
+}
+
+export async function checkHashIntegrity(
+  body: CheckHashIntegrityRequest,
+  token?: string
+): Promise<CheckHashIntegrityResponse> {
+  try {
+    const headers: Record<string, string> = { "Content-Type": "application/json" };
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+
+    const { data } = await axios.post(`${API_URL}delivery/check-integrity`, body, { headers });
+    return data;
+  } catch (error) {
+    console.error('Check hash integrity error:', error);
+    throw error;
+  }
 }
