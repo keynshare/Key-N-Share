@@ -2,7 +2,7 @@ const DatasetCatalogue = require('../models/DatasetCatalogue');
 const User = require('../models/User');
 const mongoose = require('mongoose');
 
-const DATASET_SELECT = 'title description sellerAddress price coverImageUrl fileSize extension averageRating createdAt dataCID originalContentHash tags schema source userId';
+const DATASET_SELECT = 'title description sellerAddress price coverImageUrl fileSize extension averageRating createdAt dataCID originalContentHash tags schema source userId blockchainSignature blockchainAccount blockchainNetwork';
 const USER_SELECT = 'firstName role';
 
 
@@ -21,7 +21,10 @@ async function addDataset(req, res) {
       tags,
       fileSize,
       schema,
-      source
+      source,
+      blockchainSignature,
+      blockchainAccount,
+      blockchainNetwork
     } = req.body;
 
     if (
@@ -49,6 +52,9 @@ async function addDataset(req, res) {
       extension,
       schema,
       source,
+      blockchainSignature,
+      blockchainAccount,
+      blockchainNetwork,
     });
 
     const savedDataset = await newDataset.save();
@@ -173,26 +179,26 @@ async function getDatasetByUser(req, res) {
   }
 }
 
-async function getDatasetName(req, res) {
-  try {
-    const { id } = req.query;
-    console.log("Dataset ID:", id); // Debug log
-    const dataset = await DatasetCatalogue.findById(id)
-      .select('title')
-      .lean();  
-    if (!dataset) {
-      return res.status(404).json({ message: 'Dataset not found.' });
-    } 
-    res.status(200).json({ title: dataset.title });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  } 
-}
+// async function getDatasetName(req, res) {
+//   try {
+//     const { id } = req.query;
+//     console.log("Dataset ID:", id); // Debug log
+//     const dataset = await DatasetCatalogue.findById(id)
+//       .select('title')
+//       .lean();  
+//     if (!dataset) {
+//       return res.status(404).json({ message: 'Dataset not found.' });
+//     } 
+//     res.status(200).json({ title: dataset.title });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   } 
+// }
 
 module.exports = {
   addDataset,
   getDatasets,
   getDatasetById,
  getDatasetByUser,
-  getDatasetName
+  // getDatasetName
 };

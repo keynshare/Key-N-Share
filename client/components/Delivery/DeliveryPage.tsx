@@ -8,6 +8,7 @@ import { useAuth } from "@/lib/Authentication/AuthContext";
 import { datasetApi } from "@/lib/api/DatasetApi";
 import { useNotifications } from "@/lib/notification-context";
 import { AxiosError } from "axios";
+import { profileApi } from "@/lib/api/ProfileApi";
 export default function DeliveryPage({ Id, orderId }: { Id?: string | number | undefined | null , orderId?: string | number | undefined | null}) {
     const { token } = useAuth();
     const {reportError,notify} = useNotifications();
@@ -15,9 +16,10 @@ export default function DeliveryPage({ Id, orderId }: { Id?: string | number | u
         datasetId: Id ? Id.toString() : "",
         buyerAddress: "",
         buyerId: "",
+        BuyerName:"Loading...",
         buyerPublicKey: "",
         privateKeyPem: "",
-        filename: "dataset.csv",
+        filename: "Loading...",
     });
     const [busy, setBusy] = useState(false);
     const [message, setMessage] = useState<string | null>(null);
@@ -39,6 +41,7 @@ export default function DeliveryPage({ Id, orderId }: { Id?: string | number | u
 
             try {
                 const dataset = await datasetApi.getDatasetById(values.datasetId, token);
+                 const userRes = await profileApi.getCurrentUserProfile(token);
                 setDatasetInfo({
                     title: dataset.title,
                     extension: dataset.extension
@@ -53,6 +56,7 @@ export default function DeliveryPage({ Id, orderId }: { Id?: string | number | u
                 
                 setValues(prev => ({
                     ...prev,
+                    BuyerName:userRes.data.firstName,
                     filename: filename
                 }));
             } catch (error) {

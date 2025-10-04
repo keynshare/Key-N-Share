@@ -10,6 +10,12 @@ import IPProtect from "@/components/assets/IPProtect.svg";
 import Rating from "@/components/assets/Rating.svg";
 import AboutFiller from "@/components/assets/AboutFiller.svg";
 import Tutorial from "../LandingPage/Tutorial";
+import Discuss from "@/components/assets/TeamRecepie/Discuss.jpg"
+import Discuss2 from "@/components/assets/TeamRecepie/Discuss2.png"
+import Discuss3 from "@/components/assets/TeamRecepie/Discuss3.png"
+import img3 from "@/components/assets/TeamRecepie/3.jpg"
+import img5 from "@/components/assets/TeamRecepie/5.jpg"
+import Group4People from "@/components/assets/TeamRecepie/Group4People.jpg"
 
 import Image from "next/image";
 const features = [
@@ -89,18 +95,34 @@ const WellBeing = () => {
          <div className=" flex flex-col gap-4 w-full mt-16 ">
      
         <div className="grid grid-cols-4 gap-4 auto-rows-[350px] w-full">
-        <div className="bg-gray-200 rounded-md col-span-full md:col-span-3 row-span-1"></div>
-        <div className="bg-gray-200 rounded-md col-span-full md:col-span-1 row-span-1"></div>
+        <div className="bg-gray-200 rounded-md col-span-full md:col-span-3 row-span-1">
+          <Image alt="Key N Share Team" src={Group4People} className="object-cover w-full h-full"/>
+        </div>
+        <div className="bg-gray-200 rounded-md col-span-full md:col-span-1 row-span-1">
+                                        <Image src={Discuss2} className="object-cover object-top w-full h-full" alt="Key N Share Team" />
+
+        </div>
         </div>
 
         <div className="grid grid-cols-5 gap-4 auto-rows-[350px] w-full">
-        <div className="bg-gray-200 rounded-md col-span-full md:col-span-3 row-span-1"></div>
-        <div className="bg-gray-200 rounded-md col-span-full md:col-span-2 row-span-1"></div>
+        <div className="bg-gray-200 overflow-hidden rounded-md col-span-full md:col-span-3 row-span-1">
+          <Image src={Discuss} className="object-cover w-full h-full" alt="Key N Share Team" />
+        </div>
+        <div className="bg-gray-200 rounded-md col-span-full md:col-span-2 row-span-1">
+                              <Image src={Discuss3} className="object-cover object-top w-full h-full" alt="Key N Share Team" />
+
+        </div>
         </div>
      
         <div className="grid grid-cols-4 gap-4 auto-rows-[350px] w-full">
-        <div className="bg-gray-200 rounded-md col-span-full md:col-span-1 row-span-1"></div>
-        <div className="bg-gray-200 rounded-md col-span-full md:col-span-3 row-span-1"></div>
+        <div className="bg-gray-200 rounded-md col-span-full md:col-span-1 row-span-1">
+                              <Image src={img5} className="object-cover object-top w-full h-full" alt="Key N Share Team" />
+
+        </div>
+        <div className="bg-gray-200 rounded-md col-span-full md:col-span-3 row-span-1">
+                              <Image src={img3} className="object-cover object-top w-full h-full" alt="Key N Share Team" />
+
+        </div>
         </div>
 
       </div>

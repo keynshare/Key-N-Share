@@ -9,6 +9,8 @@ import { useAuth } from "@/lib/Authentication/AuthContext";
 import { ratingApi } from "@/lib/api/RatingApi";
 import { useNotifications } from "@/lib/notification-context";
 import { AxiosError } from "axios";
+// import {checkHashIntegrity} from '@/lib/api/DeliveryApi'
+import IntegrityPopup from "@/components/IntegrityPopup/IntegrityPopup";
 
 type OrderStatus = "processing" | "delivered" | "disputed";
 
@@ -44,6 +46,7 @@ function OrderDetailCard({
   sellerUserId,
 }: OrderDetailProps) {
   const { token,userId } = useAuth();
+  const [showIntegrity, setShowIntegrity] = useState(false);
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
   const [comment, setComment] = useState("");
@@ -134,6 +137,12 @@ useEffect(() => {
   fetchSellerRating();
 }, [token, sellerUserId, userId]);
 
+
+// const CheckIntegrity= async()=>{
+//   try{
+//     const response= await checkHashIntegrity({datasetId:id,dataHash:txHash});
+//   }
+// }
 
   const handleRatingSubmit = async () => {
     if (!rating || !token) return;
@@ -413,9 +422,23 @@ const effective = sellerHovered || sellerRating || (sellerHasRated ? sellerAvera
             >
               <Download className="w-4 h-4" /> Download Dataset
             </SecondaryBtn>
+
+            <SecondaryBtn
+              className="bg-gray-900 dark:bg-white text-white dark:text-black hover:opacity-90"
+              onClick={() => setShowIntegrity(true)}
+            >
+               Check Integrity
+            </SecondaryBtn>
           </div>
         </div>
       </div>
+      {(
+        <IntegrityPopup 
+          isOpen={showIntegrity}
+          datasetId={id}
+          onClose={() => setShowIntegrity(false)}
+        />
+      )}
     </div>
   );
 }

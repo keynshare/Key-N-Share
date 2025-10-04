@@ -1,4 +1,4 @@
-# 🔐 KeyNShare: Secure Decentralized Data Marketplace
+# 🔐 KeyNShare: A Hybrid & Secure Data Marketplace using Blockchain Technology
 
 <div align="center">
   <img src="./client/public/WhiteLogo.svg" alt="KeyNShare Logo" width="200"/>

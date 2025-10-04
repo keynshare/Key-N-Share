@@ -1,6 +1,9 @@
 "use client";
 
 import { Star } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { useAuth } from '@/lib/Authentication/AuthContext';
+import { ratingApi, RatingSummary } from '@/lib/api/RatingApi';
 
 interface ProfileData {
   _id: string;
@@ -34,49 +37,54 @@ interface AboutSectionProps {
 }
 
 export default function AboutSection({ profile, loading, isCurrentUser }: AboutSectionProps) {
-  // Calculate seller rating percentages
-  const getRatingPercentages = () => {
-    if (!profile || !profile.sellerRating || profile.sellerRating.numberOfRatings === 0) {
-      return [
-        { star: 5, percent: 0 },
-        { star: 4, percent: 0 },
-        { star: 3, percent: 0 },
-        { star: 2, percent: 0 },
-        { star: 1, percent: 0 }
-      ];
-    }
+  const { token } = useAuth();
+  const [sellerSummary, setSellerSummary] = useState<RatingSummary | null>(null);
+  const [buyerSummary, setBuyerSummary] = useState<RatingSummary | null>(null);
+  const [isLoadingRatings, setIsLoadingRatings] = useState<boolean>(false);
 
-    // Placeholder data for seller ratings
-    return [
-      { star: 5, percent: 40 },
-      { star: 4, percent: 30 },
-      { star: 3, percent: 15 },
-      { star: 2, percent: 10 },
-      { star: 1, percent: 5 }
-    ];
-  };
-  
-  // Calculate buyer rating percentages
-  const getBuyerRatingPercentages = () => {
-    if (!profile || !profile.buyerRating || profile.buyerRating.numberOfRatings === 0) {
-      return [
-        { star: 5, percent: 0 },
-        { star: 4, percent: 0 },
-        { star: 3, percent: 0 },
-        { star: 2, percent: 0 },
-        { star: 1, percent: 0 }
-      ];
-    }
+  useEffect(() => {
+    let cancelled = false;
+    const fetchSummaries = async () => {
+      if (!profile?._id || !token) return;
+      try {
+        setIsLoadingRatings(true);
+        const [seller, buyer] = await Promise.all([
+          ratingApi.getUserRatingSummary(profile._id, 'seller', token),
+          ratingApi.getUserRatingSummary(profile._id, 'buyer', token)
+        ]);
+        if (!cancelled) {
+          setSellerSummary(seller);
+          setBuyerSummary(buyer);
+        }
+      } catch (e) {
+        // silently ignore, UI will fallback to zeros
+        if (!cancelled) {
+          setSellerSummary(null);
+          setBuyerSummary(null);
+        }
+      } finally {
+        if (!cancelled) setIsLoadingRatings(false);
+      }
+    };
+    fetchSummaries();
+    return () => { cancelled = true; };
+  }, [profile?._id, token]);
 
-    // Placeholder data for buyer ratings
-    return [
-      { star: 5, percent: 45 },
-      { star: 4, percent: 35 },
-      { star: 3, percent: 10 },
-      { star: 2, percent: 7 },
-      { star: 1, percent: 3 }
-    ];
-  };
+  const sellerPercentages = useMemo(() => {
+    const dist = sellerSummary?.ratingDistribution;
+    if (!dist) return [5,4,3,2,1].map(star => ({ star, percent: 0 }));
+    const total = (dist[1] || 0) + (dist[2] || 0) + (dist[3] || 0) + (dist[4] || 0) + (dist[5] || 0);
+    if (!total) return [5,4,3,2,1].map(star => ({ star, percent: 0 }));
+    return [5,4,3,2,1].map(star => ({ star, percent: Math.round(((dist[star as 1|2|3|4|5] || 0) / total) * 100) }));
+  }, [sellerSummary]);
+
+  const buyerPercentages = useMemo(() => {
+    const dist = buyerSummary?.ratingDistribution;
+    if (!dist) return [5,4,3,2,1].map(star => ({ star, percent: 0 }));
+    const total = (dist[1] || 0) + (dist[2] || 0) + (dist[3] || 0) + (dist[4] || 0) + (dist[5] || 0);
+    if (!total) return [5,4,3,2,1].map(star => ({ star, percent: 0 }));
+    return [5,4,3,2,1].map(star => ({ star, percent: Math.round(((dist[star as 1|2|3|4|5] || 0) / total) * 100) }));
+  }, [buyerSummary]);
 
 
   // Generate account overview data
@@ -150,7 +158,7 @@ export default function AboutSection({ profile, loading, isCurrentUser }: AboutS
           </span>
            {/* Rating Bars */}
         <div className="mt-4 w-full space-y-2">
-          {getRatingPercentages().map(
+          {sellerPercentages.map(
             ({ star, percent }) => (
               <div key={star} className="flex items-center gap-2 text-sm">
                 <span className="w-4">{star}</span>
@@ -190,7 +198,7 @@ export default function AboutSection({ profile, loading, isCurrentUser }: AboutS
           </span>
            {/* Rating Bars */}
         <div className="mt-4 w-full space-y-2">
-          {getBuyerRatingPercentages().map(
+          {buyerPercentages.map(
             ({ star, percent }) => (
               <div key={star} className="flex items-center gap-2 text-sm">
                 <span className="w-4">{star}</span>

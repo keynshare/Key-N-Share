@@ -107,9 +107,9 @@ const Footer = () => {
             }`} style={{ transitionDelay: '350ms' }}>
               <h3 className="font-bold mb-2 text-lg xl:text-xl font-bricola">Legal</h3>
               <ul className="space-y-1 text-lg">
-                <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/terms">Terms & Conditions</Link></li>
-                <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/privacy">Privacy Policy</Link></li>
-                <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/cookies">Cookies Policy</Link></li>
+                <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/terms-and-conditions">Terms & Conditions</Link></li>
+                <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/privacy-policy">Privacy Policy</Link></li>
+                {/* <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/cookies">Cookies Policy</Link></li> */}
               </ul>
             </div>
 
@@ -119,9 +119,9 @@ const Footer = () => {
             }`} style={{ transitionDelay: '500ms' }}>
               <h3 className="font-bold mb-2 text-lg xl:text-xl font-bricola ">Support</h3>
               <ul className="space-y-1   text-lg">
-                <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/contact">Contact Us</Link></li>
+                {/* <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/contact">Contact Us</Link></li> */}
                 <li className='hover:text-orange-500 transition-colors duration-300'><Link href="/faqs">FAQs</Link></li>
-                <li className='hover:text-orange-500 transition-colors duration-300'><Link href="https://discord.gg/">Discord</Link></li>
+                <li className='hover:text-orange-500 transition-colors duration-300'><Link href="https://www.instagram.com/keynshare/">Instagram</Link></li>
                 <li className='hover:text-orange-500 transition-colors duration-300'><Link href="https://github.com/">Github</Link></li>
               </ul>
             </div>
