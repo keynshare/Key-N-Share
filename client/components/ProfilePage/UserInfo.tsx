@@ -126,9 +126,10 @@ function UserInfo({ userId, profile, loading, isCurrentUser, onProfileUpdate }: 
               <LogOut size={20}/>
             </SecondaryBtn>
           ) : (
-            <SecondaryBtn  Title='Chat' className='p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white ' >
-              <MessageCircleMoreIcon size={20}/>
-            </SecondaryBtn>
+            // <SecondaryBtn  Title='Chat' className='p-2 bg-[#131313] dark:border dark:border-gray-800 hover:bg-[#242424] text-white ' >
+            //   <MessageCircleMoreIcon size={20}/>
+            // </SecondaryBtn>
+            <></>
           )}
 
         </div>
