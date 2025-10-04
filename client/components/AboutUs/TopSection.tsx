@@ -1,6 +1,7 @@
 import React from "react";
 import PrimaryBtn from "@/components/SharedComponents/Btns/PrimaryBtn";
-
+import Image from "next/image";
+import GroupPhoto from '@/components/assets/TeamRecepie/GroupPhoto.jpg'
 const TopSection = () => {
   return (
     <section className="flex flex-col items-center text-center px-3 md:px-5 mb-5 lg:px-10 xl:px-16 2xl:px-20 gap-10 py-10">
@@ -20,11 +21,11 @@ const TopSection = () => {
       </PrimaryBtn>
 
       {/* Image Placeholder */}
-      <div className="w-full max-w-3xl h-[320px] lg:h-[400px] bg-gray-300 rounded-md flex items-center justify-center mt-6">
-        <span className="text-gray-600 text-lg font-semibold">
+      <Image src={GroupPhoto} alt="KeyNShare Team" className="w-full max-w-3xl md:h-[320px] lg:h-[400px] bg-gray-300 rounded-md flex items-center justify-center mt-6"/>
+        {/* <span className="text-gray-600 text-lg font-semibold">
           Group Photo Placeholder
         </span>
-      </div>
+      </div> */}
     </section>
   );
 };
