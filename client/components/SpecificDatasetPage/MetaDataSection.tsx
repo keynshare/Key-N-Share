@@ -1,4 +1,4 @@
-
+import Link from "next/link";
 interface Feature {
   key?: string;
   label?: string;
@@ -61,12 +61,13 @@ return (
     </p>
   </div>
   <div className="mt-6">
-    <a
-      href={datasetId ? `/dataset/${datasetId}/blockchain` : '#'}
+    <Link
+    target="_blank"
+      href='https://explorer.solana.com/address/9dGx4usjmHMv9osGXBi2UMhH6bxCq4kWasH5ZAqZoijd?cluster=devnet'
       className="text-sm text-orange-500 hover:underline"
     >
-      View on-chain metadata
-    </a>
+      View on Solana Explorer
+    </Link>
   </div>
   </section>
 );

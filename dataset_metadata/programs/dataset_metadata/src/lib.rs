@@ -14,7 +14,7 @@ pub mod dataset_catalogue {
         data_cid: String, // Corresponds to 'dataCID'
         original_content_hash: String, // Corresponds to 'originalContentHash'
         description: String, // Corresponds to 'description'
-        file_size: u64, // Corresponds to 'fileSize'
+        file_size: String, // Corresponds to 'fileSize'
     ) -> Result<()> {
         // Get a mutable reference to the newly created dataset account
         let dataset_account = &mut ctx.accounts.dataset;

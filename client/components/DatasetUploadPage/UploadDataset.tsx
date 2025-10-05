@@ -197,7 +197,7 @@ if (!formData.encryptionKey) {
         dataCid: uploadResponse.data.cid,
         originalContentHash,
         description: formData.description,
-        fileSize: formData.file.size,
+        fileSize: formData.file.size.toString(),
       });
       if (!bcResult.success) {
         throw new Error(bcResult.error || 'Blockchain transaction failed');

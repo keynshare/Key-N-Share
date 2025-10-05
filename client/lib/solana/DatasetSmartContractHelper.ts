@@ -16,7 +16,7 @@ export interface DatasetMetadata {
   dataCid: string;
   originalContentHash: string;
   description: string;
-  fileSize: number; // File size in bytes
+  fileSize: string; // File size in bytes
 }
 
 export interface SmartContractResult {
@@ -73,38 +73,15 @@ async function addDatasetWithRawTransaction(
   }
 
   try {
-    // Generate a unique seed for this dataset
-    const seed = `dataset_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
-    // Find PDA for storing dataset metadata
-    const [datasetPDA] = PublicKey.findProgramAddressSync(
-      [Buffer.from(seed), wallet.publicKey.toBuffer()],
-      PROGRAM_ID
-    );
-
-    console.log("Generated dataset PDA:", datasetPDA.toString());
-
-    // For now, simulate a successful blockchain transaction
-    // In a real implementation, you would create and send the actual transaction
-    const mockSignature = `raw_tx_${Date.now()}_${seed}`;
-    
-    console.log("Simulated raw transaction successful:", mockSignature);
-
-    return {
-      success: true,
-      signature: mockSignature,
-      datasetAccount: datasetPDA
-    };
+    // Raw transaction construction is not implemented yet. We should not
+    // return a mock success as it can corrupt business logic.
+    throw new Error("Raw transaction path is not implemented. Anchor flow must succeed.");
 
   } catch (error) {
     console.error("Raw transaction failed:", error);
-    
-    // Fallback to mock for development
-    console.warn("Using mock response for development");
     return {
-      success: true,
-      signature: "mock_signature_" + Date.now(),
-      datasetAccount: new PublicKey("11111111111111111111111111111112")
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error occurred"
     };
   }
 }
@@ -134,7 +111,7 @@ export async function addDatasetToBlockchain(
       throw new Error(`Invalid file size: ${metadata.fileSize}. Expected a valid number.`);
     }
 
-    // Try Anchor approach first, fallback to raw transaction if it fails
+    // Try Anchor approach only; do not fallback to mock/raw until implemented
     try {
       // Get provider and program
       console.log("Creating provider with wallet:", wallet.publicKey.toString());
@@ -151,8 +128,11 @@ export async function addDatasetToBlockchain(
       return await executeAnchorTransaction(program, wallet, metadata);
       
     } catch (anchorError) {
-      console.error("Anchor approach failed, trying raw transaction approach:", anchorError);
-      return await addDatasetWithRawTransaction(wallet, connection, metadata);
+      console.error("Anchor approach failed:", anchorError);
+      return {
+        success: false,
+        error: anchorError instanceof Error ? anchorError.message : "Unknown Anchor error"
+      };
     }
 
   } catch (error: unknown) {
@@ -302,7 +282,7 @@ export function validateDatasetMetadata(metadata: DatasetMetadata): string[] {
     errors.push("Price must be greater than 0");
   }
 
-  if (metadata.fileSize <= 0) {
+  if (metadata.fileSize && metadata.fileSize.length <= 0) {
     errors.push("File size must be greater than 0");
   }
 
