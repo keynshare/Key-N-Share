@@ -1,4 +1,3 @@
-"use client";
 
 import { AnchorProvider, Program, BN, Idl } from "@coral-xyz/anchor";
 import { Connection, PublicKey, Keypair, SystemProgram, LAMPORTS_PER_SOL } from "@solana/web3.js";

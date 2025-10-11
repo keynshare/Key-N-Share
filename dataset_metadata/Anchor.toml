@@ -5,7 +5,9 @@ package_manager = "yarn"
 resolution = true
 skip-lint = false
 
-[programs.localnet]
+
+[programs.devnet]
+
 dataset_metadata = "DPLTAXALPu5PRrWbwB3fYmPjq4o3vBYHm1vRRVJZY7rw"
 
 [registry]
