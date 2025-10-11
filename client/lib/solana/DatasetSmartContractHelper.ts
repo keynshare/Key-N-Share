@@ -1,4 +1,3 @@
-"use client";
 
 import { AnchorProvider, Program, BN, Idl } from "@coral-xyz/anchor";
 import { Connection, PublicKey, Keypair, SystemProgram, LAMPORTS_PER_SOL } from "@solana/web3.js";
@@ -7,7 +6,7 @@ import { useState } from "react";
 import idl from "./dataset_catalogue_idl.json";
 
 // Program ID from the smart contract
-const PROGRAM_ID = new PublicKey("9dGx4usjmHMv9osGXBi2UMhH6bxCq4kWasH5ZAqZoijd");
+const PROGRAM_ID = new PublicKey("DPLTAXALPu5PRrWbwB3fYmPjq4o3vBYHm1vRRVJZY7rw");
 
 // Types for the smart contract interaction
 export interface DatasetMetadata {
