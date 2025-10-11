@@ -63,7 +63,7 @@ return (
   <div className="mt-6">
     <Link
     target="_blank"
-      href='https://explorer.solana.com/address/9dGx4usjmHMv9osGXBi2UMhH6bxCq4kWasH5ZAqZoijd?cluster=devnet'
+      href='https://explorer.solana.com/address/DPLTAXALPu5PRrWbwB3fYmPjq4o3vBYHm1vRRVJZY7rw?cluster=devnet'
       className="text-sm text-orange-500 hover:underline"
     >
       View on Solana Explorer

@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from "react";
 import Solana from "@/components/assets/Solana";
 import SecondaryBtn from "@/components/SharedComponents/Btns/SecondaryBtn";
-import { Calendar, Hash, Download, Star } from "lucide-react";
+import { Calendar, Hash, Download, Star, ExternalLink } from "lucide-react";
+import { getSolanaExplorerUrl } from "@/lib/solana/DatasetSmartContractHelper";
 import clsx from "clsx";
 import { useAuth } from "@/lib/Authentication/AuthContext";
 import { ratingApi } from "@/lib/api/RatingApi";
@@ -411,6 +412,17 @@ const effective = sellerHovered || sellerRating || (sellerHasRated ? sellerAvera
               <div title={txHash} className="flex gap-2 items-center">
                 <Hash className="w-5 h-5 text-gray-500" />
                 <div className="font-medium truncate max-w-24">{txHash || "—"}</div>
+                {txHash && (
+                  <a
+                    href={getSolanaExplorerUrl(txHash, 'devnet')}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 hover:text-blue-600 transition-colors"
+                    title="View on Solana Explorer"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                )}
               </div>
             </div>
           </div>

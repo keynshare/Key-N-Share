@@ -10,7 +10,7 @@ The system now integrates with a Solana smart contract to store dataset metadata
 
 ### Smart Contract (Rust/Anchor)
 - **Location**: `dataset_metadata/programs/dataset_metadata/src/lib.rs`
-- **Program ID**: `9dGx4usjmHMv9osGXBi2UMhH6bxCq4kWasH5ZAqZoijd`
+- **Program ID**: `DPLTAXALPu5PRrWbwB3fYmPjq4o3vBYHm1vRRVJZY7rw`
 - **Network**: Solana Devnet
 
 ### Frontend Integration
@@ -43,7 +43,7 @@ pub struct Dataset {
     pub data_cid: String,               // IPFS CID (max 256 chars)
     pub original_content_hash: String,   // SHA-256 hash (max 256 chars)
     pub description: String,             // Description (max 1024 chars)
-    pub file_size: u64,                 // File size in bytes
+    pub file_size: String,                 // File size in bytes
 }
 ```
 

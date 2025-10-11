@@ -1,5 +1,6 @@
 "use client";
 
+import { PublicKey } from '@solana/web3.js';
 import axios from 'axios';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/';
@@ -37,6 +38,9 @@ export interface DatasetCatalogueData {
   averageRating?: number;
   createdAt?: string;
   schema: string;
+  blockchainAccount?: string;
+  blockchainSignature?: string;
+  blockchainNetwork?: string;
 }
 
 export const datasetApi = {

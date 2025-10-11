@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 
-declare_id!("9dGx4usjmHMv9osGXBi2UMhH6bxCq4kWasH5ZAqZoijd");
+declare_id!("DPLTAXALPu5PRrWbwB3fYmPjq4o3vBYHm1vRRVJZY7rw");
 
 #[program]
 pub mod dataset_catalogue {
@@ -49,7 +49,7 @@ pub struct Dataset {
     pub data_cid: String,
     pub original_content_hash: String,
     pub description: String,
-    pub file_size: u64,                  // File size in bytes.
+    pub file_size: String,                  // File size in bytes.
 }
 
 // This struct defines all the accounts that are required by our `add_dataset` function.

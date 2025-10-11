@@ -8,6 +8,7 @@ import { useParams } from "next/navigation";
 import Breadcrumb from "../SharedComponents/Breadcrumb/Breadcrumb";
 import { datasetApi } from "@/lib/api/DatasetApi";
 import { useAuth } from "@/lib/Authentication/AuthContext";
+import BlockchainInfo from "@/components/SharedComponents/BlockchainInfo/BlockchainInfo";
 
 
 
@@ -31,6 +32,9 @@ export default function SpecificDatasetPage() {
     schema?: string;
     source?: string;
     sellerAddress?: string;
+    blockchainSignature?: string;
+    blockchainAccount?: string;
+    blockchainNetwork?: string;
     user?: {
       id?: string;
       name?: string;
@@ -128,6 +132,14 @@ export default function SpecificDatasetPage() {
           Source={dataset.source}
           Schema={dataset.schema}
           datasetId={dataset._id}
+        />
+        
+        {/* Blockchain Information Section */}
+        <BlockchainInfo
+          blockchainSignature={dataset.blockchainSignature}
+          blockchainAccount={dataset.blockchainAccount}
+          blockchainNetwork={dataset.blockchainNetwork}
+          className="mt-6"
         />
       </div>
 

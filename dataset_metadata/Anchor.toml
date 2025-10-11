@@ -6,7 +6,7 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-dataset_metadata = "9dGx4usjmHMv9osGXBi2UMhH6bxCq4kWasH5ZAqZoijd"
+dataset_metadata = "DPLTAXALPu5PRrWbwB3fYmPjq4o3vBYHm1vRRVJZY7rw"
 
 [registry]
 url = "https://api.apr.dev"

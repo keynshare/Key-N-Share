@@ -8,7 +8,7 @@ The smart contract integration has been successfully implemented and the build i
 
 ### ✅ **Smart Contract Integration**
 - **Solana Program**: Analyzed existing Rust smart contract (`dataset_metadata`)
-- **Program ID**: `9dGx4usjmHMv9osGXBi2UMhH6bxCq4kWasH5ZAqZoijd`
+- **Program ID**: `DPLTAXALPu5PRrWbwB3fYmPjq4o3vBYHm1vRRVJZY7rw`
 - **Network**: Solana Devnet
 
 ### ✅ **Frontend Integration**

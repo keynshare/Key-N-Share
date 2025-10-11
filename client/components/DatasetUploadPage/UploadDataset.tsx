@@ -81,6 +81,12 @@ function UploadDataset() {
       return;
     }
 
+    // Prevent rapid successive submissions
+    if (isUploading) {
+      notify({ type: "warning", message: "Upload already in progress. Please wait..." });
+      return;
+    }
+
     if (!formData.file) {
       notify({ type: "error", message: "Please select a dataset file" });
       return;
@@ -219,7 +225,10 @@ if (!formData.encryptionKey) {
         coverImageUrl: coverImageUrl,
         tags: formData.tags,
         fileSize: formatFileSize(formData.file.size),
-        schema: formData.schema
+        schema: formData.schema,
+        blockchainAccount: bcResult?.datasetAccount?.toString(),
+        blockchainSignature: bcResult?.signature,
+        blockchainNetwork: 'devnet',
       };
 
       const catalogueResponse = await datasetApi.addDatasetToCatalogue(catalogueData, token);
@@ -268,7 +277,20 @@ if (!formData.encryptionKey) {
           notify({ type: "error", message: error.response?.data.message || "Failed to upload dataset" });
         }
       } else {
-        notify({ type: "error", message: "Failed to upload dataset" });
+        // Handle blockchain-specific errors
+        const errorMessage = error instanceof Error ? error.message : "Failed to upload dataset";
+        
+        if (errorMessage.includes("already been processed")) {
+          notify({ type: "error", message: "This dataset has already been uploaded. Please try with different data or wait a moment." });
+        } else if (errorMessage.includes("insufficient funds")) {
+          notify({ type: "error", message: "Insufficient SOL balance. Please add more SOL to your wallet." });
+        } else if (errorMessage.includes("User rejected")) {
+          notify({ type: "error", message: "Transaction was cancelled. Please try again." });
+        } else if (errorMessage.includes("Transaction simulation failed")) {
+          notify({ type: "error", message: "Transaction failed. Please check your wallet connection and try again." });
+        } else {
+          notify({ type: "error", message: errorMessage });
+        }
       }
     } finally {
       setIsUploading(false);
