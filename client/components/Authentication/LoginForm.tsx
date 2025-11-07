@@ -36,7 +36,7 @@ function LoginForm({isLoginMode,toggleMode}:LoginProp) {
       notify({ type: "warning", message: "Please enter a valid email address" });
       return;
     }
-    if(!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(password)){
+    if(!/^(?=.*[A-Za-z])(?=.*\d).{8,}$/.test(password)){
       notify({ type: "warning", message: "Password must be 8+ chars with letters & numbers" });
       return;
     }
