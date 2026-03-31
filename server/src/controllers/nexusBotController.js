@@ -3,7 +3,7 @@ const { model } = require("../utils/nexusBot");
 const nexusBotController = async (req, res) => {
     const { userInput } = req.body;
 
-    // REVISED AND SIMPLIFIED PROMPT
+  
     const systemPrompt = `
         You are Nexus, the AI-powered expert assistant for the Key-N-Share platform. Your goal is to provide clear, helpful, and comprehensive answers to user queries.
 
@@ -53,9 +53,9 @@ const nexusBotController = async (req, res) => {
                     parts: [{ text: userInput }]
                 }
             ],
-            // ADJUSTED GENERATION CONFIG
+           
             generationConfig: {
-                temperature: 1, // Lowered for more focused, reliable analysis
+                temperature: 1,
                 topK: 40,
             },
             safetySettings: [
